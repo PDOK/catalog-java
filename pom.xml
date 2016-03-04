@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+	<!-- Provided Tomcat-7.0.x libs -->
+	<groupId>nl.kadaster.java-expertise</groupId>
+	<artifactId>parent-pom-tomcat7</artifactId>
+	<version>1.4.0</version>
+  </parent>
+  <groupId>nl.kadaster.pdok</groupId>
+  <artifactId>pdok-datamanagement-repository</artifactId>
+  <name>PDOK Datamanagement repository</name>
+  <version>1.0.0.0-SNAPSHOT</version>
+  <url>http://maven.apache.org</url>
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <info.cukes.version>1.0.0</info.cukes.version>
+  </properties>
+
+  <dependencies>
+    	<dependency>
+           <groupId>nl.kadaster.pdok</groupId>
+            <artifactId>pdok-java-util</artifactId>
+            <version>1.0.0.4</version>
+               <exclusions>
+                <exclusion>
+                   <groupId>org.slf4j</groupId>
+                   <artifactId>slf4j-api</artifactId>
+              </exclusion>
+                <exclusion>
+                   <groupId>org.slf4j</groupId>
+            <artifactId>jcl-over-slf4j</artifactId>
+              </exclusion>
+                <exclusion>
+                   <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+              </exclusion>
+              </exclusions>
+        </dependency>
+  </dependencies>
+  <scm>
+        <url>http://github.so.kadaster.nl/PDOK/datamanagement-repository.git</url>
+        <connection>scm:git:http://github.so.kadaster.nl/PDOK/datamanagement-repository.git</connection>
+        <developerConnection>scm:git:git@github.so.kadaster.nl:PDOK/datamanagement-repository.git</developerConnection>
+    <tag>pdok-datamanagement-repository-1.0.0.0</tag>
+  </scm>
+  <distributionManagement>
+        <repository>
+            <id>releases-repo</id>
+            <name>Artifactory Repo</name>
+            <url>http://ota-portal.so.kadaster.nl/artifactory/mvn-release-local/</url>
+        </repository>
+   </distributionManagement>
+</project>
