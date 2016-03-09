@@ -46,7 +46,7 @@ public interface IBaseCatalog {
     public Path getDatasetLocationTestData(String datasetName);
     public Path getDatasetLocationTestExpected(String datasetName);
     public Path getDatasetLocationShapesToDB(String datasetName);
-    public path getDatasetLocationTestData(String datasetName);
+    public Path getDatasetLocationTestData(String datasetName);
     public List<DataObject> getDatasetTestData(String datasetName);
     
     InputStream getResourcePrepareTestset(String datasetName, String resourceName) throws IOException;
