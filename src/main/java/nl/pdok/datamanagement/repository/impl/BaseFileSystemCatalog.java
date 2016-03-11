@@ -61,7 +61,7 @@ public class BaseFileSystemCatalog implements IBaseCatalog {
         return datasetNames;
     }
 
-    private Filter<Path> getFilterPathIsDirectory(final boolean isDirectory) {
+    protected Filter<Path> getFilterPathIsDirectory(final boolean isDirectory) {
         return new DirectoryStream.Filter<Path>() {
             @Override
             public boolean accept(Path entry) throws IOException {
