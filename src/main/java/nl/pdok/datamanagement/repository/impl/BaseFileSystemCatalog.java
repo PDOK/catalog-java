@@ -21,7 +21,7 @@ import java.util.Set;
 import nl.pdok.datamanagement.model.DataObject;
 
 import nl.pdok.datamanagement.repository.IBaseCatalog;
-import nl.pdok.java.util.ZipUtils;
+import nl.pdok.util.ZipUtils;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.comparator.NameFileComparator;

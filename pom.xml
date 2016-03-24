@@ -20,8 +20,8 @@
   <dependencies>
     	<dependency>
            <groupId>nl.pdok</groupId>
-            <artifactId>pdok-java-util</artifactId>
-            <version>1.0.0.5</version>
+            <artifactId>pdok-util</artifactId>
+            <version>1.0.0.6</version>
                <exclusions>
                 <exclusion>
                    <groupId>org.slf4j</groupId>
