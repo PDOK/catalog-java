@@ -1,7 +1,6 @@
 package nl.pdok.catalog.impl;
 
 import java.io.File;
-import java.io.FileFilter;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,18 +10,13 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
+
 
 import nl.pdok.catalog.ICatalog;
 import nl.pdok.util.ZipUtils;
 
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.comparator.NameFileComparator;
 import org.apache.log4j.Logger;
 
 /**
