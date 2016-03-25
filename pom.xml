@@ -10,7 +10,7 @@
   <groupId>nl.pdok</groupId>
   <artifactId>pdok-catalog-java</artifactId>
   <name>PDOK Catalog java</name>
-  <version>1.0.0.3</version>
+  <version>1.0.0.4-SNAPSHOT</version>
   <url>http://maven.apache.org</url>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -49,7 +49,7 @@
         <url>http://github.so.kadaster.nl/PDOK/datamanagement-repository.git</url>
         <connection>scm:git:http://github.so.kadaster.nl/PDOK/datamanagement-repository.git</connection>
         <developerConnection>scm:git:git@github.so.kadaster.nl:PDOK/datamanagement-repository.git</developerConnection>
-    <tag>pdok-catalog-java-1.0.0.3</tag>
+    <tag>pdok-datamanagement-repository-1.0.0.1</tag>
   </scm>
   <distributionManagement>
         <repository>
