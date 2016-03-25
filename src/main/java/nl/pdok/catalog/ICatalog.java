@@ -7,7 +7,6 @@ import java.nio.file.Path;
 import java.util.Collection;
 import java.util.List;
 
-import nl.pdok.catalog.impl.TestDataObject;
 /**
  *
  * @author Raymond Kroon <raymond@k3n.nl>
@@ -43,8 +42,8 @@ public interface ICatalog {
     public Path getDatasetLocationTestData(String datasetName);
     public Path getDatasetLocationTestExpected(String datasetName);
     public Path getDatasetLocationShapesToDB(String datasetName);
-    public List<TestDataObject> getDatasetTestData(String datasetName);
-    
+    public List<TestData> getDatasetTestData(String datasetName);
+     
     InputStream getResourcePrepareTestset(String datasetName, String resourceName) throws IOException;
     
     InputStream getDdlResource(String datasetName) throws IOException;

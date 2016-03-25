@@ -15,6 +15,7 @@ import java.util.List;
 
 
 import nl.pdok.catalog.ICatalog;
+import nl.pdok.catalog.TestData;
 import nl.pdok.util.ZipUtils;
 
 import org.apache.log4j.Logger;
@@ -63,14 +64,14 @@ public class BaseFileSystemCatalog implements ICatalog {
     }
 
     @Override
-    public List<TestDataObject> getDatasetTestData(String datasetName) {
+    public List<TestData> getDatasetTestData(String datasetName) {
         Path testDataFolder = getDatasetLocationTestData(datasetName);
-        List<TestDataObject> results = new ArrayList<TestDataObject>();
+        List<TestData> results = new ArrayList<TestData>();
 
         try (DirectoryStream<Path> ds = Files.newDirectoryStream(testDataFolder, getFilterPathIsDirectory(false))) {
             for (Path testDataFile : ds) {
                 boolean zipped = ZipUtils.isZip(testDataFile.toFile());
-                results.add(new TestDataObject(testDataFile.getFileName().toString(), new FileInputStream(testDataFile.toFile()), zipped));
+                results.add(new TestData(testDataFile.getFileName().toString(), new FileInputStream(testDataFile.toFile()), zipped));
             }
         } catch (IOException ex) {
             //nothing
