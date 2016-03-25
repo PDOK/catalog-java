@@ -18,9 +18,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-import nl.pdok.catalog.model.DataObject;
-
-import nl.pdok.catalog.IBaseCatalog;
+import nl.pdok.catalog.ICatalog;
 import nl.pdok.util.ZipUtils;
 
 import org.apache.commons.io.FileUtils;
@@ -31,7 +29,7 @@ import org.apache.log4j.Logger;
  *
  * @author Raymond Kroon <raymond@k3n.nl>
  */
-public class BaseFileSystemCatalog implements IBaseCatalog {
+public class BaseFileSystemCatalog implements ICatalog {
 
 	protected static final Logger LOGGER = Logger.getLogger(BaseFileSystemCatalog.class);
 
@@ -71,14 +69,14 @@ public class BaseFileSystemCatalog implements IBaseCatalog {
     }
 
     @Override
-    public List<DataObject> getDatasetTestData(String datasetName) {
+    public List<TestDataObject> getDatasetTestData(String datasetName) {
         Path testDataFolder = getDatasetLocationTestData(datasetName);
-        List<DataObject> results = new ArrayList<DataObject>();
+        List<TestDataObject> results = new ArrayList<TestDataObject>();
 
         try (DirectoryStream<Path> ds = Files.newDirectoryStream(testDataFolder, getFilterPathIsDirectory(false))) {
             for (Path testDataFile : ds) {
                 boolean zipped = ZipUtils.isZip(testDataFile.toFile());
-                results.add(new DataObject(testDataFile.getFileName().toString(), new FileInputStream(testDataFile.toFile()), zipped));
+                results.add(new TestDataObject(testDataFile.getFileName().toString(), new FileInputStream(testDataFile.toFile()), zipped));
             }
         } catch (IOException ex) {
             //nothing
@@ -138,3 +136,4 @@ public class BaseFileSystemCatalog implements IBaseCatalog {
         return new FileInputStream(prepareTestsetFile);
     }
 }
+

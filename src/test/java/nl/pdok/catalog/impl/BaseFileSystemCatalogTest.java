@@ -4,7 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 
-import nl.pdok.catalog.IBaseCatalog;
+import nl.pdok.catalog.ICatalog;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -38,7 +38,7 @@ public class BaseFileSystemCatalogTest {
         final String RESOURCE_DDL = "dataset_1.sql";
 
         File datasetFolderFile = new File(datasetsFolder, DATASET_NAME);
-        File ddlResourceFolder = new File(datasetFolderFile, IBaseCatalog.DDL_RESOURCE_FOLDER);
+        File ddlResourceFolder = new File(datasetFolderFile, ICatalog.DDL_RESOURCE_FOLDER);
         ddlResourceFolder.mkdirs();
         File ddlResourceFile = new File(ddlResourceFolder, RESOURCE_DDL);
         ddlResourceFile.createNewFile();

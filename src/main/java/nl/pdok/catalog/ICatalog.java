@@ -7,13 +7,12 @@ import java.nio.file.Path;
 import java.util.Collection;
 import java.util.List;
 
-import nl.pdok.catalog.model.DataObject;
-
+import nl.pdok.catalog.impl.TestDataObject;
 /**
  *
  * @author Raymond Kroon <raymond@k3n.nl>
  */
-public interface IBaseCatalog {
+public interface ICatalog {
 	
     static final String RESOURCE_EXTENSION = ".resources";
     static final String PARAMETERS_EXTENSION = ".parameters";
@@ -44,7 +43,7 @@ public interface IBaseCatalog {
     public Path getDatasetLocationTestData(String datasetName);
     public Path getDatasetLocationTestExpected(String datasetName);
     public Path getDatasetLocationShapesToDB(String datasetName);
-    public List<DataObject> getDatasetTestData(String datasetName);
+    public List<TestDataObject> getDatasetTestData(String datasetName);
     
     InputStream getResourcePrepareTestset(String datasetName, String resourceName) throws IOException;
     
