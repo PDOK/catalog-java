@@ -1,5 +1,5 @@
 
-package nl.pdok.datamanagement.repository;
+package nl.pdok.catalog;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -7,7 +7,7 @@ import java.nio.file.Path;
 import java.util.Collection;
 import java.util.List;
 
-import nl.pdok.datamanagement.model.DataObject;
+import nl.pdok.catalog.model.DataObject;
 
 /**
  *

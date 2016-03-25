@@ -1,5 +1,5 @@
 
-package nl.pdok.datamanagement.model;
+package nl.pdok.catalog.model;
 
 import java.io.InputStream;
 

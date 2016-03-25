@@ -1,4 +1,4 @@
-package nl.pdok.datamanagement.repository.impl;
+package nl.pdok.catalog.impl;
 
 import java.io.File;
 import java.io.FileFilter;
@@ -18,9 +18,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-import nl.pdok.datamanagement.model.DataObject;
+import nl.pdok.catalog.model.DataObject;
 
-import nl.pdok.datamanagement.repository.IBaseCatalog;
+import nl.pdok.catalog.IBaseCatalog;
 import nl.pdok.util.ZipUtils;
 
 import org.apache.commons.io.FileUtils;
