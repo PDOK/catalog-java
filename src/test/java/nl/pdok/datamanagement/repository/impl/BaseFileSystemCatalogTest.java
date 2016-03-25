@@ -1,10 +1,10 @@
-package nl.pdok.datamanagement.repository.impl;
+package nl.pdok.catalog.impl;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 
-import nl.pdok.datamanagement.repository.IBaseCatalog;
+import nl.pdok.catalog.IBaseCatalog;
 
 import org.junit.Before;
 import org.junit.Test;
