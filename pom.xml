@@ -6,7 +6,7 @@
 		<!-- Provided Tomcat-7.0.x libs -->
 		<groupId>nl.kadaster.java-expertise</groupId>
 		<artifactId>parent-pom-tomcat7</artifactId>
-		<version>1.4.0</version>
+		<version>1.4.3</version>
 	</parent>
 	<groupId>nl.pdok</groupId>
 	<artifactId>pdok-catalog-java</artifactId>
@@ -52,11 +52,4 @@
 		<developerConnection>scm:git:git@github.so.kadaster.nl:PDOK/catalog-java.git</developerConnection>
 		<tag>pdok-catalog-java-1.0.0.1</tag>
 	</scm>
-	<distributionManagement>
-		<repository>
-			<id>releases-repo</id>
-			<name>Artifactory Repo</name>
-			<url>http://ota-portal.so.kadaster.nl/artifactory/mvn-release-local/</url>
-		</repository>
-	</distributionManagement>
 </project>
