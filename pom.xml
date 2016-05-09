@@ -49,6 +49,32 @@
 		<url>http://github.so.kadaster.nl/PDOK/catalog-java.git</url>
 		<connection>scm:http://github.so.kadaster.nl/PDOK/catalog-java.git</connection>
 		<developerConnection>scm:git:git@github.so.kadaster.nl:PDOK/catalog-java.git</developerConnection>
-		<tag>pdok-catalog-java-1.0.0.1</tag>
+		<tag>pdok-catalog-java-1.0.0.6</tag>
 	</scm>
+	<pluginRepositories>
+        <pluginRepository>
+            <id>Kadaster Artifactory Plugins</id>
+            <url>http://ota-portal.so.kadaster.nl/artifactory/mvn-registry</url>
+        </pluginRepository>
+    </pluginRepositories>
+    <repositories>
+        <repository>
+            <id>Kadaster Artifactory Releases</id>
+            <url>http://ota-portal.so.kadaster.nl/artifactory/mvn-release-local/</url>
+            <releases>
+                <enabled>true</enabled>
+                <updatePolicy>always</updatePolicy>
+                <checksumPolicy>warn</checksumPolicy>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+                <updatePolicy>never</updatePolicy>
+                <checksumPolicy>fail</checksumPolicy>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>Kadaster Artifactory</id>
+            <url>http://ota-portal.so.kadaster.nl/artifactory/mvn-registry/</url>
+        </repository>
+    </repositories>
 </project>
