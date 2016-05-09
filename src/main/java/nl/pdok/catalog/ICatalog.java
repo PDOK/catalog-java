@@ -35,6 +35,7 @@ public interface ICatalog {
 
     static final String FILENAME_JOB_CONFIGURATION = "configuration.json";    
     static final String FILENAME_TILING_CONFIGURATION = "tiling.json";    
+    static final String FILENAME_EXTRACT_CONFIGURATION = "extract.json";    
     
     public String getRootLocation();
 
