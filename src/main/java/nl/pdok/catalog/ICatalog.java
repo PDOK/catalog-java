@@ -1,6 +1,7 @@
 
 package nl.pdok.catalog;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
@@ -29,6 +30,7 @@ public interface ICatalog {
     static final String TESTDATAFOLDER = "data";
     static final String TESTEXPECTEDFOLDER = "expected";
     static final String TESTPREPAREFOLDER = "prepare";
+    static final String TEMPLATESFOLDER = "templates";
     static final String DICTIONARY_SEPARATION_CHAR = "=";
     
     static final String SHAREDFOLDER = "shared";
@@ -43,8 +45,10 @@ public interface ICatalog {
     public Path getDatasetLocationTestData(String datasetName);
     public Path getDatasetLocationTestExpected(String datasetName);
     public Path getDatasetLocationShapesToDB(String datasetName);
-    public List<TestData> getDatasetTestData(String datasetName);
-     
+	public Path getDatasetLocationTemplatesPath(String dataset);
+	public List<TestData> getDatasetTestData(String datasetName);
+	public File getTemplateResource(String dataset,String format, String file, String subfolder);
+	
     InputStream getResourcePrepareTestset(String datasetName, String resourceName) throws IOException;
     
     InputStream getDdlResource(String datasetName) throws IOException;
@@ -54,4 +58,6 @@ public interface ICatalog {
     boolean datasetExists(String datasetName);
     
     Collection<String> getDatasetNames();
+    
+    
 }

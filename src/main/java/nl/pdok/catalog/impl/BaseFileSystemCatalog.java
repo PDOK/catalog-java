@@ -19,6 +19,7 @@ import nl.pdok.catalog.TestData;
 import nl.pdok.util.ZipUtils;
 
 import org.apache.log4j.Logger;
+import org.omg.CosNaming.NamingContextExtPackage.StringNameHelper;
 
 /**
  *
@@ -99,7 +100,22 @@ public class BaseFileSystemCatalog implements ICatalog {
     public Path getDatasetLocationShapesToDB(String datasetName) {
         return Paths.get(datasetsFolder.toString(), datasetName, SHAPES_TO_DB_FOLDER);
     }
-   
+  	
+    @Override
+   	public Path getDatasetLocationTemplatesPath(String dataset){
+   		return Paths.get(this.datasetsFolder.toString(), dataset, TEMPLATESFOLDER);
+   	}
+    
+    @Override
+   	public File getTemplateResource(String dataset,String format, String file, String subfolder){
+    	if(subfolder.isEmpty())
+   		{
+    		return Paths.get(getDatasetLocationTemplatesPath(dataset).toString(), format, file ).toFile();
+   		}else{
+   			return Paths.get(getDatasetLocationTemplatesPath(dataset).toString(), format, subfolder, file ).toFile();
+   		}
+	}
+    
     @Override
     public InputStream getDdlResource(String datasetName) throws IOException {
         File ddlResourceFile = Paths.get(datasetsFolder.toString(), datasetName, DDL_RESOURCE_FOLDER, datasetName + DDL_RESOURCE_EXTENSION).toFile();
