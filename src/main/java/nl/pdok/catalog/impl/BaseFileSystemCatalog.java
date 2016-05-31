@@ -21,10 +21,6 @@ import nl.pdok.util.ZipUtils;
 import org.apache.log4j.Logger;
 import org.omg.CosNaming.NamingContextExtPackage.StringNameHelper;
 
-/**
- *
- * @author Raymond Kroon <raymond@k3n.nl>
- */
 public class BaseFileSystemCatalog implements ICatalog {
 
 	protected static final Logger LOGGER = Logger.getLogger(BaseFileSystemCatalog.class);

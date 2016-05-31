@@ -8,10 +8,6 @@ import java.nio.file.Path;
 import java.util.Collection;
 import java.util.List;
 
-/**
- *
- * @author Raymond Kroon <raymond@k3n.nl>
- */
 public interface ICatalog {
 	
     static final String RESOURCE_EXTENSION = ".resources";
