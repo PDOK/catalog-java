@@ -20,6 +20,7 @@ public interface ICatalog {
     
     static final String SQL_RESOURCE_FOLDER = "sql";
     static final String SHAPES_TO_DB_FOLDER = "shapesToDB";
+    static final String SHAPES_TO_FEATURED_FOLDER = "shapesToFeatured";
     
     static final String DATASETSFOLDER = "datasets";
     static final String TESTFOLDER = "testset";
@@ -41,6 +42,7 @@ public interface ICatalog {
     public Path getDatasetLocationTestData(String datasetName);
     public Path getDatasetLocationTestExpected(String datasetName);
     public Path getDatasetLocationShapesToDB(String datasetName);
+    public Path getDatasetLocationShapesToFeatured(String datasetName);
 	public Path getDatasetLocationTemplatesPath(String dataset);
 	public List<TestData> getDatasetTestData(String datasetName);
 	public File getTemplateResource(String dataset,String format, String file, String subfolder);

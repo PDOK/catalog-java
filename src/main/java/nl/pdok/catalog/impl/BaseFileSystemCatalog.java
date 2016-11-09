@@ -96,6 +96,11 @@ public class BaseFileSystemCatalog implements ICatalog {
     public Path getDatasetLocationShapesToDB(String datasetName) {
         return Paths.get(datasetsFolder.toString(), datasetName, SHAPES_TO_DB_FOLDER);
     }
+
+    @Override
+    public Path getDatasetLocationShapesToFeatured(String datasetName) {
+        return Paths.get(datasetsFolder.toString(), datasetName, SHAPES_TO_FEATURED_FOLDER);
+    }
   	
     @Override
    	public Path getDatasetLocationTemplatesPath(String dataset){
