@@ -4,3 +4,4 @@
 *.asc
 pdok-catalog-java.ipr
 pdok-catalog-java.iws
+release.properties
