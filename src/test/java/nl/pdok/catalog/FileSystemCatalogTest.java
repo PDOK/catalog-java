@@ -1,10 +1,8 @@
-package nl.pdok.catalog.impl;
+package nl.pdok.catalog;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-
-import nl.pdok.catalog.ICatalog;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -16,9 +14,9 @@ import static org.junit.Assert.*;
  *
  * @author Raymond Kroon <raymond@k3n.nl>
  */
-public class BaseFileSystemCatalogTest {
+public class FileSystemCatalogTest {
 
-    private BaseFileSystemCatalog catalogus;
+    private FileSystemCatalog catalogus;
 
     public TemporaryFolder testFolder = new TemporaryFolder();
     public File datasetsFolder;
@@ -26,7 +24,7 @@ public class BaseFileSystemCatalogTest {
     @Before
     public void setup() throws IOException {
         testFolder.create();
-        catalogus = new BaseFileSystemCatalog(testFolder.getRoot());
+        catalogus = new FileSystemCatalog(testFolder.getRoot());
         datasetsFolder = testFolder.newFolder("datasets");
     }
 
@@ -38,7 +36,7 @@ public class BaseFileSystemCatalogTest {
         final String RESOURCE_DDL = "dataset_1.sql";
 
         File datasetFolderFile = new File(datasetsFolder, DATASET_NAME);
-        File ddlResourceFolder = new File(datasetFolderFile, ICatalog.DDL_RESOURCE_FOLDER);
+        File ddlResourceFolder = new File(datasetFolderFile, FileSystemCatalog.DDL_RESOURCE_FOLDER);
         ddlResourceFolder.mkdirs();
         File ddlResourceFile = new File(ddlResourceFolder, RESOURCE_DDL);
         ddlResourceFile.createNewFile();

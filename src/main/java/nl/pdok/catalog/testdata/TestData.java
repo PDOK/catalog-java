@@ -1,4 +1,4 @@
-package nl.pdok.catalog;
+package nl.pdok.catalog.testdata;
 
 import java.io.InputStream;
 
