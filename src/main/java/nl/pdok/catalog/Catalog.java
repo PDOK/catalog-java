@@ -20,7 +20,7 @@ import java.util.Set;
 
 /**
  *
- * @author Raymond Kroon <raymond@k3n.nl>
+ * @author Raymond Kroon &lt;raymond@k3n.nl&gt;
  */
 public interface Catalog  {
 	

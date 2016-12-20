@@ -8,7 +8,7 @@ import java.io.InputStream;
 
 /**
  *
- * @author Raymond Kroon <raymond@k3n.nl>
+ * @author Raymond Kroon&lt;raymond@k3n.nl&gt;
  */
 public class WorkbenchResource {
     

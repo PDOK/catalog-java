@@ -36,7 +36,7 @@ import java.util.*;
 
 /**
  *
- * @author Raymond Kroon <raymond@k3n.nl>
+ * @author Raymond Kroon &lt;raymond@k3n.nl&gt;
  */
 public class FileSystemCatalog implements Catalog{
 
