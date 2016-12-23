@@ -1,5 +1,6 @@
 package nl.pdok.catalog;
 
+import nl.pdok.catalog.exceptions.ConfigurationException;
 import nl.pdok.catalog.featured.FeatureTemplate;
 import nl.pdok.catalog.workbench.FmeWorkbenchEnvConfig;
 import nl.pdok.catalog.workbench.Workbench;
@@ -170,5 +171,27 @@ public class FileSystemCatalogTest {
 
         assertTrue(catalogusInTempFolder.datasetExists(DATASET_NAME));
         assertFalse(catalogusInTempFolder.datasetExists("no_dataset"));
+    }
+
+    @Test
+    public void testGetTransformJsonEngine() throws ConfigurationException{
+        assertEquals("pdok-featured-test", catalogusFromTestResources.getEngineTransformJson("dummy"));
+    }
+
+    @Test(expected = ConfigurationException.class)
+    public void testGetTransformConfigurationNotExists() throws ConfigurationException{
+        catalogusFromTestResources.getEngineTransformJson("not-exists");
+    }
+
+    @Test
+    public void testGetTransformJsonEngineNotPresent() throws ConfigurationException{
+
+        try {
+            catalogusFromTestResources.getEngineTransformJson("no-transform-json-engine");
+        } catch (ConfigurationException configExeception){
+            assertTrue(StringUtils.contains(configExeception.getMessage(), "parsed"));
+            return;
+        }
+        assertTrue(false);
     }
 }

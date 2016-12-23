@@ -454,7 +454,12 @@ public class FileSystemCatalog implements Catalog{
         return result;
     }
 
-
+    @Override
+    public String getEngineTransformJson(String datasetName) throws ConfigurationException {
+        File transformFile = Paths.get(datasetsFolder.toString(), datasetName, FILENAME_TRANSFORMATION_CONFIGURATION).toFile();
+        TransformationConfiguration configuration = TransformationConfigurationReader.read(datasetName, transformFile);
+        return configuration.getEngine();
+    }
 
     @Override
     public String getRootLocation() {
