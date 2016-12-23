@@ -5,14 +5,17 @@ import com.google.common.base.Joiner;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 import com.google.common.collect.FluentIterable;
+import nl.pdok.catalog.exceptions.ConfigurationException;
 import nl.pdok.catalog.featured.FeatureTemplate;
 import nl.pdok.catalog.featured.FeaturedCollectionOptions;
-import nl.pdok.catalog.jobconfig.JobConfiguration;
-import nl.pdok.catalog.jobconfig.JobConfigurationDataset;
-import nl.pdok.catalog.jobconfig.JobConfigurationReader;
+import nl.pdok.catalog.job.JobConfiguration;
+import nl.pdok.catalog.job.JobConfigurationDataset;
+import nl.pdok.catalog.job.JobConfigurationReader;
 import nl.pdok.catalog.testdata.TestData;
-import nl.pdok.catalog.tilingconfig.TilingConfiguration;
-import nl.pdok.catalog.tilingconfig.TilingConfigurationReader;
+import nl.pdok.catalog.tiling.TilingConfiguration;
+import nl.pdok.catalog.tiling.TilingConfigurationReader;
+import nl.pdok.catalog.transformation.TransformationConfiguration;
+import nl.pdok.catalog.transformation.TransformationConfigurationReader;
 import nl.pdok.catalog.workbench.*;
 import nl.pdok.util.ZipUtils;
 
@@ -63,6 +66,8 @@ public class FileSystemCatalog implements Catalog{
 
     private static final String FILENAME_JOB_CONFIGURATION = "configuration.json";
     private static final String FILENAME_TILING_CONFIGURATION = "tiling.json";
+    private static final String FILENAME_TRANSFORMATION_CONFIGURATION = "transformation.json";
+
 
     private static final String WORKBENCH_EXTENSION = ".fmw";
 
@@ -554,10 +559,6 @@ public class FileSystemCatalog implements Catalog{
         return new FileInputStream(prepareTestsetFile);
     }
 
-    @Override
-    public String getEngineTransformJson(String datasetName) throws IOException {
-        return null;
-    }
 
     public static String getWorkbenchExtension(){
         return WORKBENCH_EXTENSION;

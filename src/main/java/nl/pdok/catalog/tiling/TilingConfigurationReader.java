@@ -1,4 +1,4 @@
-package nl.pdok.catalog.tilingconfig;
+package nl.pdok.catalog.tiling;
 
 import org.apache.log4j.Logger;
 import org.codehaus.jackson.map.ObjectMapper;

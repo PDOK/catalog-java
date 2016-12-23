@@ -1,4 +1,4 @@
-package nl.pdok.catalog.jobconfig;
+package nl.pdok.catalog.job;
 
 import nl.pdok.catalog.featured.FeaturedCollectionOptions;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
