@@ -1,0 +1,15 @@
+{
+	"workspace": "testworkspace",
+	"geoserver": "testgeoserver",
+	"datasets": [{
+		"name": "dataset1",
+		"metadata_id": "metadata_id1",
+		"metadata_bron_id": "metadata_bron_id1",
+		"db_schema": "dataset1"
+	}, {
+		"name": "dataset2",
+		"metadata_id": "metadata_id2",
+		"metadata_bron_id": "metadata_bron_id2",
+		"db_schema": "dataset2"
+	}]
+}

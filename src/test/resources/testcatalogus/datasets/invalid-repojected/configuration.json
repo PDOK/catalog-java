@@ -1,0 +1,17 @@
+{
+	"workspace": "testworkspace",
+	"geoserver": "testgeoserver",
+	"datasets": [{
+		"name": "invalid-reprojected",
+		"metadata_id": "metadata_id1",
+		"metadata_bron_id": "metadata_bron_id1",
+		"db_schema": "dataset1",
+		"target_projection" : "ETRS89"
+	}, {
+		"name": "invalid-reprojected",
+		"metadata_id": "metadata_id2",
+		"metadata_bron_id": "metadata_bron_id2",
+		"db_schema": "dataset2",
+		"target_projection" : "RD"
+	}]
+}

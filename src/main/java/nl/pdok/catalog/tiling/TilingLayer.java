@@ -1,4 +1,4 @@
-package nl.pdok.catalog.tilingconfig;
+package nl.pdok.catalog.tiling;
 
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 

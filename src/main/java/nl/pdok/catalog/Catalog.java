@@ -1,11 +1,12 @@
 
 package nl.pdok.catalog;
 
+import nl.pdok.catalog.exceptions.ConfigurationException;
 import nl.pdok.catalog.featured.FeatureTemplate;
 import nl.pdok.catalog.featured.FeaturedCollectionOptions;
-import nl.pdok.catalog.jobconfig.JobConfigurationDataset;
+import nl.pdok.catalog.job.JobConfigurationDataset;
 import nl.pdok.catalog.testdata.TestData;
-import nl.pdok.catalog.tilingconfig.TilingConfiguration;
+import nl.pdok.catalog.tiling.TilingConfiguration;
 import nl.pdok.catalog.workbench.Workbench;
 import nl.pdok.catalog.workbench.WorkbenchType;
 
@@ -62,7 +63,8 @@ public interface Catalog  {
 	ArrayList<FeaturedCollectionOptions> getFeatureOptions(String datasetName);
     Set<FeatureTemplate> getFeatureTemplates(String datasetName) throws IOException;
     String getXml2JsonMapping(String datasetName, String translator) throws IOException;
-    String getEngineTransformJson(String datasetName) throws IOException;
+    String getEngineTransformJson(String datasetName) throws ConfigurationException;
+
 
     // FME
     List<Workbench> getWorkbenches(String datasetName);
