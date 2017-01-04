@@ -2,6 +2,7 @@
 package nl.pdok.catalog;
 
 import nl.pdok.catalog.exceptions.ConfigurationException;
+import nl.pdok.catalog.extract.ExtractConfiguration;
 import nl.pdok.catalog.featured.FeatureTemplate;
 import nl.pdok.catalog.featured.FeaturedCollectionOptions;
 import nl.pdok.catalog.job.JobConfigurationDataset;
@@ -55,6 +56,9 @@ public interface Catalog  {
     boolean withGtPkMetadata(String datasetName);
     TilingConfiguration getTilingConfiguration(String datasetName);
 
+    // extract management
+    ExtractConfiguration getExtractConfiguration(String datasetName);
+
     // shapes
     Path getDatasetLocationShapesToDB(String datasetName);
     Path getDatasetLocationShapesToFeatured(String datasetName);
@@ -65,11 +69,9 @@ public interface Catalog  {
     String getXml2JsonMapping(String datasetName, String translator) throws IOException;
     String getEngineTransformJson(String datasetName) throws ConfigurationException;
 
-
     // FME
     List<Workbench> getWorkbenches(String datasetName);
     List<Workbench> getWorkbenches(String datasetName, WorkbenchType type);
     Workbench getWorkbench(String datasetName, WorkbenchType type, String workbenchName);
     List<Workbench> getTransformers();
-
 }

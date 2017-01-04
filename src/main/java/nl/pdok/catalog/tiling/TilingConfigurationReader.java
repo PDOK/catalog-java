@@ -17,7 +17,7 @@ public class TilingConfigurationReader {
         try {
             configuration = new ObjectMapper().readValue(configurationFile, TilingConfiguration.class);
         } catch (FileNotFoundException e) {
-            LOGGER.info(String.format(NO_FILE));
+            LOGGER.info(NO_FILE);
         } catch (Exception e) {
             LOGGER.error(String.format(ERROR, configurationFile.getAbsolutePath()), e);
         } finally {
@@ -29,5 +29,4 @@ public class TilingConfigurationReader {
         }
         return configuration;
     }
-
 }
