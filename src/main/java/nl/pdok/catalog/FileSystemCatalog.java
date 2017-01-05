@@ -6,6 +6,8 @@ import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 import com.google.common.collect.FluentIterable;
 import nl.pdok.catalog.exceptions.ConfigurationException;
+import nl.pdok.catalog.extract.ExtractConfiguration;
+import nl.pdok.catalog.extract.ExtractConfigurationReader;
 import nl.pdok.catalog.featured.FeatureTemplate;
 import nl.pdok.catalog.featured.FeaturedCollectionOptions;
 import nl.pdok.catalog.job.JobConfiguration;
@@ -67,7 +69,7 @@ public class FileSystemCatalog implements Catalog{
     private static final String FILENAME_JOB_CONFIGURATION = "configuration.json";
     private static final String FILENAME_TILING_CONFIGURATION = "tiling.json";
     private static final String FILENAME_TRANSFORMATION_CONFIGURATION = "transformation.json";
-
+    private static final String FILENAME_EXTRACT_CONFIGURATION = "extract.json";
 
     private static final String WORKBENCH_EXTENSION = ".fmw";
 
@@ -376,6 +378,12 @@ public class FileSystemCatalog implements Catalog{
     public TilingConfiguration getTilingConfiguration(String datasetName) {
         File configurationFile = Paths.get(datasetsFolder.toString(), datasetName, FILENAME_TILING_CONFIGURATION).toFile();
         return TilingConfigurationReader.read(configurationFile, datasetName);
+    }
+
+    @Override
+    public ExtractConfiguration getExtractConfiguration(String datasetName) {
+        File configurationFile = Paths.get(datasetsFolder.toString(), datasetName, FILENAME_EXTRACT_CONFIGURATION).toFile();
+        return ExtractConfigurationReader.read(configurationFile, datasetName);
     }
 
     @Override
