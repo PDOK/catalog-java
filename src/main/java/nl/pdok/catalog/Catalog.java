@@ -67,7 +67,9 @@ public interface Catalog  {
 	ArrayList<FeaturedCollectionOptions> getFeatureOptions(String datasetName);
     Set<FeatureTemplate> getFeatureTemplates(String datasetName) throws IOException;
     String getXml2JsonMapping(String datasetName, String translator) throws IOException;
-    String getEngineTransformJson(String datasetName) throws ConfigurationException;
+
+
+    String getEngineTransformJson(String datasetName, String defaultEngine) throws ConfigurationException;
 
     // FME
     List<Workbench> getWorkbenches(String datasetName);

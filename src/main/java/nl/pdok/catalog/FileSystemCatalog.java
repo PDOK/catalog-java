@@ -80,7 +80,6 @@ public class FileSystemCatalog implements Catalog{
 
     private static final String TRANSFORMERS = "transformers";
     private static final String TRANSFORMER_EXTENSION = ".fmx";
-    protected static final String DEFAULT_APLLICATION_ID_FEATURED_ENGINE = "pdok-featured-v1";
 
     private FmeWorkbenchEnvConfig fmeworkbenchenvconfig = null;
     private Path datasetsFolder;
@@ -464,10 +463,10 @@ public class FileSystemCatalog implements Catalog{
     }
 
     @Override
-    public String getEngineTransformJson(String datasetName) throws ConfigurationException {
+    public String getEngineTransformJson(String datasetName, String defaultEngine) throws ConfigurationException {
         File transformFile = Paths.get(datasetsFolder.toString(), datasetName, FILENAME_TRANSFORMATION_CONFIGURATION).toFile();
         if (!transformFile.exists()){
-            return DEFAULT_APLLICATION_ID_FEATURED_ENGINE;
+            return defaultEngine;
         }
         TransformationConfiguration configuration = TransformationConfigurationReader.read(datasetName, transformFile);
         String engine = configuration.getEngine();

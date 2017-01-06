@@ -18,6 +18,7 @@ public class FileSystemCatalogTransformationTest {
 
     /** Catalogus based on /testcatalogus folder */
     private Catalog catalogusFromTestResources;
+    private String DEFAULT_APLLICATION_ID_FEATURED_ENGINE = "featured-engine";
 
     @Before
     public void setup() throws IOException {
@@ -26,18 +27,18 @@ public class FileSystemCatalogTransformationTest {
 
     @Test
     public void testGetTransformJsonEngine() throws ConfigurationException{
-        assertEquals("pdok-featured-test", catalogusFromTestResources.getEngineTransformJson("dummy"));
+        assertEquals("pdok-featured-test", catalogusFromTestResources.getEngineTransformJson("dummy", DEFAULT_APLLICATION_ID_FEATURED_ENGINE));
     }
 
     @Test
     public void testGetTransformConfigurationNotExists() throws ConfigurationException{
-        assertEquals(FileSystemCatalog.DEFAULT_APLLICATION_ID_FEATURED_ENGINE, catalogusFromTestResources.getEngineTransformJson("not-exists"));
+        assertEquals(DEFAULT_APLLICATION_ID_FEATURED_ENGINE, catalogusFromTestResources.getEngineTransformJson("not-exists", DEFAULT_APLLICATION_ID_FEATURED_ENGINE));
     }
 
     @Test
     public void testGetTransformJsonEngineNotPresent() throws ConfigurationException{
         try {
-            catalogusFromTestResources.getEngineTransformJson("no-transform-json-engine");
+            catalogusFromTestResources.getEngineTransformJson("no-transform-json-engine", DEFAULT_APLLICATION_ID_FEATURED_ENGINE);
         } catch (ConfigurationException configExeception){
             assertTrue(StringUtils.contains(configExeception.getMessage(), "parsed"));
             return;
@@ -48,7 +49,7 @@ public class FileSystemCatalogTransformationTest {
     @Test
     public void testGetTransformJsonEmpty() throws ConfigurationException{
         try {
-            String engine = catalogusFromTestResources.getEngineTransformJson("transform-json-empty");
+            String engine = catalogusFromTestResources.getEngineTransformJson("transform-json-empty", DEFAULT_APLLICATION_ID_FEATURED_ENGINE);
             System.out.println(engine);
         } catch (ConfigurationException configExeception){
             assertTrue(StringUtils.contains(configExeception.getMessage(), "emmpty"));
