@@ -14,7 +14,7 @@ public class TransformationConfigurationReaderTest {
 
     @Test
     public void testReadFile() throws ConfigurationException {
-        TransformationConfiguration configuration = TransformationConfigurationReader.read("dummy", new File("src/test/resources/testcatalogus/datasets/dummy/transformation.json"));
+        TransformationConfiguration configuration = TransformationConfigurationReader.read("dummy", new File("src/test/resources/transformation/datasets/dummy/transformation.json"));
         assertEquals("pdok-featured-test", configuration.getEngine());
     }
 
@@ -25,7 +25,7 @@ public class TransformationConfigurationReaderTest {
 
     @Test(expected = ConfigurationException.class)
     public void testConfigurationNotValid() throws ConfigurationException {
-        File transformationFile = new File("src/test/resources/testcatalogus/datasets/dummy/invalid-transformation.json");
+        File transformationFile = new File("src/test/resources/transformation/datasets/dummy/invalid-transformation.json");
         assertTrue(transformationFile.exists());
         TransformationConfigurationReader.read("dummy", transformationFile);
     }

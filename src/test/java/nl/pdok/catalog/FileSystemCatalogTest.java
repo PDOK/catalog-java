@@ -1,11 +1,8 @@
 package nl.pdok.catalog;
 
-import nl.pdok.catalog.exceptions.ConfigurationException;
+
 import nl.pdok.catalog.featured.FeatureTemplate;
 import nl.pdok.catalog.workbench.FmeWorkbenchEnvConfig;
-import nl.pdok.catalog.workbench.Workbench;
-import nl.pdok.catalog.workbench.WorkbenchType;
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Assert;
 import org.junit.Before;
@@ -18,7 +15,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
@@ -171,27 +167,5 @@ public class FileSystemCatalogTest {
 
         assertTrue(catalogusInTempFolder.datasetExists(DATASET_NAME));
         assertFalse(catalogusInTempFolder.datasetExists("no_dataset"));
-    }
-
-    @Test
-    public void testGetTransformJsonEngine() throws ConfigurationException{
-        assertEquals("pdok-featured-test", catalogusFromTestResources.getEngineTransformJson("dummy"));
-    }
-
-    @Test(expected = ConfigurationException.class)
-    public void testGetTransformConfigurationNotExists() throws ConfigurationException{
-        catalogusFromTestResources.getEngineTransformJson("not-exists");
-    }
-
-    @Test
-    public void testGetTransformJsonEngineNotPresent() throws ConfigurationException{
-
-        try {
-            catalogusFromTestResources.getEngineTransformJson("no-transform-json-engine");
-        } catch (ConfigurationException configExeception){
-            assertTrue(StringUtils.contains(configExeception.getMessage(), "parsed"));
-            return;
-        }
-        assertTrue(false);
     }
 }

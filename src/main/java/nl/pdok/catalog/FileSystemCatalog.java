@@ -463,10 +463,20 @@ public class FileSystemCatalog implements Catalog{
     }
 
     @Override
-    public String getEngineTransformJson(String datasetName) throws ConfigurationException {
+    public String getEngineTransformJson(String datasetName, String defaultEngine) throws ConfigurationException {
         File transformFile = Paths.get(datasetsFolder.toString(), datasetName, FILENAME_TRANSFORMATION_CONFIGURATION).toFile();
+
+        if (!transformFile.exists()){
+            return defaultEngine;
+        }
+
         TransformationConfiguration configuration = TransformationConfigurationReader.read(datasetName, transformFile);
-        return configuration.getEngine();
+        String engine = configuration.getEngine();
+        if (engine == null) {
+            throw new ConfigurationException(String.format("Configuration-item 'engine' for dataset %s is emmpty", datasetName));
+        } else {
+            return configuration.getEngine();
+        }
     }
 
     @Override
