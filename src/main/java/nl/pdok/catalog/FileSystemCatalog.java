@@ -56,6 +56,11 @@ public class FileSystemCatalog implements Catalog{
     private static final String SHAPES_TO_DB_FOLDER = "shapesToDB";
     private static final String SHAPES_TO_FEATURED_FOLDER = "shapesToFeatured";
 
+    private static final String MAPPROXY_FOLDER = "mapproxy";
+    private static final String MAPPROXY_SERVICE = "mapproxy";
+    private static final String MAPPROXY_SEED = "seed";
+    private static final String MAPPROXY_CONFIG_EXTENSION = ".yaml";
+
     private static final String DATASETS_FOLDER = "datasets";
     private static final String TEST_FOLDER = "testset";
     private static final String TEST_DATA_FOLDER = "data";
@@ -381,6 +386,17 @@ public class FileSystemCatalog implements Catalog{
     }
 
     @Override
+    public InputStream getMapProxyTemplate(String datasetName, String configFile) throws IOException {
+      if (MAPPROXY_SERVICE.equals(configFile.toLowerCase()) || MAPPROXY_SEED.equals(configFile.toLowerCase())) {
+        File mapYaml = Paths.get(datasetsFolder.toString(), datasetName, MAPPROXY_FOLDER, configFile + MAPPROXY_CONFIG_EXTENSION).toFile();
+        return new FileInputStream(mapYaml);
+      } else {
+        LOGGER.warn("no mapproxy configfile found with the name: " + configFile);
+        throw new RuntimeException();
+      }
+    }
+
+    @Override
     public ExtractConfiguration getExtractConfiguration(String datasetName) {
         File configurationFile = Paths.get(datasetsFolder.toString(), datasetName, FILENAME_EXTRACT_CONFIGURATION).toFile();
         return ExtractConfigurationReader.read(configurationFile, datasetName);
@@ -473,7 +489,7 @@ public class FileSystemCatalog implements Catalog{
         TransformationConfiguration configuration = TransformationConfigurationReader.read(datasetName, transformFile);
         String engine = configuration.getEngine();
         if (engine == null) {
-            throw new ConfigurationException(String.format("Configuration-item 'engine' for dataset %s is emmpty", datasetName));
+            throw new ConfigurationException(String.format("Configuration-item 'engine' for dataset %s is empty", datasetName));
         } else {
             return configuration.getEngine();
         }
