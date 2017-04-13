@@ -1,24 +1,14 @@
 package nl.pdok.catalog;
 
-import nl.pdok.catalog.exceptions.ConfigurationException;
-import nl.pdok.catalog.featured.FeatureTemplate;
-import nl.pdok.catalog.workbench.FmeWorkbenchEnvConfig;
-import org.apache.commons.lang3.StringUtils;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.List;
-import java.util.Set;
-
-import static org.junit.Assert.*;
+import nl.pdok.catalog.exceptions.ConfigurationException;
+import org.apache.commons.lang3.StringUtils;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  *
@@ -61,7 +51,7 @@ public class FileSystemCatalogTransformationTest {
             String engine = catalogusFromTestResources.getEngineTransformJson("transform-json-empty", DEFAULT_APLLICATION_ID_FEATURED_ENGINE);
             System.out.println(engine);
         } catch (ConfigurationException configExeception){
-            assertTrue(StringUtils.contains(configExeception.getMessage(), "emmpty"));
+            assertTrue(StringUtils.contains(configExeception.getMessage(), "empty"));
             return;
         }
         assertTrue(false);
