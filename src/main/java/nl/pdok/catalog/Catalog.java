@@ -1,15 +1,4 @@
-
 package nl.pdok.catalog;
-
-import nl.pdok.catalog.exceptions.ConfigurationException;
-import nl.pdok.catalog.extract.ExtractConfiguration;
-import nl.pdok.catalog.featured.FeatureTemplate;
-import nl.pdok.catalog.featured.FeaturedCollectionOptions;
-import nl.pdok.catalog.job.JobConfigurationDataset;
-import nl.pdok.catalog.testdata.TestData;
-import nl.pdok.catalog.tiling.TilingConfiguration;
-import nl.pdok.catalog.workbench.Workbench;
-import nl.pdok.catalog.workbench.WorkbenchType;
 
 import java.io.File;
 import java.io.IOException;
@@ -19,6 +8,15 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
+import nl.pdok.catalog.exceptions.ConfigurationException;
+import nl.pdok.catalog.extract.ExtractConfiguration;
+import nl.pdok.catalog.featured.FeatureTemplate;
+import nl.pdok.catalog.featured.FeaturedCollectionOptions;
+import nl.pdok.catalog.job.JobConfigurationDataset;
+import nl.pdok.catalog.testdata.TestData;
+import nl.pdok.catalog.tiling.TilingConfiguration;
+import nl.pdok.catalog.workbench.Workbench;
+import nl.pdok.catalog.workbench.WorkbenchType;
 
 /**
  *
@@ -54,7 +52,12 @@ public interface Catalog  {
     String getTargetProjection(String datasetName);
     boolean withIndexes(String datasetName);
     boolean withGtPkMetadata(String datasetName);
+
+    // geowebcache
     TilingConfiguration getTilingConfiguration(String datasetName);
+
+    // mapproxy
+    InputStream getMapProxyTemplate(String datasetName, String configFile) throws IOException;
 
     // extract management
     ExtractConfiguration getExtractConfiguration(String datasetName);
@@ -64,10 +67,9 @@ public interface Catalog  {
     Path getDatasetLocationShapesToFeatured(String datasetName);
 
     // Featured
-	ArrayList<FeaturedCollectionOptions> getFeatureOptions(String datasetName);
+    ArrayList<FeaturedCollectionOptions> getFeatureOptions(String datasetName);
     Set<FeatureTemplate> getFeatureTemplates(String datasetName) throws IOException;
     String getXml2JsonMapping(String datasetName, String translator) throws IOException;
-
 
     String getEngineTransformJson(String datasetName, String defaultEngine) throws ConfigurationException;
 
