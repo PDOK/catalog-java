@@ -1,6 +1,7 @@
 package nl.pdok.catalog.job;
 
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+import org.codehaus.jackson.annotate.JsonProperty;
 import org.codehaus.jackson.annotate.JsonTypeName;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -12,6 +13,12 @@ public class JobConfigurationDataset {
     private Boolean versioned;
     private Boolean withindexes;
     private Boolean withgtpkmetadata;
+
+    @JsonProperty("db_schema")
+    private String dbSchema;
+
+    @JsonProperty("mosaic_store")
+    private String mosaicStore;
 
     public String getName() {
         return name;
@@ -51,5 +58,21 @@ public class JobConfigurationDataset {
 
     public void setWithgtpkmetadata(Boolean withgtpkmetadata) {
         this.withgtpkmetadata = withgtpkmetadata;
+    }
+
+    public String getDbSchema() {
+        return dbSchema;
+    }
+
+    public void setDbSchema(String dbSchema) {
+        this.dbSchema = dbSchema;
+    }
+
+    public String getMosaicStore() {
+        return mosaicStore;
+    }
+
+    public void setMosaicStore(String mosaicStore) {
+        this.mosaicStore = mosaicStore;
     }
 }
