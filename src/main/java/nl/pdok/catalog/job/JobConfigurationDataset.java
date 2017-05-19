@@ -3,10 +3,6 @@ package nl.pdok.catalog.job;
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.annotate.JsonTypeName;
 
-/**
- *
- * @author niek
- */
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonTypeName("dataset")
 public class JobConfigurationDataset {

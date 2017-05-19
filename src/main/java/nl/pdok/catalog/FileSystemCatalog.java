@@ -5,6 +5,25 @@ import com.google.common.base.Joiner;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 import com.google.common.collect.FluentIterable;
+import com.google.common.collect.ImmutableList;
+import java.beans.PropertyDescriptor;
+import java.io.File;
+import java.io.FileFilter;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.lang.reflect.InvocationTargetException;
+import java.nio.file.DirectoryStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
 import nl.pdok.catalog.exceptions.ConfigurationException;
 import nl.pdok.catalog.extract.ExtractConfiguration;
 import nl.pdok.catalog.extract.ExtractConfigurationReader;
@@ -18,9 +37,12 @@ import nl.pdok.catalog.tiling.TilingConfiguration;
 import nl.pdok.catalog.tiling.TilingConfigurationReader;
 import nl.pdok.catalog.transformation.TransformationConfiguration;
 import nl.pdok.catalog.transformation.TransformationConfigurationReader;
-import nl.pdok.catalog.workbench.*;
+import nl.pdok.catalog.workbench.FmeWorkbenchEnvConfig;
+import nl.pdok.catalog.workbench.Workbench;
+import nl.pdok.catalog.workbench.WorkbenchParameter;
+import nl.pdok.catalog.workbench.WorkbenchResource;
+import nl.pdok.catalog.workbench.WorkbenchType;
 import nl.pdok.util.ZipUtils;
-
 import org.apache.commons.beanutils.PropertyUtils;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.comparator.NameFileComparator;
@@ -30,20 +52,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 
-import java.beans.PropertyDescriptor;
-import java.io.*;
-import java.lang.reflect.InvocationTargetException;
-import java.nio.file.DirectoryStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.*;
-
-/**
- *
- * @author Raymond Kroon &lt;raymond@k3n.nl&gt;
- */
-public class FileSystemCatalog implements Catalog{
+public class FileSystemCatalog implements Catalog {
 
     private static final String RESOURCE_EXTENSION = ".resources";
     private static final String PARAMETERS_EXTENSION = ".parameters";
@@ -92,16 +101,15 @@ public class FileSystemCatalog implements Catalog{
 
     private static final Logger LOGGER = LoggerFactory.getLogger(FileSystemCatalog.class);
 
-    public FileSystemCatalog(File catalogFolder, FmeWorkbenchEnvConfig fmeworkbenchenvconfig){
-    	this(catalogFolder);
-    	this.fmeworkbenchenvconfig = fmeworkbenchenvconfig;
+    public FileSystemCatalog(File catalogFolder, FmeWorkbenchEnvConfig fmeworkbenchenvconfig) {
+        this(catalogFolder);
+        this.fmeworkbenchenvconfig = fmeworkbenchenvconfig;
     }
 
     public FileSystemCatalog(File catalogFolder) {
         this.catalogFolder = catalogFolder.toPath();
         this.datasetsFolder = Paths.get(this.catalogFolder.toString(), DATASETS_FOLDER);
     }
-
 
     @Override
     public Collection<String> getDatasetNames() {
@@ -111,7 +119,7 @@ public class FileSystemCatalog implements Catalog{
                 datasetNames.add(dataset.getFileName().toString());
             }
         } catch (IOException ex) {
-            LOGGER.trace(ex.getMessage(),ex);
+            LOGGER.trace(ex.getMessage(), ex);
         }
         return datasetNames;
     }
@@ -145,13 +153,13 @@ public class FileSystemCatalog implements Catalog{
             return results;
         }
 
-        File[] workbenches
-                = typedWorkbenchesFolder.listFiles(new FileFilter() {
-                    @Override
-                    public boolean accept(File pathname) {
-                        return pathname.isFile() && pathname.getName().endsWith(WORKBENCH_EXTENSION);
-                    }
-                });
+        File[] workbenches = typedWorkbenchesFolder.listFiles(new FileFilter() {
+
+            @Override
+            public boolean accept(File pathname) {
+                return pathname.isFile() && pathname.getName().endsWith(WORKBENCH_EXTENSION);
+            }
+        });
 
         Arrays.sort(workbenches, NameFileComparator.NAME_INSENSITIVE_COMPARATOR);
 
@@ -199,13 +207,13 @@ public class FileSystemCatalog implements Catalog{
             return results;
         }
 
-        File[] workbenches
-                = transformersFolder.listFiles(new FileFilter() {
-                    @Override
-                    public boolean accept(File pathname) {
-                        return pathname.isFile() && pathname.getName().endsWith(TRANSFORMER_EXTENSION);
-                    }
-                });
+        File[] workbenches = transformersFolder.listFiles(new FileFilter() {
+
+            @Override
+            public boolean accept(File pathname) {
+                return pathname.isFile() && pathname.getName().endsWith(TRANSFORMER_EXTENSION);
+            }
+        });
 
         for (File workbenchFile : workbenches) {
             results.add(new Workbench(workbenchFile.getName(), workbenchFile));
@@ -232,15 +240,15 @@ public class FileSystemCatalog implements Catalog{
         File resourceFolder = new File(typedWorkbenchesFolder, workbenchName + RESOURCE_EXTENSION);
 
         if (resourceFolder.exists() && resourceFolder.isDirectory()) {
-            File[] files = resourceFolder.listFiles();
-            return files;
+            return resourceFolder.listFiles();
         } else {
             return new File[0];
         }
     }
 
     @SuppressWarnings("unchecked")
-    private List<WorkbenchParameter> getParameters(String datasetName, WorkbenchType type, String workbenchName) throws IOException {
+    private List<WorkbenchParameter> getParameters(String datasetName, WorkbenchType type, String workbenchName)
+            throws IOException {
 
         List<WorkbenchParameter> results = new LinkedList<>();
 
@@ -300,71 +308,76 @@ public class FileSystemCatalog implements Catalog{
 
     @Override
     public boolean isVersioned(final String datasetName) {
-        return BooleanUtils.toBooleanDefaultIfNull((Boolean) getSingleDatasetProperty(datasetName, datasetName, "versioned"), false);
+        return BooleanUtils.toBooleanDefaultIfNull((Boolean) getSingleDatasetProperty(datasetName, datasetName,
+                "versioned"), false);
     }
 
     @Override
     public boolean withIndexes(final String datasetName) {
-        return BooleanUtils.toBooleanDefaultIfNull((Boolean) getSingleDatasetProperty(datasetName, datasetName, "withindexes"), true);
+        return BooleanUtils.toBooleanDefaultIfNull((Boolean) getSingleDatasetProperty(datasetName, datasetName,
+                "withindexes"), true);
     }
 
     @Override
     public boolean withGtPkMetadata(final String datasetName) {
-        return BooleanUtils.toBooleanDefaultIfNull((Boolean) getSingleDatasetProperty(datasetName, datasetName, "withgtpkmetadata"), true);
+        return BooleanUtils.toBooleanDefaultIfNull((Boolean) getSingleDatasetProperty(datasetName, datasetName,
+                "withgtpkmetadata"), true);
     }
 
     @Override
-    public String getDatasetNameVersioned(final String datasetName, long version){
+    public String getDatasetNameVersioned(final String datasetName, long version) {
         return isVersioned(datasetName) ? datasetName + "_v" + version : datasetName;
     }
 
-    private Object getSingleDatasetProperty(final String workspaceName, final String datasetName, final String propertyName) {
+    private Object getSingleDatasetProperty(final String workspaceName, final String datasetName,
+            final String propertyName) {
         JobConfiguration jobConfig = loadJobConfiguration(workspaceName);
 
         Object res = null;
         if (jobConfig != null) {
-            List<Object> propertyInDatasetConfigs = FluentIterable.from(jobConfig.getDatasets()).filter(new Predicate<JobConfigurationDataset>() {
+            List<Object> propertyInDatasetConfigs = FluentIterable.from(jobConfig.getDatasets())
+                    .filter(new Predicate<JobConfigurationDataset>() {
 
-                @Override
-                public boolean apply(JobConfigurationDataset t) {
-                    return StringUtils.equals(t.getName(), datasetName);
-                }
-            }).transform(new Function<JobConfigurationDataset, Object>() {
+                        @Override
+                        public boolean apply(JobConfigurationDataset t) {
+                            return StringUtils.equals(t.getName(), datasetName);
+                        }
+                    }).transform(new Function<JobConfigurationDataset, Object>() {
 
-                @Override
-                public Object apply(JobConfigurationDataset f) {
-                    try {
-                        return PropertyUtils.getProperty(f, propertyName);
-                    } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException ex) {
-                        StringBuilder sb = new StringBuilder();
-                        sb.append("Property ");
-                        sb.append(propertyName);
-                        sb.append("is not defined for dataset configuration in catalogus workspace ");
-                        sb.append(workspaceName);
-                        sb.append(", ");
-                        sb.append(datasetName);
-                        sb.append(". Available properties: ");
-                        sb.append(Joiner.on(", ").join(FluentIterable.from(Arrays.asList(BeanUtils.getPropertyDescriptors(f.getClass()))).transform(new Function<PropertyDescriptor, String>() {
-
-                            @Override
-                            public String apply(PropertyDescriptor f) {
-                                return f.getName();
+                        @Override
+                        public Object apply(JobConfigurationDataset f) {
+                            try {
+                                return PropertyUtils.getProperty(f, propertyName);
+                            } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException ex) {
+                                String msg = buildPropertyExceptionMessage(f, propertyName, workspaceName, datasetName);
+                                throw new IllegalStateException(msg, ex);
                             }
-                        }).toList()));
-
-                        throw new IllegalStateException(sb.toString(), ex);
-                    }
-                }
-            }).filter(Predicates.notNull()).toList();
+                        }
+                    }).filter(Predicates.notNull()).toList();
             if (propertyInDatasetConfigs.size() > 1) {
-                throw new IllegalStateException("Multiple values found for property " + propertyName + " in workspace " + workspaceName + " and dataset " + datasetName);
+                throw new IllegalStateException("Multiple values found for property " + propertyName + " in workspace "
+                        + workspaceName + " and dataset " + datasetName);
             } else if (propertyInDatasetConfigs.size() == 1) {
                 res = propertyInDatasetConfigs.get(0);
             }
         }
         return res;
     }
-    
+
+    private String buildPropertyExceptionMessage(JobConfigurationDataset f, String propertyName, String workspaceName,
+            String datasetName) {
+        List<String> properties = FluentIterable.from(Arrays.asList(BeanUtils.getPropertyDescriptors(f.getClass())))
+                .transform(new Function<PropertyDescriptor, String>() {
+
+                    @Override
+                    public String apply(PropertyDescriptor f1) {
+                        return f1.getName();
+                    }
+                }).toList();
+        return "Property " + propertyName + "is not defined for dataset configuration in catalogus workspace "
+                + workspaceName + ", " + datasetName + ". Available properties: " + Joiner.on(", ").join(properties);
+    }
+
     @Override
     public ArrayList<FeaturedCollectionOptions> getFeatureOptions(String datasetName) {
         ArrayList<FeaturedCollectionOptions> collectionoptions = loadJobConfiguration(datasetName).getFeatured();
@@ -381,30 +394,33 @@ public class FileSystemCatalog implements Catalog{
 
     @Override
     public TilingConfiguration getTilingConfiguration(String datasetName) {
-        File configurationFile = Paths.get(datasetsFolder.toString(), datasetName, FILENAME_TILING_CONFIGURATION).toFile();
+        File configurationFile = Paths.get(datasetsFolder.toString(), datasetName, FILENAME_TILING_CONFIGURATION)
+                .toFile();
         return TilingConfigurationReader.read(configurationFile, datasetName);
     }
 
     @Override
     public InputStream getMapProxyTemplate(String datasetName, String configFile) throws IOException {
-      if (MAPPROXY_SERVICE.equals(configFile.toLowerCase()) || MAPPROXY_SEED.equals(configFile.toLowerCase())) {
-        File mapYaml = Paths.get(datasetsFolder.toString(), datasetName, MAPPROXY_FOLDER, configFile + MAPPROXY_CONFIG_EXTENSION).toFile();
-        return new FileInputStream(mapYaml);
-      } else {
-        LOGGER.warn("no mapproxy configfile found with the name: " + configFile);
-        throw new RuntimeException();
-      }
+        if (MAPPROXY_SERVICE.equals(configFile.toLowerCase()) || MAPPROXY_SEED.equals(configFile.toLowerCase())) {
+            File mapYaml = Paths.get(datasetsFolder.toString(), datasetName, MAPPROXY_FOLDER,
+                    configFile + MAPPROXY_CONFIG_EXTENSION).toFile();
+            return new FileInputStream(mapYaml);
+        } else {
+            LOGGER.warn("no mapproxy configfile found with the name: " + configFile);
+            throw new RuntimeException();
+        }
     }
 
     @Override
     public ExtractConfiguration getExtractConfiguration(String datasetName) {
-        File configurationFile = Paths.get(datasetsFolder.toString(), datasetName, FILENAME_EXTRACT_CONFIGURATION).toFile();
+        File configurationFile = Paths.get(datasetsFolder.toString(), datasetName, FILENAME_EXTRACT_CONFIGURATION)
+                .toFile();
         return ExtractConfigurationReader.read(configurationFile, datasetName);
     }
 
     @Override
     public List<JobConfigurationDataset> getDatastoresConfiguration(String datasetName) {
-    	return loadJobConfiguration(datasetName).getDatasets();
+        return loadJobConfiguration(datasetName).getDatasets();
     }
 
     @Override
@@ -431,7 +447,8 @@ public class FileSystemCatalog implements Catalog{
 
         try (DirectoryStream<Path> stream = Files.newDirectoryStream(extractTypeFolder)) {
             for (Path entry : stream) {
-                if (Files.isDirectory(entry) && StringUtils.equals(TEMPLATE_PARTIAL_FOLDER, entry.getFileName().toString())) {
+                if (Files.isDirectory(entry)
+                        && StringUtils.equals(TEMPLATE_PARTIAL_FOLDER, entry.getFileName().toString())) {
                     getFeatureTemplatePartials(entry, res);
                 } else if (Files.isRegularFile(entry)) {
                     res.addFeature(entry);
@@ -443,7 +460,6 @@ public class FileSystemCatalog implements Catalog{
     }
 
     private void getFeatureTemplatePartials(Path extractTypeFolder, FeatureTemplate res) throws IOException {
-
         try (DirectoryStream<Path> partialsStream = Files.newDirectoryStream(extractTypeFolder)) {
             for (Path partialEntry : partialsStream) {
                 if (Files.isRegularFile(partialEntry)) {
@@ -480,16 +496,17 @@ public class FileSystemCatalog implements Catalog{
 
     @Override
     public String getEngineTransformJson(String datasetName, String defaultEngine) throws ConfigurationException {
-        File transformFile = Paths.get(datasetsFolder.toString(), datasetName, FILENAME_TRANSFORMATION_CONFIGURATION).toFile();
+        File transformFile = Paths.get(datasetsFolder.toString(), datasetName, FILENAME_TRANSFORMATION_CONFIGURATION)
+                .toFile();
 
-        if (!transformFile.exists()){
+        if (!transformFile.exists()) {
             return defaultEngine;
         }
 
         TransformationConfiguration configuration = TransformationConfigurationReader.read(datasetName, transformFile);
         String engine = configuration.getEngine();
         if (engine == null) {
-            throw new ConfigurationException(String.format("Configuration-item 'engine' for dataset %s is empty", datasetName));
+            throw new ConfigurationException("Configuration-item 'engine' for dataset " + datasetName + " is empty");
         } else {
             return configuration.getEngine();
         }
@@ -499,7 +516,6 @@ public class FileSystemCatalog implements Catalog{
     public String getRootLocation() {
         return this.catalogFolder.toString();
     }
-
 
     protected DirectoryStream.Filter<Path> getFilterPathIsDirectory(final boolean isDirectory) {
         return new DirectoryStream.Filter<Path>() {
@@ -513,12 +529,13 @@ public class FileSystemCatalog implements Catalog{
     @Override
     public List<TestData> getDatasetTestData(String datasetName) {
         Path testDataFolder = getDatasetLocationTestData(datasetName);
-        List<TestData> results = new ArrayList<TestData>();
+        List<TestData> results = new ArrayList<>();
 
         try (DirectoryStream<Path> ds = Files.newDirectoryStream(testDataFolder, getFilterPathIsDirectory(false))) {
             for (Path testDataFile : ds) {
                 boolean zipped = ZipUtils.isZip(testDataFile.toFile());
-                results.add(new TestData(testDataFile.getFileName().toString(), new FileInputStream(testDataFile.toFile()), zipped));
+                results.add(new TestData(testDataFile.getFileName().toString(),
+                        new FileInputStream(testDataFile.toFile()), zipped));
             }
         } catch (IOException ex) {
             //nothing
@@ -553,35 +570,37 @@ public class FileSystemCatalog implements Catalog{
     }
 
     @Override
-    public Path getDatasetLocationTemplatesPath(String dataset){
+    public Path getDatasetLocationTemplatesPath(String dataset) {
         return Paths.get(this.datasetsFolder.toString(), dataset, TEMPLATES_FOLDER);
     }
 
     @Override
-    public File getTemplateResource(String dataset,String format, String file, String subfolder){
-        if(subfolder.isEmpty())
-        {
-            return Paths.get(getDatasetLocationTemplatesPath(dataset).toString(), format, file ).toFile();
-        }else{
-            return Paths.get(getDatasetLocationTemplatesPath(dataset).toString(), format, subfolder, file ).toFile();
+    public File getTemplateResource(String dataset, String format, String file, String subfolder) {
+        if (subfolder.isEmpty()) {
+            return Paths.get(getDatasetLocationTemplatesPath(dataset).toString(), format, file).toFile();
+        } else {
+            return Paths.get(getDatasetLocationTemplatesPath(dataset).toString(), format, subfolder, file).toFile();
         }
     }
 
     @Override
     public InputStream getDdlResource(String datasetName) throws IOException {
-        File ddlResourceFile = Paths.get(datasetsFolder.toString(), datasetName, DDL_RESOURCE_FOLDER, datasetName + DDL_RESOURCE_EXTENSION).toFile();
+        File ddlResourceFile = Paths.get(datasetsFolder.toString(), datasetName, DDL_RESOURCE_FOLDER,
+                datasetName + DDL_RESOURCE_EXTENSION).toFile();
         return new FileInputStream(ddlResourceFile);
     }
 
     @Override
     public InputStream getSqlResource(String datasetName, String fileName) throws IOException {
-        File sqlResourceFile = Paths.get(datasetsFolder.toString(), datasetName, SQL_RESOURCE_FOLDER, fileName).toFile();
+        File sqlResourceFile = Paths.get(datasetsFolder.toString(), datasetName, SQL_RESOURCE_FOLDER, fileName)
+                .toFile();
         return new FileInputStream(sqlResourceFile);
     }
 
     @Override
     public InputStream getCsvResource(String datasetName, String fileName) throws IOException {
-        File csvResourceFile = Paths.get(datasetsFolder.toString(), datasetName, CSV_RESOURCE_FOLDER, fileName).toFile();
+        File csvResourceFile = Paths.get(datasetsFolder.toString(), datasetName, CSV_RESOURCE_FOLDER, fileName)
+                .toFile();
         return new FileInputStream(csvResourceFile);
     }
 
@@ -592,15 +611,13 @@ public class FileSystemCatalog implements Catalog{
     }
 
     @Override
-    public InputStream getResourcePrepareTestset(String datasetName,
-                                                 String resourceName) throws IOException {
-        File prepareTestsetFile = Paths.get(datasetsFolder.toString(), datasetName, TEST_FOLDER, TEST_PREPARE_FOLDER, resourceName).toFile();
+    public InputStream getResourcePrepareTestset(String datasetName, String resourceName) throws IOException {
+        File prepareTestsetFile = Paths.get(datasetsFolder.toString(), datasetName, TEST_FOLDER, TEST_PREPARE_FOLDER,
+                resourceName).toFile();
         return new FileInputStream(prepareTestsetFile);
     }
 
-
-    public static String getWorkbenchExtension(){
+    public static String getWorkbenchExtension() {
         return WORKBENCH_EXTENSION;
     }
-
 }

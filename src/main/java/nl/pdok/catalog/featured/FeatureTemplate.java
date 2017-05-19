@@ -1,13 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package nl.pdok.catalog.featured;
 
 import com.google.common.base.Function;
 import com.google.common.collect.FluentIterable;
-
 import java.io.Serializable;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -17,21 +11,18 @@ import java.util.Set;
 /**
  * Representation of a Feature template.
  *
- * Example for the BGT:
+ * <p>Example for the BGT:</p>
  *
- * extractType = 'citygml'
+ * <p>extractType = 'citygml'</p>
  *
- * partials = ['city-model-start.mustache', 'city-model-eind.mustache', ..]
+ * <p>partials = ['city-model-start.mustache', 'city-model-eind.mustache', ...]</p>
  *
- * features = ['buurt.mustache','functioneelgebied.mustache',..]
- *
- *
- * @author Niek Hoogma
+ * <p>features = ['buurt.mustache', 'functioneelgebied.mustache', ...]</p>
  */
 public class FeatureTemplate implements Serializable {
 
     /**
-     * Extract type (for instance 'citygml')
+     * Extract type (for instance 'citygml').
      */
     private final String extractType;
 

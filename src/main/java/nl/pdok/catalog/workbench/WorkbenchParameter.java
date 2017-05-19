@@ -2,13 +2,12 @@ package nl.pdok.catalog.workbench;
 
 import java.io.Serializable;
 
-
 public class WorkbenchParameter implements Serializable, Comparable<WorkbenchParameter> {
 
     private static final long serialVersionUID = 812456893649L;
-    
+
     private String name;
-    
+
     private String value;
 
     public WorkbenchParameter(String name, String value) {
@@ -16,7 +15,7 @@ public class WorkbenchParameter implements Serializable, Comparable<WorkbenchPar
         this.name = name;
         this.value = value;
     }
-    
+
     public void setValue(String value) {
         this.value = value;
     }
@@ -92,7 +91,7 @@ public class WorkbenchParameter implements Serializable, Comparable<WorkbenchPar
     public String getValue() {
         return value;
     }
-    
+
     public WorkbenchParameter clone() {
         return new WorkbenchParameter(this.name, this.value);
     }

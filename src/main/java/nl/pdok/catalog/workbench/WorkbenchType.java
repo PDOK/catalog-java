@@ -7,9 +7,8 @@ public enum WorkbenchType {
     EXTRACT,
     DERIVATIVE,
     UNKNOWN;
-    
+
     public String value() {
         return name();
     }
-
 }

@@ -1,9 +1,5 @@
 package nl.pdok.catalog.transformation;
 
-
-/**
- * Created by stroej on 22-12-2016.
- */
 public class TransformationConfiguration {
 
     private String transformationEngine;
@@ -15,6 +11,4 @@ public class TransformationConfiguration {
     public void setEngine(String transformationEngine) {
         this.transformationEngine = transformationEngine;
     }
-
 }
-

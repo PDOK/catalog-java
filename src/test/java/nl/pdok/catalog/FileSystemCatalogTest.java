@@ -1,13 +1,8 @@
 package nl.pdok.catalog;
 
-
-import nl.pdok.catalog.featured.FeatureTemplate;
-import nl.pdok.catalog.workbench.FmeWorkbenchEnvConfig;
-import org.apache.commons.lang3.StringUtils;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -17,25 +12,29 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Set;
+import nl.pdok.catalog.featured.FeatureTemplate;
+import nl.pdok.catalog.workbench.FmeWorkbenchEnvConfig;
+import org.apache.commons.lang3.StringUtils;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.rules.TemporaryFolder;
 
-import static org.junit.Assert.*;
-import static org.junit.Assert.assertFalse;
-
-/**
- *
- * @author Raymond Kroon <raymond@k3n.nl>
- */
 public class FileSystemCatalogTest {
 
     private FmeWorkbenchEnvConfig fmeworkbenchenvconfig;
 
-    /** Catalogus for fme */
+    /**
+     * Catalogus for fme.
+     */
     private Catalog catalogusInTempFolder;
-    
-    /** Catalogus based on /testcatalogus folder */
+
+    /**
+     * Catalogus based on /testcatalogus folder.
+     */
     private Catalog catalogusFromTestResources;
 
-    public File datasetsFolder;
+    private File datasetsFolder;
 
     @Before
     public void setup() throws IOException {
@@ -43,11 +42,12 @@ public class FileSystemCatalogTest {
         tempFolder.create();
         datasetsFolder = tempFolder.newFolder("datasets");
         catalogusInTempFolder = new FileSystemCatalog(tempFolder.getRoot(), fmeworkbenchenvconfig);
-        catalogusFromTestResources = new FileSystemCatalog(new File(FileSystemCatalogTest.class.getResource("/testcatalogus/").getFile()), fmeworkbenchenvconfig);
+        catalogusFromTestResources = new FileSystemCatalog(
+                new File(FileSystemCatalogTest.class.getResource("/testcatalogus/").getFile()), fmeworkbenchenvconfig);
     }
 
     private void createTemplateFeatureFolderStructure(String dataset, String extractType) throws IOException {
-        File citygmlFolder = new File (new File(new File (datasetsFolder,  dataset), "templates"), extractType);
+        File citygmlFolder = new File(new File(new File(datasetsFolder, dataset), "templates"), extractType);
         citygmlFolder.getParentFile().mkdirs();
 
         Path partialPathA = Paths.get(citygmlFolder.getPath(), "partials", "partialA.mustache");
@@ -122,14 +122,14 @@ public class FileSystemCatalogTest {
 
     @Test(expected = IllegalStateException.class)
     public void testGetInvalidTargetProjection() {
-         catalogusFromTestResources.getTargetProjection("invalid-reprojected");
+        catalogusFromTestResources.getTargetProjection("invalid-reprojected");
     }
-    
+
     @Test(expected = IllegalStateException.class)
     public void testGetTargetProjectionNonExisting() {
         catalogusFromTestResources.getTargetProjection("not-existing");
     }
-    
+
     private boolean containsFile(List<Path> paths, String fileName) {
         boolean res = false;
         for (Path path : paths) {
@@ -144,28 +144,27 @@ public class FileSystemCatalogTest {
 
     @Test
     public void testDdlResource() throws IOException {
+        final String datasetName = "dataset_1";
+        final String resourceDdl = "dataset_1.sql";
 
-        final String DATASET_NAME = "dataset_1";
-        final String RESOURCE_DDL = "dataset_1.sql";
-
-        File datasetFolderFile = new File(datasetsFolder, DATASET_NAME);
+        File datasetFolderFile = new File(datasetsFolder, datasetName);
         File ddlResourceFolder = new File(datasetFolderFile, FileSystemCatalog.DDL_RESOURCE_FOLDER);
         ddlResourceFolder.mkdirs();
-        File ddlResourceFile = new File(ddlResourceFolder, RESOURCE_DDL);
+        File ddlResourceFile = new File(ddlResourceFolder, resourceDdl);
         ddlResourceFile.createNewFile();
 
-        try (FileInputStream ddlResource = (FileInputStream) catalogusInTempFolder.getDdlResource(DATASET_NAME)) {
+        try (FileInputStream ddlResource = (FileInputStream) catalogusInTempFolder.getDdlResource(datasetName)) {
             assertNotNull(ddlResource);
         }
     }
 
     @Test
     public void testDatasetExists() throws IOException {
-        final String DATASET_NAME = "dataset_dummy";
-        File datasetFolderFile = new File(datasetsFolder, DATASET_NAME);
+        final String datasetName = "dataset_dummy";
+        File datasetFolderFile = new File(datasetsFolder, datasetName);
         datasetFolderFile.mkdirs();
 
-        assertTrue(catalogusInTempFolder.datasetExists(DATASET_NAME));
+        assertTrue(catalogusInTempFolder.datasetExists(datasetName));
         assertFalse(catalogusInTempFolder.datasetExists("no_dataset"));
     }
 }

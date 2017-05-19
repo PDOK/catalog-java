@@ -9,7 +9,7 @@ public class FeatureDefinition {
     private String description;
     private boolean selected;
     private String datatype;
-    private List<String> innertypes = new ArrayList<String>();
+    private List<String> innertypes = new ArrayList<>();
 
     public String getName() {
         return name;

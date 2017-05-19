@@ -12,8 +12,8 @@ public class ExtractConfiguration {
     private boolean history;
     private boolean showcoverage;
     private boolean selectionrequired;
-    private List<FeatureDefinition> features = new ArrayList<FeatureDefinition>();
-    private Map<String, String> formats = new HashMap<String, String>();
+    private List<FeatureDefinition> features = new ArrayList<>();
+    private Map<String, String> formats = new HashMap<>();
     private List<String> cached = new ArrayList<>();
 
     public ExtractConfiguration() {

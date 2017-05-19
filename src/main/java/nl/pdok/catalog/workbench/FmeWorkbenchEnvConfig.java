@@ -4,17 +4,17 @@ import java.util.List;
 
 public class FmeWorkbenchEnvConfig {
 
-	private List<WorkbenchParameter> parameters;
-	
-	public FmeWorkbenchEnvConfig(List<WorkbenchParameter> parameters) {
-		this.setParameters(parameters);
-	}
+    private List<WorkbenchParameter> parameters;
 
-	public List<WorkbenchParameter> getParameters() {
-		return parameters;
-	}
+    public FmeWorkbenchEnvConfig(List<WorkbenchParameter> parameters) {
+        this.setParameters(parameters);
+    }
 
-	public void setParameters(List<WorkbenchParameter> parameters) {
-		this.parameters = parameters;
-	}
+    public List<WorkbenchParameter> getParameters() {
+        return parameters;
+    }
+
+    public void setParameters(List<WorkbenchParameter> parameters) {
+        this.parameters = parameters;
+    }
 }

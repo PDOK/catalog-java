@@ -1,10 +1,9 @@
 package nl.pdok.catalog.job;
 
-import nl.pdok.catalog.featured.FeaturedCollectionOptions;
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
-
 import java.util.ArrayList;
 import java.util.List;
+import nl.pdok.catalog.featured.FeaturedCollectionOptions;
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class JobConfiguration {
@@ -12,7 +11,7 @@ public class JobConfiguration {
     private String workspace;
     private String geoserver;
     private ArrayList<FeaturedCollectionOptions> featured;
-    
+
     private List<JobConfigurationDataset> datasets;
 
     public JobConfiguration() {

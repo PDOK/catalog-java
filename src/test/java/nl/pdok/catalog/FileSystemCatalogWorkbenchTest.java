@@ -1,5 +1,11 @@
 package nl.pdok.catalog;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.Arrays;
 import nl.pdok.catalog.workbench.Workbench;
 import nl.pdok.catalog.workbench.WorkbenchType;
 import org.apache.commons.io.FileUtils;
@@ -7,21 +13,11 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.Arrays;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-
-/**
- * Created by stroej on 23-12-2016.
- */
 public class FileSystemCatalogWorkbenchTest {
 
-
-
-    /** Catalogus create in temp-folder */
+    /**
+     * Catalogus create in temp-folder.
+     */
     private Catalog catalogusInTempFolder;
     private File datasetsFolder;
 
@@ -31,7 +27,7 @@ public class FileSystemCatalogWorkbenchTest {
         tempFolder.create();
         datasetsFolder = tempFolder.newFolder("datasets");
         catalogusInTempFolder = new FileSystemCatalog(tempFolder.getRoot(), null);
-     }
+    }
 
     @Test
     public void testWorkbenchNoResources() throws IOException {
@@ -80,8 +76,8 @@ public class FileSystemCatalogWorkbenchTest {
 
         File parametersFile = new File(workbenchFolder, "name.fmw.parameters");
         parametersFile.createNewFile();
-        FileUtils.writeLines(parametersFile, Arrays.asList(new String[]{
-                "parameter1=test", "parameter2=\\**.gml", "geenparameter1=", "geenparameter2"}));
+        FileUtils.writeLines(parametersFile, Arrays.asList("parameter1=test", "parameter2=\\**.gml", "geenparameter1=",
+                "geenparameter2"));
 
         Workbench workbench = catalogusInTempFolder.getWorkbench("dataset", WorkbenchType.FULL, "name.fmw");
 
@@ -94,10 +90,8 @@ public class FileSystemCatalogWorkbenchTest {
 
     @Test
     public void testWorkbenchNoWorkbench() throws IOException {
-
         Workbench workbench = catalogusInTempFolder.getWorkbench("dataset", WorkbenchType.FULL, "name");
 
         assertNull("Workbench found", workbench);
     }
-
 }

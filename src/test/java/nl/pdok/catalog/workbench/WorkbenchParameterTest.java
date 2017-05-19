@@ -1,9 +1,9 @@
 package nl.pdok.catalog.workbench;
 
-import org.junit.Test;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+
+import org.junit.Test;
 
 public class WorkbenchParameterTest {
 
@@ -13,7 +13,7 @@ public class WorkbenchParameterTest {
         assertEquals("name", param.getName());
         assertEquals("value", param.getValue());
     }
-    
+
     @Test
     public void testCompareTo() {
         WorkbenchParameter param1 = new WorkbenchParameter("abc", "def");
@@ -29,6 +29,5 @@ public class WorkbenchParameterTest {
         assertEquals(1, param1.compareTo(param4));
         assertEquals(-1, param4.compareTo(param1));
         assertEquals(0, param4.compareTo(param4));
-        
     }
 }
