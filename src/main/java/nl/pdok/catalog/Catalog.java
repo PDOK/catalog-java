@@ -1,6 +1,7 @@
 package nl.pdok.catalog;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
@@ -8,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
+import java.util.zip.ZipInputStream;
 import nl.pdok.catalog.exceptions.ConfigurationException;
 import nl.pdok.catalog.extract.ExtractConfiguration;
 import nl.pdok.catalog.featured.FeatureTemplate;
@@ -68,8 +70,14 @@ public interface Catalog {
     // geowebcache
     TilingConfiguration getTilingConfiguration(String datasetName);
 
-    // mapproxy
-    InputStream getMapProxyTemplate(String datasetName, String configFile) throws IOException;
+    // mapproxy service config template
+    FileInputStream getMapProxyServiceTemplate(String datasetName);
+
+    // mapproxy seed config template
+    FileInputStream getMapProxySeedTemplate(String datasetName);
+
+    // mapproxy coverage config
+    ZipInputStream getMapProxyCoverage(String datasetName);
 
     // extract management
     ExtractConfiguration getExtractConfiguration(String datasetName);

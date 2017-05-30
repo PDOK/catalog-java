@@ -1,5 +1,6 @@
 package nl.pdok.catalog;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -12,6 +13,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Set;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 import nl.pdok.catalog.featured.FeatureTemplate;
 import nl.pdok.catalog.workbench.FmeWorkbenchEnvConfig;
 import org.apache.commons.lang3.StringUtils;
@@ -166,5 +169,38 @@ public class FileSystemCatalogTest {
 
         assertTrue(catalogusInTempFolder.datasetExists(datasetName));
         assertFalse(catalogusInTempFolder.datasetExists("no_dataset"));
+    }
+
+    @Test
+    public void testMapProxyServiceTemplate() throws IOException {
+        try (FileInputStream file = catalogusFromTestResources.getMapProxyServiceTemplate("mapproxy_dataset")) {
+            assertNotNull(file);
+        }
+    }
+
+    @Test(expected = RuntimeException.class)
+    public void testNoMapProxyServiceTemplate() throws IOException {
+        catalogusFromTestResources.getMapProxyServiceTemplate("no_mapproxy_dataset");
+    }
+
+    @Test(expected = RuntimeException.class)
+    public void testMapProxyWithNoConfig() throws IOException {
+        catalogusFromTestResources.getMapProxyServiceTemplate("mapproxy_dataset_with_no_config");
+    }
+
+    @Test
+    public void testMapProxySeedTemplate() throws IOException {
+        try (FileInputStream file = catalogusFromTestResources.getMapProxySeedTemplate("mapproxy_dataset")) {
+            assertNotNull(file);
+        }
+    }
+
+    @Test
+    public void testMapProxyCoverage() throws IOException {
+        try (ZipInputStream zip = catalogusFromTestResources.getMapProxyCoverage("mapproxy_dataset")) {
+            ZipEntry ze = zip.getNextEntry();
+            assertEquals(ze.getName(), "zipentry_one.txt");
+            assertNotNull(zip);
+        }
     }
 }

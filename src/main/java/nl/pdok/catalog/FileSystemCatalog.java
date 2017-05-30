@@ -5,7 +5,6 @@ import com.google.common.base.Joiner;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 import com.google.common.collect.FluentIterable;
-import com.google.common.collect.ImmutableList;
 import java.beans.PropertyDescriptor;
 import java.io.File;
 import java.io.FileFilter;
@@ -24,6 +23,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import java.util.zip.ZipInputStream;
 import nl.pdok.catalog.exceptions.ConfigurationException;
 import nl.pdok.catalog.extract.ExtractConfiguration;
 import nl.pdok.catalog.extract.ExtractConfigurationReader;
@@ -66,9 +66,9 @@ public class FileSystemCatalog implements Catalog {
     private static final String SHAPES_TO_FEATURED_FOLDER = "shapesToFeatured";
 
     private static final String MAPPROXY_FOLDER = "mapproxy";
-    private static final String MAPPROXY_SERVICE = "mapproxy";
-    private static final String MAPPROXY_SEED = "seed";
-    private static final String MAPPROXY_CONFIG_EXTENSION = ".yaml";
+    private static final String MAPPROXY_SERVICE_YAML = "mapproxy.yaml";
+    private static final String MAPPROXY_SEED_YAML = "seed.yaml";
+    private static final String MAPPROXY_COVERAGE = "coverage.zip";
 
     private static final String DATASETS_FOLDER = "datasets";
     private static final String TEST_FOLDER = "testset";
@@ -400,16 +400,32 @@ public class FileSystemCatalog implements Catalog {
     }
 
     @Override
-    public InputStream getMapProxyTemplate(String datasetName, String configFile) throws IOException {
-        if (MAPPROXY_SERVICE.equals(configFile.toLowerCase()) || MAPPROXY_SEED.equals(configFile.toLowerCase())) {
-            File mapYaml = Paths.get(datasetsFolder.toString(), datasetName, MAPPROXY_FOLDER,
-                    configFile + MAPPROXY_CONFIG_EXTENSION).toFile();
-            return new FileInputStream(mapYaml);
-        } else {
-            LOGGER.warn("no mapproxy configfile found with the name: " + configFile);
-            throw new RuntimeException();
+    public FileInputStream getMapProxyServiceTemplate(String datasetName) {
+
+        return getMapProxyFile(datasetName, MAPPROXY_SERVICE_YAML);
+    }
+
+    @Override
+    public FileInputStream getMapProxySeedTemplate(String datasetName) {
+        return getMapProxyFile(datasetName, MAPPROXY_SEED_YAML);
+    }
+
+    @Override
+    public ZipInputStream getMapProxyCoverage(String datasetName) {
+        return new ZipInputStream(getMapProxyFile(datasetName, MAPPROXY_COVERAGE));
+    }
+
+    private FileInputStream getMapProxyFile(String datasetName, String mapproxyFile) {
+        try {
+          File file = Paths.get(datasetsFolder.toString(), datasetName, MAPPROXY_FOLDER,
+              mapproxyFile).toFile();
+          return new FileInputStream(file);
+        } catch (Exception e) {
+          LOGGER.error("no " + mapproxyFile + " found");
+          throw new RuntimeException();
         }
     }
+
 
     @Override
     public ExtractConfiguration getExtractConfiguration(String datasetName) {
