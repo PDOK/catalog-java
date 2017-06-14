@@ -12,6 +12,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
@@ -193,6 +194,21 @@ public class FileSystemCatalogTest {
         try (FileInputStream file = catalogusFromTestResources.getMapProxyTemplateForSeed("mapproxy_dataset")) {
             assertNotNull(file);
         }
+    }
+
+    @Test
+    public void testGetAvailableMapProxyFilesFromNoDataset() {
+        Map<String,List<String>> files = catalogusFromTestResources.getAvailableMapProxyFiles("no_mapproxy_dataset");
+        assertTrue(files.size() == 0);
+    }
+
+    @Test
+    public void testGetAvailableMapProxyFiles() {
+        Map<String,List<String>> files = catalogusFromTestResources.getAvailableMapProxyFiles("mapproxy_dataset");
+
+        assertTrue(files.get("seed").contains("seed.yaml"));
+        assertTrue(files.get("seed").contains("mapproxy.yaml"));
+        assertTrue(files.get("service").contains("mapproxy.yaml"));
     }
 
     @Test

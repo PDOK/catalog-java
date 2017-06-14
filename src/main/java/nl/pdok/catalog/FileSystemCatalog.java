@@ -19,9 +19,11 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.zip.ZipInputStream;
 import nl.pdok.catalog.exceptions.ConfigurationException;
@@ -419,13 +421,14 @@ public class FileSystemCatalog implements Catalog {
 
     @Override
     public ZipInputStream getCoverageFile(String datasetName) {
-        return new ZipInputStream(getMapProxyFile(datasetName, MAPPROXY_SEED_FOLDER, MAPPROXY_COVERAGE));
+        return new ZipInputStream(getMapProxyFile(datasetName, MAPPROXY_SEED_FOLDER,
+            MAPPROXY_COVERAGE));
     }
 
     private FileInputStream getMapProxyFile(String datasetName, String path, String mapproxyFile) {
         try {
-          File file = Paths.get(datasetsFolder.toString(), datasetName, MAPPROXY_ROOT + "/" + path,
-              mapproxyFile).toFile();
+          File file = Paths.get(datasetsFolder.toString(), datasetName,
+              MAPPROXY_ROOT + "/" + path, mapproxyFile).toFile();
           return new FileInputStream(file);
         } catch (Exception e) {
           LOGGER.error("no " + mapproxyFile + " found");
@@ -434,8 +437,34 @@ public class FileSystemCatalog implements Catalog {
     }
 
     @Override
+    public Map<String,List<String>> getAvailableMapProxyFiles(String datasetName) {
+        Map<String,List<String>> map = new HashMap<>();
+        String[] folders = new String[]{MAPPROXY_SEED_FOLDER, MAPPROXY_SERVICE_FOLDER};
+
+        try {
+            for (String folderName: folders) {
+                File folder = Paths.get(datasetsFolder.toString(), datasetName,
+                    MAPPROXY_ROOT + "/" + folderName).toFile();
+                File[] files = folder.listFiles();
+                if (files != null) {
+                    List<String> filenames = new ArrayList<>();
+                    for (File file : files) {
+                        filenames.add(file.getName());
+                    }
+                    map.put(folderName, filenames);
+                }
+            }
+            return map;
+        } catch (Exception e) {
+            LOGGER.error("no files found");
+            throw new RuntimeException();
+        }
+    }
+
+    @Override
     public ExtractConfiguration getExtractConfiguration(String datasetName) {
-        File configurationFile = Paths.get(datasetsFolder.toString(), datasetName, FILENAME_EXTRACT_CONFIGURATION)
+        File configurationFile = Paths.get(datasetsFolder.toString(), datasetName,
+            FILENAME_EXTRACT_CONFIGURATION)
                 .toFile();
         return ExtractConfigurationReader.read(configurationFile, datasetName);
     }

@@ -8,6 +8,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.zip.ZipInputStream;
 import nl.pdok.catalog.exceptions.ConfigurationException;
@@ -81,6 +82,8 @@ public interface Catalog {
 
     // mapproxy seed coverage file
     ZipInputStream getCoverageFile(String datasetName);
+
+    Map<String,List<String>> getAvailableMapProxyFiles(String datasetName);
 
     // extract management
     ExtractConfiguration getExtractConfiguration(String datasetName);
