@@ -65,8 +65,11 @@ public class FileSystemCatalog implements Catalog {
     private static final String SHAPES_TO_DB_FOLDER = "shapesToDB";
     private static final String SHAPES_TO_FEATURED_FOLDER = "shapesToFeatured";
 
-    private static final String MAPPROXY_FOLDER = "mapproxy";
-    private static final String MAPPROXY_SERVICE_YAML = "mapproxy.yaml";
+    private static final String MAPPROXY_ROOT = "mapproxy";
+    private static final String MAPPROXY_SERVICE_FOLDER = "service";
+    private static final String MAPPROXY_SEED_FOLDER = "seed";
+    private static final String MAPPROXY_FOR_SERVICE_YAML = "mapproxy.yaml";
+    private static final String MAPPROXY_FOR_SEED_YAML = "mapproxy.yaml";
     private static final String MAPPROXY_SEED_YAML = "seed.yaml";
     private static final String MAPPROXY_COVERAGE = "coverage.zip";
 
@@ -400,24 +403,28 @@ public class FileSystemCatalog implements Catalog {
     }
 
     @Override
-    public FileInputStream getMapProxyServiceTemplate(String datasetName) {
-
-        return getMapProxyFile(datasetName, MAPPROXY_SERVICE_YAML);
+    public FileInputStream getMapProxyTemplateForService(String datasetName) {
+        return getMapProxyFile(datasetName, MAPPROXY_SERVICE_FOLDER, MAPPROXY_FOR_SERVICE_YAML);
     }
 
     @Override
-    public FileInputStream getMapProxySeedTemplate(String datasetName) {
-        return getMapProxyFile(datasetName, MAPPROXY_SEED_YAML);
+    public FileInputStream getMapProxyTemplateForSeed(String datasetName) {
+        return getMapProxyFile(datasetName, MAPPROXY_SEED_FOLDER, MAPPROXY_FOR_SEED_YAML);
     }
 
     @Override
-    public ZipInputStream getMapProxyCoverage(String datasetName) {
-        return new ZipInputStream(getMapProxyFile(datasetName, MAPPROXY_COVERAGE));
+    public FileInputStream getSeedTemplate(String datasetName) {
+        return getMapProxyFile(datasetName, MAPPROXY_SEED_FOLDER, MAPPROXY_SEED_YAML);
     }
 
-    private FileInputStream getMapProxyFile(String datasetName, String mapproxyFile) {
+    @Override
+    public ZipInputStream getCoverageFile(String datasetName) {
+        return new ZipInputStream(getMapProxyFile(datasetName, MAPPROXY_SEED_FOLDER, MAPPROXY_COVERAGE));
+    }
+
+    private FileInputStream getMapProxyFile(String datasetName, String path, String mapproxyFile) {
         try {
-          File file = Paths.get(datasetsFolder.toString(), datasetName, MAPPROXY_FOLDER,
+          File file = Paths.get(datasetsFolder.toString(), datasetName, MAPPROXY_ROOT + "/" + path,
               mapproxyFile).toFile();
           return new FileInputStream(file);
         } catch (Exception e) {
@@ -425,7 +432,6 @@ public class FileSystemCatalog implements Catalog {
           throw new RuntimeException();
         }
     }
-
 
     @Override
     public ExtractConfiguration getExtractConfiguration(String datasetName) {

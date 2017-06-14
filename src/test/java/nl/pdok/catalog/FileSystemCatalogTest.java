@@ -173,31 +173,31 @@ public class FileSystemCatalogTest {
 
     @Test
     public void testMapProxyServiceTemplate() throws IOException {
-        try (FileInputStream file = catalogusFromTestResources.getMapProxyServiceTemplate("mapproxy_dataset")) {
+        try (FileInputStream file = catalogusFromTestResources.getMapProxyTemplateForService("mapproxy_dataset")) {
             assertNotNull(file);
         }
     }
 
     @Test(expected = RuntimeException.class)
     public void testNoMapProxyServiceTemplate() throws IOException {
-        catalogusFromTestResources.getMapProxyServiceTemplate("no_mapproxy_dataset");
+        catalogusFromTestResources.getMapProxyTemplateForService("no_mapproxy_dataset");
     }
 
     @Test(expected = RuntimeException.class)
     public void testMapProxyWithNoConfig() throws IOException {
-        catalogusFromTestResources.getMapProxyServiceTemplate("mapproxy_dataset_with_no_config");
+        catalogusFromTestResources.getMapProxyTemplateForService("mapproxy_dataset_with_no_config");
     }
 
     @Test
     public void testMapProxySeedTemplate() throws IOException {
-        try (FileInputStream file = catalogusFromTestResources.getMapProxySeedTemplate("mapproxy_dataset")) {
+        try (FileInputStream file = catalogusFromTestResources.getMapProxyTemplateForSeed("mapproxy_dataset")) {
             assertNotNull(file);
         }
     }
 
     @Test
     public void testMapProxyCoverage() throws IOException {
-        try (ZipInputStream zip = catalogusFromTestResources.getMapProxyCoverage("mapproxy_dataset")) {
+        try (ZipInputStream zip = catalogusFromTestResources.getCoverageFile("mapproxy_dataset")) {
             ZipEntry ze = zip.getNextEntry();
             assertEquals(ze.getName(), "zipentry_one.txt");
             assertNotNull(zip);

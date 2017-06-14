@@ -70,14 +70,17 @@ public interface Catalog {
     // geowebcache
     TilingConfiguration getTilingConfiguration(String datasetName);
 
-    // mapproxy service config template
-    FileInputStream getMapProxyServiceTemplate(String datasetName);
+    // mapproxy service mapproxy-config template
+    FileInputStream getMapProxyTemplateForService(String datasetName);
 
-    // mapproxy seed config template
-    FileInputStream getMapProxySeedTemplate(String datasetName);
+    // mapproxy seed mapproxy-config template
+    FileInputStream getMapProxyTemplateForSeed(String datasetName);
 
-    // mapproxy coverage config
-    ZipInputStream getMapProxyCoverage(String datasetName);
+    // mapproxy seed seed-config template
+    FileInputStream getSeedTemplate(String datasetName);
+
+    // mapproxy seed coverage file
+    ZipInputStream getCoverageFile(String datasetName);
 
     // extract management
     ExtractConfiguration getExtractConfiguration(String datasetName);
