@@ -80,7 +80,7 @@ public interface Catalog {
     Path getDatasetLocationShapesToFeatured(String datasetName);
 
     // Featured
-    ArrayList<FeaturedCollectionOptions> getFeatureOptions(String datasetName);
+    ArrayList<FeaturedCollectionOptions> getFeaturedOptions(String datasetName);
 
     Set<FeatureTemplate> getFeatureTemplates(String datasetName) throws IOException;
 
