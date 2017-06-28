@@ -379,7 +379,7 @@ public class FileSystemCatalog implements Catalog {
     }
 
     @Override
-    public ArrayList<FeaturedCollectionOptions> getFeatureOptions(String datasetName) {
+    public ArrayList<FeaturedCollectionOptions> getFeaturedOptions(String datasetName) {
         ArrayList<FeaturedCollectionOptions> collectionoptions = loadJobConfiguration(datasetName).getFeatured();
         if (collectionoptions == null) {
             collectionoptions = new ArrayList<>();
