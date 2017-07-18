@@ -1,0 +1,34 @@
+{
+  "workspace": "testworkspace",
+  "geoserver": "testgeoserver",
+  "datasets": [
+    {
+      "name": "bag",
+      "metadata_id": "metadata_id1",
+      "metadata_bron_id": "metadata_bron_id1",
+      "db_schema": "bagactueel",
+      "versioned": true
+    },
+    {
+      "name": "bagactueel",
+      "metadata_id": "metadata_id2",
+      "metadata_bron_id": "metadata_bron_id2",
+      "db_schema": "bagactueel",
+      "versioned": true
+    },
+    {
+      "name": "something",
+      "metadata_id": "metadata_id3",
+      "metadata_bron_id": "metadata_bron_id3",
+      "mosaic_store": "something",
+      "versioned": true
+    },
+    {
+      "name": "something_else",
+      "metadata_id": "metadata_id3",
+      "metadata_bron_id": "metadata_bron_id3",
+      "db_schema": "something_else",
+      "versioned": false
+    }
+  ]
+}

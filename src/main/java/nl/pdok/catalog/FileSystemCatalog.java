@@ -329,6 +329,20 @@ public class FileSystemCatalog implements Catalog {
         return isVersioned(datasetName) ? datasetName + "_v" + version : datasetName;
     }
 
+    @Override
+    public Set<String> getVersionedSchemas(final String datasetName, final long version) {
+        Set<String> schemas = new HashSet<>();
+        if (datasetExists(datasetName)) {
+            JobConfiguration jobConfig = loadJobConfiguration(datasetName);
+            for (JobConfigurationDataset dataset : jobConfig.getDatasets()) {
+                if (dataset.getVersioned() != null && dataset.getVersioned() && dataset.getDbSchema() != null) {
+                    schemas.add(getDatasetNameVersioned(dataset.getDbSchema(), version));
+                }
+            }
+        }
+        return schemas;
+    }
+
     private Object getSingleDatasetProperty(final String workspaceName, final String datasetName,
             final String propertyName) {
         JobConfiguration jobConfig = loadJobConfiguration(workspaceName);

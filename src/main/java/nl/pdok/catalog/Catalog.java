@@ -65,6 +65,8 @@ public interface Catalog {
 
     boolean withGtPkMetadata(String datasetName);
 
+    Set<String> getVersionedSchemas(String datasetName, long version);
+
     // geowebcache
     TilingConfiguration getTilingConfiguration(String datasetName);
 

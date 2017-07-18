@@ -1,5 +1,6 @@
 package nl.pdok.catalog;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -22,7 +23,7 @@ import org.junit.rules.TemporaryFolder;
 
 public class FileSystemCatalogTest {
 
-    private FmeWorkbenchEnvConfig fmeworkbenchenvconfig;
+    private FmeWorkbenchEnvConfig fmeWorkbenchEnvConfig = null;
 
     /**
      * Catalogus for fme.
@@ -41,9 +42,9 @@ public class FileSystemCatalogTest {
         TemporaryFolder tempFolder = new TemporaryFolder();
         tempFolder.create();
         datasetsFolder = tempFolder.newFolder("datasets");
-        catalogusInTempFolder = new FileSystemCatalog(tempFolder.getRoot(), fmeworkbenchenvconfig);
+        catalogusInTempFolder = new FileSystemCatalog(tempFolder.getRoot(), fmeWorkbenchEnvConfig);
         catalogusFromTestResources = new FileSystemCatalog(
-                new File(FileSystemCatalogTest.class.getResource("/testcatalogus/").getFile()), fmeworkbenchenvconfig);
+                new File(FileSystemCatalogTest.class.getResource("/testcatalogus/").getFile()), fmeWorkbenchEnvConfig);
     }
 
     private void createTemplateFeatureFolderStructure(String dataset, String extractType) throws IOException {
@@ -166,5 +167,12 @@ public class FileSystemCatalogTest {
 
         assertTrue(catalogusInTempFolder.datasetExists(datasetName));
         assertFalse(catalogusInTempFolder.datasetExists("no_dataset"));
+    }
+
+    @Test
+    public void testVersionedSchemas() throws IOException {
+        Set<String> schemas = catalogusFromTestResources.getVersionedSchemas("bagactueel", 1234L);
+        assertEquals(schemas.size(), 1);
+        assertEquals(schemas.iterator().next(), "bagactueel_v1234");
     }
 }
