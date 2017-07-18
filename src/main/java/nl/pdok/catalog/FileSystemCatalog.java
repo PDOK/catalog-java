@@ -336,7 +336,7 @@ public class FileSystemCatalog implements Catalog {
             JobConfiguration jobConfig = loadJobConfiguration(datasetName);
             for (JobConfigurationDataset dataset : jobConfig.getDatasets()) {
                 if (dataset.getVersioned() != null && dataset.getVersioned() && dataset.getDbSchema() != null) {
-                    schemas.add(getDatasetNameVersioned(dataset.getDbSchema(), version));
+                    schemas.add(dataset.getDbSchema() + "_v" + version);
                 }
             }
         }

@@ -10,7 +10,7 @@
       "versioned": true
     },
     {
-      "name": "bagactueel",
+      "name": "bagv2",
       "metadata_id": "metadata_id2",
       "metadata_bron_id": "metadata_bron_id2",
       "db_schema": "bagactueel",
