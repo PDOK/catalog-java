@@ -98,4 +98,6 @@ public interface Catalog {
     Workbench getWorkbench(String datasetName, WorkbenchType type, String workbenchName);
 
     List<Workbench> getTransformers();
+    
+    String retrieveJobEntriesByTypeDataset(String datasetType) throws IOException;
 }

@@ -5,7 +5,6 @@ import com.google.common.base.Joiner;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 import com.google.common.collect.FluentIterable;
-import com.google.common.collect.ImmutableList;
 import java.beans.PropertyDescriptor;
 import java.io.File;
 import java.io.FileFilter;
@@ -32,6 +31,7 @@ import nl.pdok.catalog.featured.FeaturedCollectionOptions;
 import nl.pdok.catalog.job.JobConfiguration;
 import nl.pdok.catalog.job.JobConfigurationDataset;
 import nl.pdok.catalog.job.JobConfigurationReader;
+import nl.pdok.catalog.job.RetriveJobEntries;
 import nl.pdok.catalog.testdata.TestData;
 import nl.pdok.catalog.tiling.TilingConfiguration;
 import nl.pdok.catalog.tiling.TilingConfigurationReader;
@@ -634,4 +634,10 @@ public class FileSystemCatalog implements Catalog {
     public static String getWorkbenchExtension() {
         return WORKBENCH_EXTENSION;
     }
+
+	@Override
+	public String retrieveJobEntriesByTypeDataset(String datasetType) throws IOException {
+		// TODO Auto-generated method stub
+		return RetriveJobEntries.retrieveByTypeDataset(datasetType);
+	}
 }
