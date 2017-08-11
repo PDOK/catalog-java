@@ -99,5 +99,5 @@ public interface Catalog {
 
     List<Workbench> getTransformers();
     
-    String retrieveJobEntriesByTypeDataset(String datasetType) throws IOException;
+	String retrieveJobEntriesByDataset(File catalogus, String dataset) throws IOException;
 }

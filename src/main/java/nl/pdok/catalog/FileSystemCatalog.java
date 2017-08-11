@@ -31,7 +31,7 @@ import nl.pdok.catalog.featured.FeaturedCollectionOptions;
 import nl.pdok.catalog.job.JobConfiguration;
 import nl.pdok.catalog.job.JobConfigurationDataset;
 import nl.pdok.catalog.job.JobConfigurationReader;
-import nl.pdok.catalog.job.RetriveJobEntries;
+import nl.pdok.catalog.job.RetrieveJobEntries;
 import nl.pdok.catalog.testdata.TestData;
 import nl.pdok.catalog.tiling.TilingConfiguration;
 import nl.pdok.catalog.tiling.TilingConfigurationReader;
@@ -636,8 +636,7 @@ public class FileSystemCatalog implements Catalog {
     }
 
 	@Override
-	public String retrieveJobEntriesByTypeDataset(String datasetType) throws IOException {
-		// TODO Auto-generated method stub
-		return RetriveJobEntries.retrieveByTypeDataset(datasetType);
+	public String retrieveJobEntriesByDataset(File catalogus, String dataset) throws IOException {
+		return RetrieveJobEntries.retrieveByDataset(catalogus, dataset);
 	}
 }
