@@ -637,12 +637,12 @@ public class FileSystemCatalog implements Catalog {
     }
 
 	@Override
-	public String retrieveJobEntriesByDataset(File catalogus, String dataset) throws IOException {
-		return RetrieveJobEntries.retrieveByDataset(catalogus, dataset);
+	public String retrieveJobEntriesByDataset(String dataset) throws IOException {
+		return RetrieveJobEntries.retrieveJobEntriesByDatasetFromCatalogus(catalogFolder.toFile(), dataset);
 	}
 	
 	@Override
-	public boolean checkout(String branchName, File destinationFolder) {
-		return GitInteractionsHandler.checkout(branchName, destinationFolder);
+	public boolean checkout(String branchName) {
+		return GitInteractionsHandler.checkout(branchName, catalogFolder.toFile());
 	}
 }

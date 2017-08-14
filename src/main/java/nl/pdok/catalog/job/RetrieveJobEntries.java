@@ -15,7 +15,7 @@ public class RetrieveJobEntries {
 //		retrieveByDataset(new File("D:\\tempDir\\catalogus") , "bag");
 //	}
 
-	public static String retrieveByDataset(File catalogusFolder, String datasetName) throws IOException {
+	public static String retrieveJobEntriesByDatasetFromCatalogus(File catalogusFolder, String datasetName) throws IOException {
 		String filePath = catalogusFolder.getPath() + buildFilePathForDataset(datasetName);
 		
 		File file = new File(filePath);
