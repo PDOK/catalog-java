@@ -2,6 +2,7 @@ package nl.pdok.catalog.job;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 
 public class RetrieveJobEntries {
@@ -21,7 +22,7 @@ public class RetrieveJobEntries {
 		File file = new File(filePath);
 		StringBuilder builder = new StringBuilder();
 		
-		for (String str : Files.readAllLines(file.toPath())) {
+		for (String str : Files.readAllLines(file.toPath(), StandardCharsets.UTF_8)) {
 			builder.append(str);
 		}
 		
