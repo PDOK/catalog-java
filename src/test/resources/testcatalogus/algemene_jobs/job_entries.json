@@ -1,0 +1,10 @@
+{
+"job_entries": [
+{"job_name":"dataset_publish","execution_order":2,"name":"nl.pdok.datamanagement.task.activating.UpdateAtomFeed","data_in_type":"","active":true,"data_in":null}
+{"job_name":"dataset_publish","execution_order":1,"name":"nl.pdok.datamanagement.task.activating.UpdateNgrMetadata","data_in_type":"","active":true,"data_in":null}
+{"job_name":"update_cleanup","execution_order":0,"name":"nl.pdok.datamanagement.task.cleanup.DeleteSchema","data_in_type":"","active":true,"data_in":null}
+{"job_name":"update_cleanup","execution_order":2,"name":"nl.pdok.datamanagement.task.cleanup.DeleteRasterStore","data_in_type":"","active":true,"data_in":null}
+{"job_name":"update_cleanup","execution_order":3,"name":"nl.pdok.datamanagement.task.cleanup.MassTruncateTiles","data_in_type":"","active":false,"data_in":null}
+{"job_name":"update_cleanup","execution_order":1,"name":"nl.pdok.datamanagement.task.cleanup.DeleteDirectoryLuceneIndex","data_in_type":"","active":true,"data_in":null}
+]
+}

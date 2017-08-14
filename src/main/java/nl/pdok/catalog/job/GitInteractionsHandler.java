@@ -53,7 +53,7 @@ public class GitInteractionsHandler {
 			return false;
 		}
 		try {
-			for (int i = 1; 1 < 5; i++) {
+			for (int i = 1; i <= 5; i++) {
 				if (renameFolders(destinationFolder, branchName)) {
 					break;
 				}
@@ -129,9 +129,6 @@ public class GitInteractionsHandler {
 	private static boolean renameFolders(File destinationFolder, String branchName) throws IOException {
 		File tempFolder = new File(destinationFolder.getParentFile() + File.separator + "catalogus-" + branchName);
 		File oldFolder = new File(destinationFolder.getParentFile() + File.separator + "catalogus_old");
-//		System.out.println(tempFolder.getAbsolutePath());
-//		System.out.println(oldFolder.getAbsolutePath());
-//		System.out.println(destinationFolder.getAbsolutePath());
 		try {
 			Files.move(destinationFolder.toPath(), oldFolder.toPath(), StandardCopyOption.ATOMIC_MOVE);
 		} catch (IOException e) {

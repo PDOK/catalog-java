@@ -1,0 +1,5 @@
+{
+"job_entries": [
+{"job_name":"bagactueel","execution_order":2,"name":"nl.pdok.datamanagement.task.processing.ExecuteSQL","data_in_type":"nl.pdok.datamanagement.task.processing.ExecuteDatabase$Config","active":true,"data_in":{"resource":"bagactueel.sql"}}
+]
+}

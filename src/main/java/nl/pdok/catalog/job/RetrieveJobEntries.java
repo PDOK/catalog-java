@@ -3,6 +3,15 @@ package nl.pdok.catalog.job;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
+import nl.pdok.catalog.jsonentities.JobEntry;
 
 public class RetrieveJobEntries {
 
@@ -10,12 +19,11 @@ public class RetrieveJobEntries {
     
     private static final String FILE_NAME = "job_entries.json";
     
-	
 //	public static void main(String[] args) throws IOException, ClassNotFoundException {
-//		retrieveByDataset(new File("D:\\tempDir\\catalogus") , "bag");
+//		System.out.println(retrieveJobEntriesByDatasetFromCatalogus(new File("D:\\development\\git\\catalogus\\catalogus") , "bag"));
 //	}
 
-	public static String retrieveJobEntriesByDatasetFromCatalogus(File catalogusFolder, String datasetName) throws IOException {
+	public static List<JobEntry> retrieveJobEntriesByDatasetFromCatalogus(File catalogusFolder, String datasetName) throws IOException {
 		String filePath = catalogusFolder.getPath() + buildFilePathForDataset(datasetName);
 		
 		File file = new File(filePath);
@@ -25,8 +33,7 @@ public class RetrieveJobEntries {
 			builder.append(str);
 		}
 		
-		System.out.println(builder.toString());
-		return builder.toString();
+		return parseStringToJobEntries(builder.toString());
 	}
 
 	private static String buildFilePathForDataset(String datasetName) {
@@ -45,4 +52,35 @@ public class RetrieveJobEntries {
 		}
 		return pathStr.toString();
 	}
+	
+	private static List<JobEntry> parseStringToJobEntries(String jsonString) {
+		List<JobEntry> listJobEntries = new ArrayList<>();
+		JSONParser parser = new JSONParser();
+
+		JSONObject json;
+		try {
+			json = (JSONObject) parser.parse(jsonString);
+
+			JSONArray jsonArr = (JSONArray) json.get("job_entries");
+			for (int ii = 0; ii < jsonArr.size(); ii++) {
+				 JobEntry entry = parseJSONObjectIntoJobEntry((JSONObject) jsonArr.get(ii));
+				 listJobEntries.add(entry);
+			}
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return listJobEntries;
+	}
+
+	private static JobEntry parseJSONObjectIntoJobEntry(JSONObject jObj) {
+		JobEntry entry = new JobEntry();
+		 entry.setName((String) jObj.get("name"));
+		 entry.setExecutionOrder((Long) jObj.get("execution_order"));
+		 entry.setJobName((String) jObj.get("job_name"));
+		 entry.setDataIn((JSONObject)jObj.get("data_in"));
+		 entry.setDataInType((String) jObj.get("data_in_type"));
+		 entry.setActive((Boolean) jObj.get("Active"));
+		return entry;
+	}
+	
 }

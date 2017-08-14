@@ -13,6 +13,7 @@ import nl.pdok.catalog.extract.ExtractConfiguration;
 import nl.pdok.catalog.featured.FeatureTemplate;
 import nl.pdok.catalog.featured.FeaturedCollectionOptions;
 import nl.pdok.catalog.job.JobConfigurationDataset;
+import nl.pdok.catalog.jsonentities.JobEntry;
 import nl.pdok.catalog.testdata.TestData;
 import nl.pdok.catalog.tiling.TilingConfiguration;
 import nl.pdok.catalog.workbench.Workbench;
@@ -99,7 +100,7 @@ public interface Catalog {
 
     List<Workbench> getTransformers();
     
-	String retrieveJobEntriesByDataset(String dataset) throws IOException;
+    List<JobEntry> retrieveJobEntriesByDataset(String dataset) throws IOException;
 	
 	boolean checkout(String branchName);
 }

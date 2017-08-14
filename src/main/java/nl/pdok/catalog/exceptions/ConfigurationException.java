@@ -2,7 +2,12 @@ package nl.pdok.catalog.exceptions;
 
 public class ConfigurationException extends Exception {
 
-    public ConfigurationException(String msg, Exception e) {
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 2703721819177493053L;
+
+	public ConfigurationException(String msg, Exception e) {
         super(msg, e);
     }
 
