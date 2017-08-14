@@ -100,4 +100,6 @@ public interface Catalog {
     List<Workbench> getTransformers();
     
 	String retrieveJobEntriesByDataset(File catalogus, String dataset) throws IOException;
+	
+	boolean checkout(String branchName, File destinationFolder);
 }

@@ -31,16 +31,16 @@ public class GitInteractionsHandler {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(GitInteractionsHandler.class);
 
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		if (checkout("pdok-1263", new File("D:/tempDir/catalogus"))) {
-			System.out.println("success");
-		} else {
-			System.out.println("Failure");
-		}
-	}
+//	/**
+//	 * @param args
+//	 */
+//	public static void main(String[] args) {
+//		if (checkout("pdok-1263", new File("D:/tempDir/catalogus"))) {
+//			System.out.println("success");
+//		} else {
+//			System.out.println("Failure");
+//		}
+//	}
 
 	public static boolean checkout(String branchName, File destinationFolder) {
 		InputStream fileInputStream;
@@ -129,17 +129,19 @@ public class GitInteractionsHandler {
 	private static boolean renameFolders(File destinationFolder, String branchName) throws IOException {
 		File tempFolder = new File(destinationFolder.getParentFile() + File.separator + "catalogus-" + branchName);
 		File oldFolder = new File(destinationFolder.getParentFile() + File.separator + "catalogus_old");
-		System.out.println(tempFolder.getAbsolutePath());
-		System.out.println(oldFolder.getAbsolutePath());
-		System.out.println(destinationFolder.getAbsolutePath());
+//		System.out.println(tempFolder.getAbsolutePath());
+//		System.out.println(oldFolder.getAbsolutePath());
+//		System.out.println(destinationFolder.getAbsolutePath());
 		try {
 			Files.move(destinationFolder.toPath(), oldFolder.toPath(), StandardCopyOption.ATOMIC_MOVE);
 		} catch (IOException e) {
+			LOGGER.info("Unable to move catalogus to _old.", e);
 			return false;
 		}
 		try {
 			Files.move(tempFolder.toPath(), destinationFolder.toPath(), StandardCopyOption.ATOMIC_MOVE);
 		} catch (IOException e) {
+			LOGGER.error("Failed to place new checkout in catalogus! Attempting to return current version.", e);
 			Files.move(oldFolder.toPath(), destinationFolder.toPath(), StandardCopyOption.ATOMIC_MOVE);
 			return false;
 		}

@@ -28,6 +28,7 @@ import nl.pdok.catalog.extract.ExtractConfiguration;
 import nl.pdok.catalog.extract.ExtractConfigurationReader;
 import nl.pdok.catalog.featured.FeatureTemplate;
 import nl.pdok.catalog.featured.FeaturedCollectionOptions;
+import nl.pdok.catalog.job.GitInteractionsHandler;
 import nl.pdok.catalog.job.JobConfiguration;
 import nl.pdok.catalog.job.JobConfigurationDataset;
 import nl.pdok.catalog.job.JobConfigurationReader;
@@ -638,5 +639,10 @@ public class FileSystemCatalog implements Catalog {
 	@Override
 	public String retrieveJobEntriesByDataset(File catalogus, String dataset) throws IOException {
 		return RetrieveJobEntries.retrieveByDataset(catalogus, dataset);
+	}
+	
+	@Override
+	public boolean checkout(String branchName, File destinationFolder) {
+		return GitInteractionsHandler.checkout(branchName, destinationFolder);
 	}
 }

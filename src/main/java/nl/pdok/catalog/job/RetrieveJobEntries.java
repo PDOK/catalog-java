@@ -11,9 +11,9 @@ public class RetrieveJobEntries {
     private static final String FILE_NAME = "job_entries.json";
     
 	
-	public static void main(String[] args) throws IOException, ClassNotFoundException {
-		retrieveByDataset(new File("D:\\tempDir\\catalogus") , "bag");
-	}
+//	public static void main(String[] args) throws IOException, ClassNotFoundException {
+//		retrieveByDataset(new File("D:\\tempDir\\catalogus") , "bag");
+//	}
 
 	public static String retrieveByDataset(File catalogusFolder, String datasetName) throws IOException {
 		String filePath = catalogusFolder.getPath() + buildFilePathForDataset(datasetName);
