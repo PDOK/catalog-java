@@ -14,6 +14,7 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.Set;
 import nl.pdok.catalog.featured.FeatureTemplate;
+import nl.pdok.catalog.jsonentities.JobEntry;
 import nl.pdok.catalog.workbench.FmeWorkbenchEnvConfig;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Assert;
@@ -174,5 +175,11 @@ public class FileSystemCatalogTest {
         Set<String> schemas = catalogusFromTestResources.getVersionedSchemas("bagactueel", 1234L);
         assertEquals(schemas.size(), 1);
         assertEquals(schemas.iterator().next(), "bagactueel_v1234");
+    }
+    
+    @Test
+    public void testRetrieveJobEntriesByDataset() throws IOException {
+    	List<JobEntry> entries = catalogusFromTestResources.retrieveJobEntriesByDataset("bagactueel");
+		Assert.assertEquals(1,entries.size());
     }
 }

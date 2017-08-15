@@ -14,15 +14,10 @@ import org.json.simple.parser.ParseException;
 
 import nl.pdok.catalog.jsonentities.JobEntry;
 
-public class RetrieveJobEntries {
+public class JobEntriesReader {
 
 	public static final String ALGEMENE_JOBS = "algemene_jobs";
-    
     private static final String FILE_NAME = "job_entries.json";
-    
-//	public static void main(String[] args) throws IOException, ClassNotFoundException {
-//		System.out.println(retrieveJobEntriesByDatasetFromCatalogus(new File("D:\\development\\git\\catalogus\\catalogus") , "bag"));
-//	}
 
 	public static List<JobEntry> retrieveJobEntriesByDatasetFromCatalogus(File catalogusFolder, String datasetName) throws IOException {
 		String filePath = catalogusFolder.getPath() + buildFilePathForDataset(datasetName);

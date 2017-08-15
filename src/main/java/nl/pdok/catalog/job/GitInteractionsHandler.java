@@ -26,26 +26,14 @@ import org.slf4j.LoggerFactory;
 public class GitInteractionsHandler {
 
 	private static final String AUTHORIZATION = "Authorization";
-	private static final String BASIC_AUTH_STRING = "Basic enpfcGRvazphYTliNGYwYjQ0MzVjYWMyZjIwZTEyNjVmYTBmYTI0MTc0MmYwODkz";
 	private static final String BASE_GIT_PATH = "http://github.so.kadaster.nl/PDOK/catalogus/archive/";
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(GitInteractionsHandler.class);
 
-//	/**
-//	 * @param args
-//	 */
-//	public static void main(String[] args) {
-//		if (checkout("pdok-1263", new File("D:/tempDir/catalogus"))) {
-//			System.out.println("success");
-//		} else {
-//			System.out.println("Failure");
-//		}
-//	}
-
-	public static boolean checkout(String branchName, File destinationFolder) {
+	public static boolean checkout(String branchName, File destinationFolder, String authorization) {
 		InputStream fileInputStream;
 		try {
-			fileInputStream = retrieveZipFromGit(branchName);
+			fileInputStream = retrieveZipFromGit(branchName, authorization);
 			clearCatalogusOldDirectory(destinationFolder.getParentFile());
 			unpackZipIntoTempFolder(fileInputStream, destinationFolder.getParentFile());
 		} catch (IOException e) {
@@ -69,11 +57,11 @@ public class GitInteractionsHandler {
 		return true;
 	}
 
-	private static InputStream retrieveZipFromGit(String branchName) throws IOException {
+	private static InputStream retrieveZipFromGit(String branchName, String authorization) throws IOException {
 		String url = BASE_GIT_PATH + branchName.trim() + ".zip";
 		URL gitURL = new URL(url);
 		HttpURLConnection httpConnection = (HttpURLConnection) gitURL.openConnection();
-		httpConnection.setRequestProperty(AUTHORIZATION, BASIC_AUTH_STRING);
+		httpConnection.setRequestProperty(AUTHORIZATION, authorization);
 
 		return httpConnection.getInputStream();
 	}
@@ -100,8 +88,6 @@ public class GitInteractionsHandler {
 			if (!ze.isDirectory()) {
 				String fileName = ze.getName();
 				File newFile = new File(parentDirectory + File.separator + fileName);
-
-				System.out.println("file unzip : " + newFile.getAbsoluteFile());
 
 				new File(newFile.getParent()).mkdirs();
 

@@ -32,7 +32,7 @@ import nl.pdok.catalog.job.GitInteractionsHandler;
 import nl.pdok.catalog.job.JobConfiguration;
 import nl.pdok.catalog.job.JobConfigurationDataset;
 import nl.pdok.catalog.job.JobConfigurationReader;
-import nl.pdok.catalog.job.RetrieveJobEntries;
+import nl.pdok.catalog.job.JobEntriesReader;
 import nl.pdok.catalog.jsonentities.JobEntry;
 import nl.pdok.catalog.testdata.TestData;
 import nl.pdok.catalog.tiling.TilingConfiguration;
@@ -639,11 +639,11 @@ public class FileSystemCatalog implements Catalog {
 
 	@Override
 	public List<JobEntry> retrieveJobEntriesByDataset(String dataset) throws IOException {
-		return RetrieveJobEntries.retrieveJobEntriesByDatasetFromCatalogus(catalogFolder.toFile(), dataset);
+		return JobEntriesReader.retrieveJobEntriesByDatasetFromCatalogus(catalogFolder.toFile(), dataset);
 	}
 	
 	@Override
-	public boolean checkout(String branchName) {
-		return GitInteractionsHandler.checkout(branchName, catalogFolder.toFile());
+	public boolean checkout(String branchName, String authorization) {
+		return GitInteractionsHandler.checkout(branchName, catalogFolder.toFile(), authorization);
 	}
 }

@@ -102,5 +102,5 @@ public interface Catalog {
     
     List<JobEntry> retrieveJobEntriesByDataset(String dataset) throws IOException;
 	
-	boolean checkout(String branchName);
+	boolean checkout(String branchName, String authorization);
 }
