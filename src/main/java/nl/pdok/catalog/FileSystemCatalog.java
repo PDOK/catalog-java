@@ -638,7 +638,7 @@ public class FileSystemCatalog implements Catalog {
     }
 
 	@Override
-	public List<JobEntry> retrieveJobEntriesByDataset(String dataset) throws IOException {
+	public List<JobEntry> retrieveJobEntriesByDataset(String dataset) {
 		return JobEntriesReader.retrieveJobEntriesByDatasetFromCatalogus(catalogFolder.toFile(), dataset);
 	}
 	

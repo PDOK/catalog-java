@@ -11,10 +11,11 @@ import nl.pdok.catalog.jsonentities.JobEntry;
 
 public class JobEntriesReaderTest {
 	
-	@Test(expected=IOException.class)
+	@Test
 	public void testRetrieveJobEntriesByDatasetFromCatalogusNoFile() throws IOException {
-		JobEntriesReader.retrieveJobEntriesByDatasetFromCatalogus(new File(JobEntriesReaderTest.class
+		List<JobEntry> entries = JobEntriesReader.retrieveJobEntriesByDatasetFromCatalogus(new File(JobEntriesReaderTest.class
                 .getResource("/testcatalogus/").getFile()), "bag");
+		Assert.assertTrue(entries.isEmpty());
 	}
 	
 	@Test

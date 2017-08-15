@@ -11,22 +11,31 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import nl.pdok.catalog.jsonentities.JobEntry;
 
 public class JobEntriesReader {
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(JobEntriesReader.class);
 
 	public static final String ALGEMENE_JOBS = "algemene_jobs";
     private static final String FILE_NAME = "job_entries.json";
 
-	public static List<JobEntry> retrieveJobEntriesByDatasetFromCatalogus(File catalogusFolder, String datasetName) throws IOException {
+	public static List<JobEntry> retrieveJobEntriesByDatasetFromCatalogus(File catalogusFolder, String datasetName) {
 		String filePath = catalogusFolder.getPath() + buildFilePathForDataset(datasetName);
 		
 		File file = new File(filePath);
 		StringBuilder builder = new StringBuilder();
 		
-		for (String str : Files.readAllLines(file.toPath(), StandardCharsets.UTF_8)) {
-			builder.append(str);
+		try {
+			for (String str : Files.readAllLines(file.toPath(), StandardCharsets.UTF_8)) {
+				builder.append(str);
+			}
+		} catch (IOException e) {
+			LOGGER.error("There was a problem reading the JobEntries file for dataset: \"" + datasetName + "\".", e);
+			return new ArrayList<>();
 		}
 		
 		return parseStringToJobEntries(builder.toString());
@@ -63,7 +72,7 @@ public class JobEntriesReader {
 				 listJobEntries.add(entry);
 			}
 		} catch (ParseException e) {
-			e.printStackTrace();
+			LOGGER.error("There was an error when attempting to parse the json file", e);
 		}
 		return listJobEntries;
 	}
