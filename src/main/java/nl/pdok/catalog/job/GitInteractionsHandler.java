@@ -31,30 +31,34 @@ public class GitInteractionsHandler {
 	private static final Logger LOGGER = LoggerFactory.getLogger(GitInteractionsHandler.class);
 
 	public static boolean checkout(String branchName, File destinationFolder, String authorization) {
+		if (downloadAndUnpackZipFileFromGit(branchName, destinationFolder, authorization)) {
+			try {
+				for (int i = 1; i <= 5; i++) {
+					if (renameFolders(destinationFolder, branchName)) {
+						return true;
+					}
+					Thread.sleep(200);
+				}
+			} catch (IOException e) {
+				LOGGER.error("Something went wrong with renaming the Catalogus Folders.", e);
+			} catch (InterruptedException e) {
+				LOGGER.error("InterruptedException on the sleep timer.", e);
+			}
+		}
+		return false;
+	}
+
+	private static boolean downloadAndUnpackZipFileFromGit(String branchName, File destinationFolder, String authorization) {
 		InputStream fileInputStream;
 		try {
 			fileInputStream = retrieveZipFromGit(branchName, authorization);
 			clearCatalogusOldDirectory(destinationFolder.getParentFile());
 			unpackZipIntoTempFolder(fileInputStream, destinationFolder.getParentFile());
+			return true;
 		} catch (IOException e) {
 			LOGGER.error("Something went wrong with retrieving and unpacking the zip for " + branchName + " from Git.", e);
 			return false;
 		}
-		try {
-			for (int i = 1; i <= 5; i++) {
-				if (renameFolders(destinationFolder, branchName)) {
-					break;
-				}
-				Thread.sleep(200);
-			}
-		} catch (IOException e) {
-			LOGGER.error("Something went wrong with renaming the Catalogus Folders.", e);
-			return false;
-		} catch (InterruptedException e) {
-			LOGGER.error("InterruptedException on the sleep timer.", e);
-			return false;
-		}
-		return true;
 	}
 
 	private static InputStream retrieveZipFromGit(String branchName, String authorization) throws IOException {
