@@ -21,86 +21,86 @@ import nl.pdok.catalog.workbench.WorkbenchType;
 
 public interface Catalog {
 
-    // dataset
-    String getRootLocation();
+	// dataset
+	String getRootLocation();
 
-    boolean datasetExists(String datasetName);
+	boolean datasetExists(String datasetName);
 
-    String getDatasetNameVersioned(String datasetName, long version);
+	String getDatasetNameVersioned(String datasetName, long version);
 
-    boolean isVersioned(String datasetName);
+	boolean isVersioned(String datasetName);
 
-    Collection<String> getDatasetNames();
+	Collection<String> getDatasetNames();
 
-    // testdata
-    Path getDatasetLocationTest(String datasetName);
+	// testdata
+	Path getDatasetLocationTest(String datasetName);
 
-    Path getDatasetLocationTestData(String datasetName);
+	Path getDatasetLocationTestData(String datasetName);
 
-    List<TestData> getDatasetTestData(String datasetName);
+	List<TestData> getDatasetTestData(String datasetName);
 
-    Path getDatasetLocationTestExpected(String datasetName);
+	Path getDatasetLocationTestExpected(String datasetName);
 
-    InputStream getResourcePrepareTestset(String datasetName, String resourceName) throws IOException;
+	InputStream getResourcePrepareTestset(String datasetName, String resourceName) throws IOException;
 
-    Path getDatasetLocationTemplatesPath(String dataset);
+	Path getDatasetLocationTemplatesPath(String dataset);
 
-    File getTemplateResource(String dataset, String format, String file, String subfolder);
+	File getTemplateResource(String dataset, String format, String file, String subfolder);
 
-    InputStream getDdlResource(String datasetName) throws IOException;
+	InputStream getDdlResource(String datasetName) throws IOException;
 
-    InputStream getSqlResource(String datasetName, String fileName) throws IOException;
+	InputStream getSqlResource(String datasetName, String fileName) throws IOException;
 
-    InputStream getCsvResource(String datasetName, String fileName) throws IOException;
+	InputStream getCsvResource(String datasetName, String fileName) throws IOException;
 
-    List<JobConfigurationDataset> getDatastoresConfiguration(String datasetName);
+	List<JobConfigurationDataset> getDatastoresConfiguration(String datasetName);
 
-    // geoserver
-    String getServiceName(String datasetName);
+	// geoserver
+	String getServiceName(String datasetName);
 
-    String getGeoserverType(String datasetName);
+	String getGeoserverType(String datasetName);
 
-    String getTargetProjection(String datasetName);
+	String getTargetProjection(String datasetName);
 
-    boolean withIndexes(String datasetName);
+	boolean withIndexes(String datasetName);
 
-    boolean withGtPkMetadata(String datasetName);
+	boolean withGtPkMetadata(String datasetName);
 
-    Set<String> getVersionedSchemas(String datasetName, long version);
+	Set<String> getVersionedSchemas(String datasetName, long version);
 
-    // geowebcache
-    TilingConfiguration getTilingConfiguration(String datasetName);
+	// geowebcache
+	TilingConfiguration getTilingConfiguration(String datasetName);
 
-    // mapproxy
-    InputStream getMapProxyTemplate(String datasetName, String configFile) throws IOException;
+	// mapproxy
+	InputStream getMapProxyTemplate(String datasetName, String configFile) throws IOException;
 
-    // extract management
-    ExtractConfiguration getExtractConfiguration(String datasetName);
+	// extract management
+	ExtractConfiguration getExtractConfiguration(String datasetName);
 
-    // shapes
-    Path getDatasetLocationShapesToDB(String datasetName);
+	// shapes
+	Path getDatasetLocationShapesToDB(String datasetName);
 
-    Path getDatasetLocationShapesToFeatured(String datasetName);
-    
-    // Featured
-    ArrayList<FeaturedCollectionOptions> getFeaturedOptions(String datasetName);
+	Path getDatasetLocationShapesToFeatured(String datasetName);
 
-    Set<FeatureTemplate> getFeatureTemplates(String datasetName) throws IOException;
+	// Featured
+	ArrayList<FeaturedCollectionOptions> getFeaturedOptions(String datasetName);
 
-    String getXml2JsonMapping(String datasetName, String translator) throws IOException;
+	Set<FeatureTemplate> getFeatureTemplates(String datasetName) throws IOException;
 
-    String getEngineTransformJson(String datasetName, String defaultEngine) throws ConfigurationException;
+	String getXml2JsonMapping(String datasetName, String translator) throws IOException;
 
-    // FME
-    List<Workbench> getWorkbenches(String datasetName);
+	String getEngineTransformJson(String datasetName, String defaultEngine) throws ConfigurationException;
 
-    List<Workbench> getWorkbenches(String datasetName, WorkbenchType type);
+	// FME
+	List<Workbench> getWorkbenches(String datasetName);
 
-    Workbench getWorkbench(String datasetName, WorkbenchType type, String workbenchName);
+	List<Workbench> getWorkbenches(String datasetName, WorkbenchType type);
 
-    List<Workbench> getTransformers();
-    
-    List<JobEntry> retrieveJobEntriesByDataset(String dataset);
-	
+	Workbench getWorkbench(String datasetName, WorkbenchType type, String workbenchName);
+
+	List<Workbench> getTransformers();
+
+	List<JobEntry> retrieveJobEntriesByDataset(String dataset);
+
 	boolean checkout(String branchName, String authorization);
 }
