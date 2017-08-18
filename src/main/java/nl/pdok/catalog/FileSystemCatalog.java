@@ -637,13 +637,13 @@ public class FileSystemCatalog implements Catalog {
         return WORKBENCH_EXTENSION;
     }
 
-	@Override
-	public List<JobEntry> retrieveJobEntriesByDataset(String dataset) {
-		return JobEntriesReader.retrieveJobEntriesByDatasetFromCatalogus(catalogFolder.toFile(), dataset);
-	}
-	
-	@Override
-	public boolean checkout(String branchName, String authorization) {
-		return GitInteractionsHandler.checkout(branchName, catalogFolder.toFile(), authorization);
-	}
+    @Override
+    public List<JobEntry> retrieveJobEntriesByDataset(String dataset) {
+        return JobEntriesReader.retrieveJobEntriesByDatasetFromCatalogus(catalogFolder.toFile(), dataset);
+    }
+    
+    @Override
+    public boolean checkout(String branchName, String authorization) {
+        return GitInteractionsHandler.checkout(branchName, catalogFolder.toFile(), authorization);
+    }
 }
