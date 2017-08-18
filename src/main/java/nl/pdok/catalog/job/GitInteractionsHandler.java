@@ -1,6 +1,3 @@
-/**
- * 
- */
 package nl.pdok.catalog.job;
 
 import java.io.File;
