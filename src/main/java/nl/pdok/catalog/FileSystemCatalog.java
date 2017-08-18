@@ -440,8 +440,8 @@ public class FileSystemCatalog implements Catalog {
     }
 
     @Override
-    public Set<FeatureTemplate> getFeatureTemplates(String datasetName) throws IOException {
-        Set<FeatureTemplate> res = new HashSet<>();
+    public Set<String> getExtractTypes(String datasetName) throws IOException {
+        Set<String> res = new HashSet<>();
 
         Path templateFolder = Paths.get(datasetsFolder.toString(), datasetName, TEMPLATE_FOLDER);
 
@@ -449,10 +449,22 @@ public class FileSystemCatalog implements Catalog {
             try (DirectoryStream<Path> stream = Files.newDirectoryStream(templateFolder)) {
                 for (Path entry : stream) {
                     if (Files.isDirectory(entry)) {
-                        res.add(getFeatureTemplateExtractType(entry));
+                        res.add(entry.getFileName().toString());
                     }
                 }
             }
+        }
+
+        return res;
+    }
+
+    @Override
+    public Set<FeatureTemplate> getFeatureTemplates(String datasetName) throws IOException {
+        Set<FeatureTemplate> res = new HashSet<>();
+
+        for (String extractType : getExtractTypes(datasetName)) {
+            Path entry = Paths.get(datasetsFolder.toString(), datasetName, TEMPLATE_FOLDER, extractType);
+            res.add(getFeatureTemplateExtractType(entry));
         }
 
         return res;
