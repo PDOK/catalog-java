@@ -81,7 +81,7 @@ public interface Catalog {
     Path getDatasetLocationShapesToDB(String datasetName);
 
     Path getDatasetLocationShapesToFeatured(String datasetName);
-
+    
     // Featured
     ArrayList<FeaturedCollectionOptions> getFeaturedOptions(String datasetName);
 
