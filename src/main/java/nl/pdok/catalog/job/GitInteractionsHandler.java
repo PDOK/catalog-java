@@ -16,10 +16,6 @@ import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- * @author henrya
- *
- */
 public class GitInteractionsHandler {
 
     private static final String AUTHORIZATION = "Authorization";
@@ -45,7 +41,8 @@ public class GitInteractionsHandler {
         return false;
     }
 
-    private static boolean downloadAndUnpackZipFileFromGit(String branchName, File destinationFolder, String authorization) {
+    private static boolean downloadAndUnpackZipFileFromGit(String branchName, File destinationFolder,
+            String authorization) {
         InputStream fileInputStream;
         try {
             fileInputStream = retrieveZipFromGit(branchName, authorization);
@@ -53,7 +50,8 @@ public class GitInteractionsHandler {
             unpackZipIntoTempFolder(fileInputStream, destinationFolder.getParentFile());
             return true;
         } catch (IOException e) {
-            LOGGER.error("Something went wrong with retrieving and unpacking the zip for " + branchName + " from Git.", e);
+            LOGGER.error("Something went wrong with retrieving and unpacking the zip for " + branchName + " from Git.",
+                    e);
             return false;
         }
     }
@@ -101,8 +99,7 @@ public class GitInteractionsHandler {
         zis.close();
     }
 
-    private static void writeFile(byte[] buffer, ZipInputStream zis, File newFile)
-            throws FileNotFoundException, IOException {
+    private static void writeFile(byte[] buffer, ZipInputStream zis, File newFile) throws IOException {
         FileOutputStream fos = new FileOutputStream(newFile);
 
         int len;
@@ -131,5 +128,4 @@ public class GitInteractionsHandler {
         }
         return true;
     }
-
 }

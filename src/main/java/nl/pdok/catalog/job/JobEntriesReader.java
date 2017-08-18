@@ -17,7 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class JobEntriesReader {
-    
+
     private static final Logger LOGGER = LoggerFactory.getLogger(JobEntriesReader.class);
 
     public static final String ALGEMENE_JOBS = "algemene_jobs";
@@ -25,10 +25,10 @@ public class JobEntriesReader {
 
     public static List<JobEntry> retrieveJobEntriesByDatasetFromCatalogus(File catalogusFolder, String datasetName) {
         String filePath = catalogusFolder.getPath() + buildFilePathForDataset(datasetName);
-        
+
         File file = new File(filePath);
         StringBuilder builder = new StringBuilder();
-        
+
         try {
             for (String str : Files.readAllLines(file.toPath(), StandardCharsets.UTF_8)) {
                 builder.append(str);
@@ -37,7 +37,7 @@ public class JobEntriesReader {
             LOGGER.error("There was a problem reading the JobEntries file for dataset: \"" + datasetName + "\".", e);
             return new ArrayList<>();
         }
-        
+
         return parseStringToJobEntries(builder.toString());
     }
 
@@ -57,7 +57,7 @@ public class JobEntriesReader {
         }
         return pathStr.toString();
     }
-    
+
     private static List<JobEntry> parseStringToJobEntries(String jsonString) {
         List<JobEntry> listJobEntries = new ArrayList<>();
         JSONParser parser = new JSONParser();
@@ -67,8 +67,8 @@ public class JobEntriesReader {
             json = (JSONObject) parser.parse(jsonString);
 
             JSONArray jsonArr = (JSONArray) json.get("job_entries");
-            for (int ii = 0; ii < jsonArr.size(); ii++) {
-                JobEntry entry = parseJsonObjectIntoJobEntry((JSONObject) jsonArr.get(ii));
+            for (Object jsonObject : jsonArr) {
+                JobEntry entry = parseJsonObjectIntoJobEntry((JSONObject) jsonObject);
                 listJobEntries.add(entry);
             }
         } catch (ParseException e) {
@@ -87,5 +87,4 @@ public class JobEntriesReader {
         entry.setActive((Boolean) jsonObj.get("Active"));
         return entry;
     }
-    
 }

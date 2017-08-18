@@ -176,10 +176,10 @@ public class FileSystemCatalogTest {
         assertEquals(schemas.size(), 1);
         assertEquals(schemas.iterator().next(), "bagactueel_v1234");
     }
-    
+
     @Test
     public void testRetrieveJobEntriesByDataset() throws IOException {
         List<JobEntry> entries = catalogusFromTestResources.retrieveJobEntriesByDataset("bagactueel");
-        Assert.assertEquals(1,entries.size());
+        Assert.assertEquals(1, entries.size());
     }
 }

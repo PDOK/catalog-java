@@ -653,7 +653,7 @@ public class FileSystemCatalog implements Catalog {
     public List<JobEntry> retrieveJobEntriesByDataset(String dataset) {
         return JobEntriesReader.retrieveJobEntriesByDatasetFromCatalogus(catalogFolder.toFile(), dataset);
     }
-    
+
     @Override
     public boolean checkout(String branchName, String authorization) {
         return GitInteractionsHandler.checkout(branchName, catalogFolder.toFile(), authorization);
