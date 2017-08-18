@@ -23,42 +23,41 @@ public class JobEntry implements Serializable {
 
     @JsonProperty(value = "active")
     private Boolean active;
-    
+
     @JsonProperty(value = "data_in")
     private JSONObject dataIn;
 
-    public JobEntry() {
-    }
+    public JobEntry() {}
 
     public String getJobName() {
         return jobName;
     }
 
     public Boolean getActive() {
-		return active;
-	}
+        return active;
+    }
 
-	public void setActive(Boolean active) {
-		this.active = active;
-	}
+    public void setActive(Boolean active) {
+        this.active = active;
+    }
 
-	public void setJobName(String jobName) {
-		this.jobName = jobName;
-	}
+    public void setJobName(String jobName) {
+        this.jobName = jobName;
+    }
 
-	public void setExecutionOrder(Long executionOrder) {
-		this.executionOrder = executionOrder;
-	}
+    public void setExecutionOrder(Long executionOrder) {
+        this.executionOrder = executionOrder;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public void setDataInType(String dataInType) {
-		this.dataInType = dataInType;
-	}
+    public void setDataInType(String dataInType) {
+        this.dataInType = dataInType;
+    }
 
-	public Long getExecutionOrder() {
+    public Long getExecutionOrder() {
         return executionOrder;
     }
 
@@ -74,22 +73,22 @@ public class JobEntry implements Serializable {
         return active;
     }
 
-	public JSONObject getDataIn() {
-		return dataIn;
-	}
+    public JSONObject getDataIn() {
+        return dataIn;
+    }
 
-	public void setDataIn(JSONObject dataIn) {
-		this.dataIn = dataIn;
-	}
-	
-	public String toString() {
-		StringBuilder builder = new StringBuilder();
-		builder.append("{\"job_name\":\"" + this.jobName + "\",");
-		builder.append("\"execution_order\":" + this.executionOrder + ",");
-		builder.append("\"name\":\"" + this.name + "\",");
-		builder.append("\"data_in_type\":\"" + this.dataInType + "\",");
-		builder.append("\"active\":" + this.active + ",");
-		builder.append("\"data_in\":" + this.dataIn + "}");
-		return builder.toString();
-	}
+    public void setDataIn(JSONObject dataIn) {
+        this.dataIn = dataIn;
+    }
+
+    public String toString() {
+        StringBuilder builder = new StringBuilder();
+        builder.append("{\"job_name\":\"" + this.jobName + "\",");
+        builder.append("\"execution_order\":" + this.executionOrder + ",");
+        builder.append("\"name\":\"" + this.name + "\",");
+        builder.append("\"data_in_type\":\"" + this.dataInType + "\",");
+        builder.append("\"active\":" + this.active + ",");
+        builder.append("\"data_in\":" + this.dataIn + "}");
+        return builder.toString();
+    }
 }

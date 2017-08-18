@@ -179,7 +179,7 @@ public class FileSystemCatalogTest {
     
     @Test
     public void testRetrieveJobEntriesByDataset() throws IOException {
-    	List<JobEntry> entries = catalogusFromTestResources.retrieveJobEntriesByDataset("bagactueel");
-		Assert.assertEquals(1,entries.size());
+        List<JobEntry> entries = catalogusFromTestResources.retrieveJobEntriesByDataset("bagactueel");
+        Assert.assertEquals(1,entries.size());
     }
 }

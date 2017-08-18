@@ -25,114 +25,114 @@ import org.slf4j.LoggerFactory;
  */
 public class GitInteractionsHandler {
 
-	private static final String AUTHORIZATION = "Authorization";
-	private static final String BASE_GIT_PATH = "http://github.so.kadaster.nl/PDOK/catalogus/archive/";
+    private static final String AUTHORIZATION = "Authorization";
+    private static final String BASE_GIT_PATH = "http://github.so.kadaster.nl/PDOK/catalogus/archive/";
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(GitInteractionsHandler.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(GitInteractionsHandler.class);
 
-	public static boolean checkout(String branchName, File destinationFolder, String authorization) {
-		if (downloadAndUnpackZipFileFromGit(branchName, destinationFolder, authorization)) {
-			try {
-				for (int i = 1; i <= 5; i++) {
-					if (renameFolders(destinationFolder, branchName)) {
-						return true;
-					}
-					Thread.sleep(200);
-				}
-			} catch (IOException e) {
-				LOGGER.error("Something went wrong with renaming the Catalogus Folders.", e);
-			} catch (InterruptedException e) {
-				LOGGER.error("InterruptedException on the sleep timer.", e);
-			}
-		}
-		return false;
-	}
+    public static boolean checkout(String branchName, File destinationFolder, String authorization) {
+        if (downloadAndUnpackZipFileFromGit(branchName, destinationFolder, authorization)) {
+            try {
+                for (int i = 1; i <= 5; i++) {
+                    if (renameFolders(destinationFolder, branchName)) {
+                        return true;
+                    }
+                    Thread.sleep(200);
+                }
+            } catch (IOException e) {
+                LOGGER.error("Something went wrong with renaming the Catalogus Folders.", e);
+            } catch (InterruptedException e) {
+                LOGGER.error("InterruptedException on the sleep timer.", e);
+            }
+        }
+        return false;
+    }
 
-	private static boolean downloadAndUnpackZipFileFromGit(String branchName, File destinationFolder, String authorization) {
-		InputStream fileInputStream;
-		try {
-			fileInputStream = retrieveZipFromGit(branchName, authorization);
-			clearCatalogusOldDirectory(destinationFolder.getParentFile());
-			unpackZipIntoTempFolder(fileInputStream, destinationFolder.getParentFile());
-			return true;
-		} catch (IOException e) {
-			LOGGER.error("Something went wrong with retrieving and unpacking the zip for " + branchName + " from Git.", e);
-			return false;
-		}
-	}
+    private static boolean downloadAndUnpackZipFileFromGit(String branchName, File destinationFolder, String authorization) {
+        InputStream fileInputStream;
+        try {
+            fileInputStream = retrieveZipFromGit(branchName, authorization);
+            clearCatalogusOldDirectory(destinationFolder.getParentFile());
+            unpackZipIntoTempFolder(fileInputStream, destinationFolder.getParentFile());
+            return true;
+        } catch (IOException e) {
+            LOGGER.error("Something went wrong with retrieving and unpacking the zip for " + branchName + " from Git.", e);
+            return false;
+        }
+    }
 
-	private static InputStream retrieveZipFromGit(String branchName, String authorization) throws IOException {
-		String url = BASE_GIT_PATH + branchName.trim() + ".zip";
-		URL gitURL = new URL(url);
-		HttpURLConnection httpConnection = (HttpURLConnection) gitURL.openConnection();
-		httpConnection.setRequestProperty(AUTHORIZATION, authorization);
+    private static InputStream retrieveZipFromGit(String branchName, String authorization) throws IOException {
+        String url = BASE_GIT_PATH + branchName.trim() + ".zip";
+        URL gitURL = new URL(url);
+        HttpURLConnection httpConnection = (HttpURLConnection) gitURL.openConnection();
+        httpConnection.setRequestProperty(AUTHORIZATION, authorization);
 
-		return httpConnection.getInputStream();
-	}
+        return httpConnection.getInputStream();
+    }
 
-	private static void clearCatalogusOldDirectory(File parentDirectory) throws IOException {
-		File file = new File(parentDirectory + File.separator + "catalogus_old");
-		if (file.exists()) {
-			FileUtils.cleanDirectory(file);
-			FileUtils.deleteDirectory(file);
-		}
-	}
+    private static void clearCatalogusOldDirectory(File parentDirectory) throws IOException {
+        File file = new File(parentDirectory + File.separator + "catalogus_old");
+        if (file.exists()) {
+            FileUtils.cleanDirectory(file);
+            FileUtils.deleteDirectory(file);
+        }
+    }
 
-	private static void unpackZipIntoTempFolder(InputStream inputStream, File parentDirectory) throws IOException {
-		byte[] buffer = new byte[1024];
+    private static void unpackZipIntoTempFolder(InputStream inputStream, File parentDirectory) throws IOException {
+        byte[] buffer = new byte[1024];
 
-		if (!parentDirectory.exists()) {
-			parentDirectory.mkdir();
-		}
+        if (!parentDirectory.exists()) {
+            parentDirectory.mkdir();
+        }
 
-		ZipInputStream zis = new ZipInputStream(inputStream);
-		ZipEntry ze = zis.getNextEntry();
-		while (ze != null) {
+        ZipInputStream zis = new ZipInputStream(inputStream);
+        ZipEntry ze = zis.getNextEntry();
+        while (ze != null) {
 
-			if (!ze.isDirectory()) {
-				String fileName = ze.getName();
-				File newFile = new File(parentDirectory + File.separator + fileName);
+            if (!ze.isDirectory()) {
+                String fileName = ze.getName();
+                File newFile = new File(parentDirectory + File.separator + fileName);
 
-				new File(newFile.getParent()).mkdirs();
+                new File(newFile.getParent()).mkdirs();
 
-				writeFile(buffer, zis, newFile);
-			}
-			ze = zis.getNextEntry();
-		}
+                writeFile(buffer, zis, newFile);
+            }
+            ze = zis.getNextEntry();
+        }
 
-		zis.closeEntry();
-		zis.close();
-	}
+        zis.closeEntry();
+        zis.close();
+    }
 
-	private static void writeFile(byte[] buffer, ZipInputStream zis, File newFile)
-			throws FileNotFoundException, IOException {
-		FileOutputStream fos = new FileOutputStream(newFile);
+    private static void writeFile(byte[] buffer, ZipInputStream zis, File newFile)
+            throws FileNotFoundException, IOException {
+        FileOutputStream fos = new FileOutputStream(newFile);
 
-		int len;
-		while ((len = zis.read(buffer)) > 0) {
-			fos.write(buffer, 0, len);
-		}
+        int len;
+        while ((len = zis.read(buffer)) > 0) {
+            fos.write(buffer, 0, len);
+        }
 
-		fos.close();
-	}
+        fos.close();
+    }
 
-	private static boolean renameFolders(File destinationFolder, String branchName) throws IOException {
-		File tempFolder = new File(destinationFolder.getParentFile() + File.separator + "catalogus-" + branchName);
-		File oldFolder = new File(destinationFolder.getParentFile() + File.separator + "catalogus_old");
-		try {
-			Files.move(destinationFolder.toPath(), oldFolder.toPath(), StandardCopyOption.ATOMIC_MOVE);
-		} catch (IOException e) {
-			LOGGER.info("Unable to move catalogus to _old.", e);
-			return false;
-		}
-		try {
-			Files.move(tempFolder.toPath(), destinationFolder.toPath(), StandardCopyOption.ATOMIC_MOVE);
-		} catch (IOException e) {
-			LOGGER.error("Failed to place new checkout in catalogus! Attempting to return current version.", e);
-			Files.move(oldFolder.toPath(), destinationFolder.toPath(), StandardCopyOption.ATOMIC_MOVE);
-			return false;
-		}
-		return true;
-	}
+    private static boolean renameFolders(File destinationFolder, String branchName) throws IOException {
+        File tempFolder = new File(destinationFolder.getParentFile() + File.separator + "catalogus-" + branchName);
+        File oldFolder = new File(destinationFolder.getParentFile() + File.separator + "catalogus_old");
+        try {
+            Files.move(destinationFolder.toPath(), oldFolder.toPath(), StandardCopyOption.ATOMIC_MOVE);
+        } catch (IOException e) {
+            LOGGER.info("Unable to move catalogus to _old.", e);
+            return false;
+        }
+        try {
+            Files.move(tempFolder.toPath(), destinationFolder.toPath(), StandardCopyOption.ATOMIC_MOVE);
+        } catch (IOException e) {
+            LOGGER.error("Failed to place new checkout in catalogus! Attempting to return current version.", e);
+            Files.move(oldFolder.toPath(), destinationFolder.toPath(), StandardCopyOption.ATOMIC_MOVE);
+            return false;
+        }
+        return true;
+    }
 
 }
