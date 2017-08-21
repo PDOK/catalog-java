@@ -93,25 +93,26 @@
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.powermock/powermock-api-mockito -->
 		<dependency>
-		    <groupId>org.powermock</groupId>
-		    <artifactId>powermock-api-mockito</artifactId>
-		    <version>1.7.0</version>
-		    <scope>test</scope>
+			<groupId>org.powermock</groupId>
+			<artifactId>powermock-api-mockito</artifactId>
+			<version>1.7.0</version>
+			<scope>test</scope>
 		</dependency>
-        <!-- https://mvnrepository.com/artifact/org.powermock/powermock-module-junit4 -->
+		<!-- https://mvnrepository.com/artifact/org.powermock/powermock-module-junit4 -->
 		<dependency>
-		    <groupId>org.powermock</groupId>
-		    <artifactId>powermock-module-junit4</artifactId>
-		    <version>1.7.0</version>
-		    <scope>test</scope>
+			<groupId>org.powermock</groupId>
+			<artifactId>powermock-module-junit4</artifactId>
+			<version>1.7.0</version>
+			<scope>test</scope>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.eclipse.jgit/org.eclipse.jgit -->
 		<dependency>
-		    <groupId>org.eclipse.jgit</groupId>
-		    <artifactId>org.eclipse.jgit</artifactId>
-		    <version>4.8.0.201706111038-r</version>
+			<groupId>org.eclipse.jgit</groupId>
+			<artifactId>org.eclipse.jgit</artifactId>
+			<version>4.8.0.201706111038-r</version>
 		</dependency>
 	</dependencies>
+
 	<scm>
 		<url>http://github.com/PDOK/catalog-java.git</url>
 		<connection>scm:http://github.com/PDOK/catalog-java.git</connection>

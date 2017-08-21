@@ -33,5 +33,4 @@ public class JobEntriesReaderTest {
                 new File(JobEntriesReaderTest.class.getResource("/testcatalogus/").getFile()), "bagactueel");
         Assert.assertEquals(1, entries.size());
     }
-
 }
