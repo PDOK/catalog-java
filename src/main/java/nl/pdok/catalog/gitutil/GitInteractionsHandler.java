@@ -1,7 +1,6 @@
 package nl.pdok.catalog.gitutil;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -22,6 +21,10 @@ public class GitInteractionsHandler {
     private static final String BASE_GIT_PATH = "http://github.so.kadaster.nl/PDOK/catalogus/archive/";
 
     private static final Logger LOGGER = LoggerFactory.getLogger(GitInteractionsHandler.class);
+    
+    public static boolean isCatalogusPresent(File destinationFolder) {
+        return destinationFolder.exists();
+    }
 
     public static boolean checkout(String branchName, File destinationFolder, String authorization) {
         if (downloadAndUnpackZipFileFromGit(branchName, destinationFolder, authorization)) {
@@ -114,7 +117,9 @@ public class GitInteractionsHandler {
         File tempFolder = new File(destinationFolder.getParentFile() + File.separator + "catalogus-" + branchName);
         File oldFolder = new File(destinationFolder.getParentFile() + File.separator + "catalogus_old");
         try {
-            Files.move(destinationFolder.toPath(), oldFolder.toPath(), StandardCopyOption.ATOMIC_MOVE);
+            if (destinationFolder.exists()) {
+                Files.move(destinationFolder.toPath(), oldFolder.toPath(), StandardCopyOption.ATOMIC_MOVE);
+            }
         } catch (IOException e) {
             LOGGER.info("Unable to move catalogus to _old.", e);
             return false;
