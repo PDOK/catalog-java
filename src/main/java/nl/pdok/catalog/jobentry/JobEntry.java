@@ -88,7 +88,7 @@ public class JobEntry implements Serializable {
         builder.append("\"name\":\"" + this.name + "\",");
         builder.append("\"data_in_type\":\"" + this.dataInType + "\",");
         builder.append("\"active\":" + this.active + ",");
-        builder.append("\"data_in\":" + this.dataIn + "}");
+        builder.append("\"data_in\":" + this.dataIn.toString() + "}");
         return builder.toString();
     }
 }
