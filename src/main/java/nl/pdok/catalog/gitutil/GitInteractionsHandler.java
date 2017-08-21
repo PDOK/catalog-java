@@ -1,4 +1,4 @@
-package nl.pdok.catalog.job;
+package nl.pdok.catalog.gitutil;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -60,8 +60,8 @@ public class GitInteractionsHandler {
 
     private static InputStream retrieveZipFromGit(String branchName, String authorization) throws IOException {
         String url = BASE_GIT_PATH + branchName.trim() + ".zip";
-        URL gitURL = new URL(url);
-        HttpURLConnection httpConnection = (HttpURLConnection) gitURL.openConnection();
+        URL gitUrl = new URL(url);
+        HttpURLConnection httpConnection = (HttpURLConnection) gitUrl.openConnection();
         httpConnection.setRequestProperty(AUTHORIZATION, authorization);
 
         return httpConnection.getInputStream();

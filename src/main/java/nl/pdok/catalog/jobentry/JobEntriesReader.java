@@ -1,4 +1,4 @@
-package nl.pdok.catalog.job;
+package nl.pdok.catalog.jobentry;
 
 import java.io.File;
 import java.io.IOException;
@@ -7,12 +7,7 @@ import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 
-import nl.pdok.catalog.jsonentities.JobEntry;
-
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,6 +17,19 @@ public class JobEntriesReader {
 
     public static final String ALGEMENE_JOBS = "algemene_jobs";
     private static final String FILE_NAME = "job_entries.json";
+    
+//    static String path1 = "D:\\development\\eclipse_workspace\\catalogus";
+//    static String path2 = "D:\\development\\git\\catalogus\\catalogus";
+//    
+//    public static void main(String[] args) throws IOException, ClassNotFoundException {
+//        List<JobEntry> entries = retrieveJobEntriesByDatasetFromCatalogus(new File(path1) , "bag");
+//        for (JobEntry entry : entries) {
+//            System.out.println(entry.getJobName());
+//            if (entry.getDataIn() != null) {
+//                System.out.println(entry.getDataIn().toString());
+//            }
+//        }
+//    }
 
     public static List<JobEntry> retrieveJobEntriesByDatasetFromCatalogus(File catalogusFolder, String datasetName) {
         String filePath = catalogusFolder.getPath() + buildFilePathForDataset(datasetName);
@@ -35,6 +43,7 @@ public class JobEntriesReader {
             }
         } catch (IOException e) {
             LOGGER.error("There was a problem reading the JobEntries file for dataset: \"" + datasetName + "\".", e);
+//            e.printStackTrace();
             return new ArrayList<>();
         }
         
@@ -60,32 +69,17 @@ public class JobEntriesReader {
     
     private static List<JobEntry> parseStringToJobEntries(String jsonString) {
         List<JobEntry> listJobEntries = new ArrayList<>();
-        JSONParser parser = new JSONParser();
-
-        JSONObject json;
+        ObjectMapper mapper = new ObjectMapper();
         try {
-            json = (JSONObject) parser.parse(jsonString);
-
-            JSONArray jsonArr = (JSONArray) json.get("job_entries");
-            for (int ii = 0; ii < jsonArr.size(); ii++) {
-                JobEntry entry = parseJsonObjectIntoJobEntry((JSONObject) jsonArr.get(ii));
+            JobEntry[] entries = mapper.readValue(jsonString, JobEntry[].class);
+            
+            for (JobEntry entry : entries) {
                 listJobEntries.add(entry);
             }
-        } catch (ParseException e) {
+        } catch (IOException e) {
             LOGGER.error("There was an error when attempting to parse the json file", e);
+//            e.printStackTrace();
         }
         return listJobEntries;
     }
-
-    private static JobEntry parseJsonObjectIntoJobEntry(JSONObject jsonObj) {
-        JobEntry entry = new JobEntry();
-        entry.setName((String) jsonObj.get("name"));
-        entry.setExecutionOrder((Long) jsonObj.get("execution_order"));
-        entry.setJobName((String) jsonObj.get("job_name"));
-        entry.setDataIn((JSONObject)jsonObj.get("data_in"));
-        entry.setDataInType((String) jsonObj.get("data_in_type"));
-        entry.setActive((Boolean) jsonObj.get("Active"));
-        return entry;
-    }
-    
 }

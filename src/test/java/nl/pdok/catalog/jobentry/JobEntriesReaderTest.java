@@ -1,13 +1,14 @@
-package nl.pdok.catalog.job;
+package nl.pdok.catalog.jobentry;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-import nl.pdok.catalog.jsonentities.JobEntry;
-
 import org.junit.Assert;
 import org.junit.Test;
+
+import nl.pdok.catalog.jobentry.JobEntriesReader;
+import nl.pdok.catalog.jobentry.JobEntry;
 
 public class JobEntriesReaderTest {
 

@@ -1,9 +1,9 @@
-package nl.pdok.catalog.jsonentities;
+package nl.pdok.catalog.jobentry;
 
 import java.io.Serializable;
 
+import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.annotate.JsonProperty;
-import org.json.simple.JSONObject;
 
 public class JobEntry implements Serializable {
 
@@ -25,7 +25,7 @@ public class JobEntry implements Serializable {
     private Boolean active;
 
     @JsonProperty(value = "data_in")
-    private JSONObject dataIn;
+    private JsonNode dataIn;
 
     public JobEntry() {}
 
@@ -73,11 +73,11 @@ public class JobEntry implements Serializable {
         return active;
     }
 
-    public JSONObject getDataIn() {
+    public JsonNode getDataIn() {
         return dataIn;
     }
 
-    public void setDataIn(JSONObject dataIn) {
+    public void setDataIn(JsonNode dataIn) {
         this.dataIn = dataIn;
     }
 
