@@ -1,7 +1,6 @@
 package nl.pdok.catalog.jobentry;
 
 import java.io.Serializable;
-
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.annotate.JsonProperty;
 
@@ -27,7 +26,8 @@ public class JobEntry implements Serializable {
     @JsonProperty(value = "data_in")
     private JsonNode dataIn;
 
-    public JobEntry() {}
+    public JobEntry() {
+    }
 
     public String getJobName() {
         return jobName;
@@ -82,13 +82,11 @@ public class JobEntry implements Serializable {
     }
 
     public String toString() {
-        StringBuilder builder = new StringBuilder();
-        builder.append("{\"job_name\":\"" + this.jobName + "\",");
-        builder.append("\"execution_order\":" + this.executionOrder + ",");
-        builder.append("\"name\":\"" + this.name + "\",");
-        builder.append("\"data_in_type\":\"" + this.dataInType + "\",");
-        builder.append("\"active\":" + this.active + ",");
-        builder.append("\"data_in\":" + this.dataIn.toString() + "}");
-        return builder.toString();
+        return ("{\"job_name\":\"" + this.jobName + "\",")
+                + "\"execution_order\":" + this.executionOrder + ","
+                + "\"name\":\"" + this.name + "\","
+                + "\"data_in_type\":\"" + this.dataInType + "\","
+                + "\"active\":" + this.active + ","
+                + "\"data_in\":" + this.dataIn.toString() + "}";
     }
 }

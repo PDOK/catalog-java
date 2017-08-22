@@ -115,7 +115,7 @@ public interface Catalog {
      *
      * @param branchName Name of the branch to be downloaded.
      * @param authorization Basic authorization for accessing the Git repository.
-     * @return true if the branch has been succesfully downloaded and unpacked.
+     * @return true if the branch has been successfully downloaded and unpacked.
      */
     boolean checkout(String branchName, String authorization);
 }
