@@ -12,15 +12,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class JobEntriesReader {
-    
+
     private static final Logger LOGGER = LoggerFactory.getLogger(JobEntriesReader.class);
 
     public static final String ALGEMENE_JOBS = "algemene_jobs";
     private static final String FILE_NAME = "job_entries.json";
-    
+
 //    static String path1 = "D:\\development\\eclipse_workspace\\catalogus";
 //    static String path2 = "D:\\development\\git\\catalogus\\catalogus";
-//    
+//
 //    public static void main(String[] args) throws IOException, ClassNotFoundException {
 //        List<JobEntry> entries = retrieveJobEntriesByDatasetFromCatalogus(new File(path1) , "bag");
 //        for (JobEntry entry : entries) {
@@ -33,10 +33,10 @@ public class JobEntriesReader {
 
     public static List<JobEntry> retrieveJobEntriesByDatasetFromCatalogus(File catalogusFolder, String datasetName) {
         String filePath = catalogusFolder.getPath() + buildFilePathForDataset(datasetName);
-        
+
         File file = new File(filePath);
         StringBuilder builder = new StringBuilder();
-        
+
         try {
             for (String str : Files.readAllLines(file.toPath(), StandardCharsets.UTF_8)) {
                 builder.append(str);
@@ -46,7 +46,7 @@ public class JobEntriesReader {
 //            e.printStackTrace();
             return new ArrayList<>();
         }
-        
+
         return parseStringToJobEntries(builder.toString());
     }
 
@@ -66,13 +66,13 @@ public class JobEntriesReader {
         }
         return pathStr.toString();
     }
-    
+
     private static List<JobEntry> parseStringToJobEntries(String jsonString) {
         List<JobEntry> listJobEntries = new ArrayList<>();
         ObjectMapper mapper = new ObjectMapper();
         try {
             JobEntry[] entries = mapper.readValue(jsonString, JobEntry[].class);
-            
+
             for (JobEntry entry : entries) {
                 listJobEntries.add(entry);
             }

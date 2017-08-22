@@ -21,7 +21,7 @@ public class GitInteractionsHandler {
     private static final String BASE_GIT_PATH = "http://github.so.kadaster.nl/PDOK/catalogus/archive/";
 
     private static final Logger LOGGER = LoggerFactory.getLogger(GitInteractionsHandler.class);
-    
+
     public static boolean isCatalogusPresent(File destinationFolder) {
         return destinationFolder.exists();
     }

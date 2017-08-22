@@ -104,7 +104,7 @@ public interface Catalog {
 
     /**
      * Extract JobEntries from the Catalogus.
-     * 
+     *
      * @param dataset Name of the dataset to be extracted.
      * @return List of JobEntries.
      */
@@ -112,7 +112,7 @@ public interface Catalog {
 
     /**
      * Download and unpack the Catalogus from git.
-     * 
+     *
      * @param branchName Name of the branch to be downloaded.
      * @param authorization Basic authorization for accessing the Git repository.
      * @return true if the branch has been succesfully downloaded and unpacked.
