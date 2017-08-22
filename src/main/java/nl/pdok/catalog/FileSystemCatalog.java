@@ -649,11 +649,17 @@ public class FileSystemCatalog implements Catalog {
         return WORKBENCH_EXTENSION;
     }
 
+    /* (non-Javadoc)
+     * @see nl.pdok.catalog.Catalog#retrieveJobEntriesByDataset(java.lang.String)
+     */
     @Override
     public List<JobEntry> retrieveJobEntriesByDataset(String dataset) {
         return JobEntriesReader.retrieveJobEntriesByDatasetFromCatalogus(catalogFolder.toFile(), dataset);
     }
 
+    /* (non-Javadoc)
+     * @see nl.pdok.catalog.Catalog#checkout(java.lang.String, java.lang.String)
+     */
     @Override
     public boolean checkout(String branchName, String authorization) {
         return GitInteractionsHandler.checkout(branchName, catalogFolder.toFile(), authorization);

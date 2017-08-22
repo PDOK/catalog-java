@@ -102,7 +102,20 @@ public interface Catalog {
 
     List<Workbench> getTransformers();
 
+    /**
+     * Extract JobEntries from the Catalogus.
+     * 
+     * @param dataset Name of the dataset to be extracted.
+     * @return List of JobEntries.
+     */
     List<JobEntry> retrieveJobEntriesByDataset(String dataset);
 
+    /**
+     * Download and unpack the Catalogus from git.
+     * 
+     * @param branchName Name of the branch to be downloaded.
+     * @param authorization Basic authorization for accessing the Git repository.
+     * @return true if the branch has been succesfully downloaded and unpacked.
+     */
     boolean checkout(String branchName, String authorization);
 }
