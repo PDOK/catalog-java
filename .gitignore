@@ -5,3 +5,5 @@
 pdok-catalog-java.ipr
 pdok-catalog-java.iws
 release.properties
+/.project
+/.classpath

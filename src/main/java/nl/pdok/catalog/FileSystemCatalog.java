@@ -5,7 +5,6 @@ import com.google.common.base.Joiner;
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
 import com.google.common.collect.FluentIterable;
-import com.google.common.collect.ImmutableList;
 import java.beans.PropertyDescriptor;
 import java.io.File;
 import java.io.FileFilter;
@@ -29,9 +28,12 @@ import nl.pdok.catalog.extract.ExtractConfiguration;
 import nl.pdok.catalog.extract.ExtractConfigurationReader;
 import nl.pdok.catalog.featured.FeatureTemplate;
 import nl.pdok.catalog.featured.FeaturedCollectionOptions;
+import nl.pdok.catalog.gitutil.GitInteractionsHandler;
 import nl.pdok.catalog.job.JobConfiguration;
 import nl.pdok.catalog.job.JobConfigurationDataset;
 import nl.pdok.catalog.job.JobConfigurationReader;
+import nl.pdok.catalog.jobentry.JobEntriesReader;
+import nl.pdok.catalog.jobentry.JobEntry;
 import nl.pdok.catalog.testdata.TestData;
 import nl.pdok.catalog.tiling.TilingConfiguration;
 import nl.pdok.catalog.tiling.TilingConfigurationReader;
@@ -645,5 +647,21 @@ public class FileSystemCatalog implements Catalog {
 
     public static String getWorkbenchExtension() {
         return WORKBENCH_EXTENSION;
+    }
+
+    /* (non-Javadoc)
+     * @see nl.pdok.catalog.Catalog#retrieveJobEntriesByDataset(java.lang.String)
+     */
+    @Override
+    public List<JobEntry> retrieveJobEntriesByDataset(String dataset) {
+        return JobEntriesReader.retrieveJobEntriesByDatasetFromCatalogus(catalogFolder.toFile(), dataset);
+    }
+
+    /* (non-Javadoc)
+     * @see nl.pdok.catalog.Catalog#checkout(java.lang.String, java.lang.String)
+     */
+    @Override
+    public boolean checkout(String branchName, String authorization) {
+        return GitInteractionsHandler.checkout(branchName, catalogFolder.toFile(), authorization);
     }
 }

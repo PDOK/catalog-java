@@ -13,6 +13,7 @@ import nl.pdok.catalog.extract.ExtractConfiguration;
 import nl.pdok.catalog.featured.FeatureTemplate;
 import nl.pdok.catalog.featured.FeaturedCollectionOptions;
 import nl.pdok.catalog.job.JobConfigurationDataset;
+import nl.pdok.catalog.jobentry.JobEntry;
 import nl.pdok.catalog.testdata.TestData;
 import nl.pdok.catalog.tiling.TilingConfiguration;
 import nl.pdok.catalog.workbench.Workbench;
@@ -100,4 +101,21 @@ public interface Catalog {
     Workbench getWorkbench(String datasetName, WorkbenchType type, String workbenchName);
 
     List<Workbench> getTransformers();
+
+    /**
+     * Extract JobEntries from the Catalogus.
+     *
+     * @param dataset Name of the dataset to be extracted.
+     * @return List of JobEntries.
+     */
+    List<JobEntry> retrieveJobEntriesByDataset(String dataset);
+
+    /**
+     * Download and unpack the Catalogus from git.
+     *
+     * @param branchName Name of the branch to be downloaded.
+     * @param authorization Basic authorization for accessing the Git repository.
+     * @return true if the branch has been successfully downloaded and unpacked.
+     */
+    boolean checkout(String branchName, String authorization);
 }
