@@ -21,7 +21,6 @@ public class GitInteractionsHandler {
 
     private static final String GIT_BRANCH_TXT = "gitBranch.txt";
     private static final String AUTHORIZATION = "Authorization";
-    private static final String BASE_GIT_PATH = "http://github.so.kadaster.nl/PDOK/catalogus/archive/";
 
     private static final Logger LOGGER = LoggerFactory.getLogger(GitInteractionsHandler.class);
 
@@ -88,7 +87,7 @@ public class GitInteractionsHandler {
     }
 
     private static InputStream retrieveZipFromGit(String branchName, String authorization) throws IOException {
-        String url = BASE_GIT_PATH + branchName.trim() + ".zip";
+        String url = branchName.trim() + ".zip";
         URL gitUrl = new URL(url);
         HttpURLConnection httpConnection = (HttpURLConnection) gitUrl.openConnection();
         httpConnection.setRequestProperty(AUTHORIZATION, authorization);
