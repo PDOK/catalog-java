@@ -2,12 +2,14 @@ package nl.pdok.catalog.gitutil;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
+import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import org.apache.commons.io.FileUtils;
@@ -16,6 +18,7 @@ import org.slf4j.LoggerFactory;
 
 public class GitInteractionsHandler {
 
+    private static final String GIT_BRANCH_TXT = "gitBranch.txt";
     private static final String AUTHORIZATION = "Authorization";
     private static final String BASE_GIT_PATH = "http://github.so.kadaster.nl/PDOK/catalogus/archive/";
 
@@ -24,12 +27,28 @@ public class GitInteractionsHandler {
     public static boolean isCatalogusPresent(File destinationFolder) {
         return destinationFolder.exists();
     }
+    
+    public static String whichBranchIsPresent(File destinationFolder) {
+        File file = new File(destinationFolder.getPath() + File.separator + GIT_BRANCH_TXT);
+        List<String> lines;
+        try {
+            lines = Files.readAllLines(file.toPath());
+        } catch (IOException e) {
+            return "Unable to read File.";
+        }
+        String output = "";
+        for (String string : lines) {
+            output += string;
+        }
+        return output;
+    }
 
     public static boolean checkout(String branchName, File destinationFolder, String authorization) {
         if (downloadAndUnpackZipFileFromGit(branchName, destinationFolder, authorization)) {
             try {
                 for (int i = 1; i <= 5; i++) {
                     if (renameFolders(destinationFolder, branchName)) {
+                        writeBranchNameToFile(branchName, destinationFolder);
                         return true;
                     }
                     Thread.sleep(200);
@@ -41,6 +60,15 @@ public class GitInteractionsHandler {
             }
         }
         return false;
+    }
+
+    private static void writeBranchNameToFile(String branchName, File destinationFolder) throws IOException {
+        File file = new File(destinationFolder + File.separator + GIT_BRANCH_TXT);
+        file.createNewFile();
+        FileWriter writer = new FileWriter(file);
+        writer.write(branchName);
+        writer.flush();
+        writer.close();
     }
 
     private static boolean downloadAndUnpackZipFileFromGit(String branchName, File destinationFolder,

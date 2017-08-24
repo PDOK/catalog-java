@@ -664,4 +664,20 @@ public class FileSystemCatalog implements Catalog {
     public boolean checkout(String branchName, String authorization) {
         return GitInteractionsHandler.checkout(branchName, catalogFolder.toFile(), authorization);
     }
+    
+    /* (non-Javadoc)
+     * @see nl.pdok.catalog.Catalog#isCatalogusBranchPresent()
+     */
+    @Override
+    public boolean isCatalogusBranchPresent() {
+        return GitInteractionsHandler.isCatalogusPresent(catalogFolder.toFile());
+    }
+
+    /* (non-Javadoc)
+     * @see nl.pdok.catalog.Catalog#checkCatalogusBranch()
+     */
+    @Override
+    public String checkCatalogusBranch() {
+        return GitInteractionsHandler.whichBranchIsPresent(catalogFolder.toFile());
+    }
 }

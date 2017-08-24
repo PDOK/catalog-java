@@ -118,4 +118,14 @@ public interface Catalog {
      * @return true if the branch has been successfully downloaded and unpacked.
      */
     boolean checkout(String branchName, String authorization);
+    
+    /**
+     * @return true if a catalogus folder is present
+     */
+    boolean isCatalogusBranchPresent();
+    
+    /**
+     * @return the catalogus Branch on the local hard drive
+     */
+    String checkCatalogusBranch();
 }
