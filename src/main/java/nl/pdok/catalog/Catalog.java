@@ -117,7 +117,7 @@ public interface Catalog {
      * @param authorization Basic authorization for accessing the Git repository.
      * @return true if the branch has been successfully downloaded and unpacked.
      */
-    boolean checkout(String branchName, String authorization);
+    boolean checkout(String gitAddress, String branchName, String authorization);
     
     /**
      * @return true if a catalogus folder is present

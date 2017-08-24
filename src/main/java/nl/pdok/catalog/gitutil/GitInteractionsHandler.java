@@ -43,8 +43,8 @@ public class GitInteractionsHandler {
         return output;
     }
 
-    public static boolean checkout(String branchName, File destinationFolder, String authorization) {
-        if (downloadAndUnpackZipFileFromGit(branchName, destinationFolder, authorization)) {
+    public static boolean checkout(String gitAddress, String branchName, File destinationFolder, String authorization) {
+        if (downloadAndUnpackZipFileFromGit(gitAddress + branchName, destinationFolder, authorization)) {
             try {
                 for (int i = 1; i <= 5; i++) {
                     if (renameFolders(destinationFolder, branchName)) {

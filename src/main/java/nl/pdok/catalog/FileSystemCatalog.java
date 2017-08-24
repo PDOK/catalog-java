@@ -661,8 +661,8 @@ public class FileSystemCatalog implements Catalog {
      * @see nl.pdok.catalog.Catalog#checkout(java.lang.String, java.lang.String)
      */
     @Override
-    public boolean checkout(String branchName, String authorization) {
-        return GitInteractionsHandler.checkout(branchName, catalogFolder.toFile(), authorization);
+    public boolean checkout(String gitAddress, String branchName, String authorization) {
+        return GitInteractionsHandler.checkout(gitAddress, branchName, catalogFolder.toFile(), authorization);
     }
     
     /* (non-Javadoc)
