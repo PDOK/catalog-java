@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
@@ -32,7 +33,7 @@ public class GitInteractionsHandler {
         File file = new File(destinationFolder.getPath() + File.separator + GIT_BRANCH_TXT);
         List<String> lines;
         try {
-            lines = Files.readAllLines(file.toPath());
+            lines = Files.readAllLines(file.toPath(), StandardCharsets.UTF_8);
         } catch (IOException e) {
             return "Unable to read File.";
         }
