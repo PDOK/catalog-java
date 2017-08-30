@@ -34,6 +34,7 @@ import nl.pdok.catalog.job.JobConfigurationDataset;
 import nl.pdok.catalog.job.JobConfigurationReader;
 import nl.pdok.catalog.jobentry.JobEntriesReader;
 import nl.pdok.catalog.jobentry.JobEntry;
+import nl.pdok.catalog.jobentry.JobEntryException;
 import nl.pdok.catalog.testdata.TestData;
 import nl.pdok.catalog.tiling.TilingConfiguration;
 import nl.pdok.catalog.tiling.TilingConfigurationReader;
@@ -653,7 +654,7 @@ public class FileSystemCatalog implements Catalog {
      * @see nl.pdok.catalog.Catalog#retrieveJobEntriesByDataset(java.lang.String)
      */
     @Override
-    public List<JobEntry> retrieveJobEntriesByDataset(String dataset) {
+    public List<JobEntry> retrieveJobEntriesByDataset(String dataset) throws JobEntryException {
         return JobEntriesReader.retrieveJobEntriesByDatasetFromCatalogus(catalogFolder.toFile(), dataset);
     }
 
@@ -664,7 +665,7 @@ public class FileSystemCatalog implements Catalog {
     public boolean checkout(String gitAddress, String branchName, String authorization) {
         return GitInteractionsHandler.checkout(gitAddress, branchName, catalogFolder.toFile(), authorization);
     }
-    
+
     /* (non-Javadoc)
      * @see nl.pdok.catalog.Catalog#isCatalogusBranchPresent()
      */

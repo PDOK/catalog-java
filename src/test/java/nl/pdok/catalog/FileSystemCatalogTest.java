@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Set;
 import nl.pdok.catalog.featured.FeatureTemplate;
 import nl.pdok.catalog.jobentry.JobEntry;
+import nl.pdok.catalog.jobentry.JobEntryException;
 import nl.pdok.catalog.workbench.FmeWorkbenchEnvConfig;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Assert;
@@ -178,7 +179,7 @@ public class FileSystemCatalogTest {
     }
 
     @Test
-    public void testRetrieveJobEntriesByDataset() throws IOException {
+    public void testRetrieveJobEntriesByDataset() throws JobEntryException {
         List<JobEntry> entries = catalogusFromTestResources.retrieveJobEntriesByDataset("bagactueel");
         Assert.assertEquals(1, entries.size());
     }

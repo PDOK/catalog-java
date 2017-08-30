@@ -1,26 +1,27 @@
 package nl.pdok.catalog.jobentry;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.List;
-
 import org.junit.Assert;
 import org.junit.Test;
 
-import nl.pdok.catalog.jobentry.JobEntriesReader;
-import nl.pdok.catalog.jobentry.JobEntry;
-
 public class JobEntriesReaderTest {
 
-    @Test
-    public void testRetrieveJobEntriesByDatasetFromCatalogusNoFile() throws IOException {
-        List<JobEntry> entries = JobEntriesReader.retrieveJobEntriesByDatasetFromCatalogus(
+    @Test(expected = JobEntryException.class)
+    public void testRetrieveJobEntriesByDatasetFromCatalogusNoFile() throws JobEntryException {
+        JobEntriesReader.retrieveJobEntriesByDatasetFromCatalogus(
                 new File(JobEntriesReaderTest.class.getResource("/testcatalogus/").getFile()), "bag");
+    }
+
+    @Test
+    public void testRetrieveJobEntriesByDatasetFromCatalogusEmptyFile() throws JobEntryException {
+        List<JobEntry> entries = JobEntriesReader.retrieveJobEntriesByDatasetFromCatalogus(
+                new File(JobEntriesReaderTest.class.getResource("/testcatalogus/").getFile()), "d1");
         Assert.assertTrue(entries.isEmpty());
     }
 
     @Test
-    public void testRetrieveJobEntriesByDatasetFromCatalogusAlgemene() throws IOException {
+    public void testRetrieveJobEntriesByDatasetFromCatalogusAlgemene() throws JobEntryException {
         List<JobEntry> entries = JobEntriesReader.retrieveJobEntriesByDatasetFromCatalogus(
                 new File(JobEntriesReaderTest.class.getResource("/testcatalogus/").getFile()),
                 JobEntriesReader.ALGEMENE_JOBS);
@@ -28,7 +29,7 @@ public class JobEntriesReaderTest {
     }
 
     @Test
-    public void testRetrieveJobEntriesByDatasetFromCatalogusBagActueel() throws IOException {
+    public void testRetrieveJobEntriesByDatasetFromCatalogusBagActueel() throws JobEntryException {
         List<JobEntry> entries = JobEntriesReader.retrieveJobEntriesByDatasetFromCatalogus(
                 new File(JobEntriesReaderTest.class.getResource("/testcatalogus/").getFile()), "bagactueel");
         Assert.assertEquals(1, entries.size());

@@ -14,6 +14,7 @@ import nl.pdok.catalog.featured.FeatureTemplate;
 import nl.pdok.catalog.featured.FeaturedCollectionOptions;
 import nl.pdok.catalog.job.JobConfigurationDataset;
 import nl.pdok.catalog.jobentry.JobEntry;
+import nl.pdok.catalog.jobentry.JobEntryException;
 import nl.pdok.catalog.testdata.TestData;
 import nl.pdok.catalog.tiling.TilingConfiguration;
 import nl.pdok.catalog.workbench.Workbench;
@@ -108,7 +109,7 @@ public interface Catalog {
      * @param dataset Name of the dataset to be extracted.
      * @return List of JobEntries.
      */
-    List<JobEntry> retrieveJobEntriesByDataset(String dataset);
+    List<JobEntry> retrieveJobEntriesByDataset(String dataset) throws JobEntryException;
 
     /**
      * Download and unpack the Catalogus from git.
@@ -118,12 +119,12 @@ public interface Catalog {
      * @return true if the branch has been successfully downloaded and unpacked.
      */
     boolean checkout(String gitAddress, String branchName, String authorization);
-    
+
     /**
      * @return true if a catalogus folder is present
      */
     boolean isCatalogusBranchPresent();
-    
+
     /**
      * @return the catalogus Branch on the local hard drive
      */

@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -18,7 +17,8 @@ public class JobEntriesReader {
     public static final String ALGEMENE_JOBS = "algemene_jobs";
     private static final String FILE_NAME = "job_entries.json";
 
-    public static List<JobEntry> retrieveJobEntriesByDatasetFromCatalogus(File catalogusFolder, String datasetName) {
+    public static List<JobEntry> retrieveJobEntriesByDatasetFromCatalogus(File catalogusFolder, String datasetName)
+            throws JobEntryException {
         String filePath = catalogusFolder.getPath() + buildFilePathForDataset(datasetName);
 
         File file = new File(filePath);
@@ -29,8 +29,9 @@ public class JobEntriesReader {
                 builder.append(str);
             }
         } catch (IOException e) {
-            LOGGER.error("There was a problem reading the JobEntries file for dataset: \"" + datasetName + "\".", e);
-            return new ArrayList<>();
+            String errorMsg = "There was a problem reading the JobEntries file for dataset: \"" + datasetName + "\".";
+            LOGGER.error(errorMsg, e);
+            throw new JobEntryException(errorMsg, e);
         }
 
         return parseStringToJobEntries(builder.toString());
@@ -53,15 +54,16 @@ public class JobEntriesReader {
         return pathStr.toString();
     }
 
-    private static List<JobEntry> parseStringToJobEntries(String jsonString) {
+    private static List<JobEntry> parseStringToJobEntries(String jsonString) throws JobEntryException {
         ObjectMapper mapper = new ObjectMapper();
         try {
             JobEntry[] entries = mapper.readValue(jsonString, JobEntry[].class);
 
             return Arrays.asList(entries);
         } catch (IOException e) {
-            LOGGER.error("There was an error when attempting to parse the json file", e);
+            String errorMsg = "There was an error when attempting to parse the json file";
+            LOGGER.error(errorMsg, e);
+            throw new JobEntryException(errorMsg, e);
         }
-        return new ArrayList<>();
     }
 }
