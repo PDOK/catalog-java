@@ -16,6 +16,18 @@ public class TransformationConfigurationReaderTest {
         assertEquals("pdok-featured-test", configuration.getEngine());
     }
 
+
+    @Test
+    public void testReadFileBothTransformationAndExtraction() throws ConfigurationException {
+        TransformationConfiguration configuration = TransformationConfigurationReader.read("dummy", new File(
+                "src/test/resources/transformation/datasets/dummy/transformation_extraction.json"));
+        assertEquals("pdok-featured-test", configuration.getEngine());
+        assertEquals("pdok-featured-to-extracts", configuration.getExtractionEngine());
+    }
+
+
+
+
     @Test(expected = ConfigurationException.class)
     public void testConfigurationNotExists() throws ConfigurationException {
         TransformationConfigurationReader.read("not-exists", new File("transformation.json"));
