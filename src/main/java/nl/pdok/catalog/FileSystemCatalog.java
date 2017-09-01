@@ -525,7 +525,7 @@ public class FileSystemCatalog implements Catalog {
 
     @Override
     public String getEngineTransformJson(String datasetName, String defaultEngine) throws ConfigurationException {
-        TransformationConfiguration configuration = readConfiguration(datasetName, defaultEngine);
+        TransformationConfiguration configuration = readConfiguration(datasetName);
         if (configuration == null) {
             return defaultEngine;
         }
@@ -539,7 +539,7 @@ public class FileSystemCatalog implements Catalog {
 
     @Override
     public String getExtractionEngine(String datasetName, String defaultEngine) throws ConfigurationException {
-        TransformationConfiguration configuration = readConfiguration(datasetName, defaultEngine);
+        TransformationConfiguration configuration = readConfiguration(datasetName);
         if (configuration == null) {
             return defaultEngine;
         }
@@ -548,7 +548,7 @@ public class FileSystemCatalog implements Catalog {
     }
 
 
-    private TransformationConfiguration readConfiguration(String datasetName, String defaultEngine) throws ConfigurationException {
+    private TransformationConfiguration readConfiguration(String datasetName) throws ConfigurationException {
         File transformFile = Paths.get(datasetsFolder.toString(), datasetName, FILENAME_TRANSFORMATION_CONFIGURATION)
                 .toFile();
 
