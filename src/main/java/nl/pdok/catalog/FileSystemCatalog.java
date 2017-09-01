@@ -525,21 +525,41 @@ public class FileSystemCatalog implements Catalog {
 
     @Override
     public String getEngineTransformJson(String datasetName, String defaultEngine) throws ConfigurationException {
-        File transformFile = Paths.get(datasetsFolder.toString(), datasetName, FILENAME_TRANSFORMATION_CONFIGURATION)
-                .toFile();
-
-        if (!transformFile.exists()) {
+        TransformationConfiguration configuration = readConfiguration(datasetName);
+        if (configuration == null) {
             return defaultEngine;
         }
-
-        TransformationConfiguration configuration = TransformationConfigurationReader.read(datasetName, transformFile);
-        String engine = configuration.getEngine();
-        if (engine == null) {
+        String transformationEngine = configuration.getEngine();
+       if (transformationEngine == null) {
             throw new ConfigurationException("Configuration-item 'engine' for dataset " + datasetName + " is empty");
         } else {
             return configuration.getEngine();
         }
     }
+
+    @Override
+    public String getExtractionEngine(String datasetName, String defaultEngine) throws ConfigurationException {
+        TransformationConfiguration configuration = readConfiguration(datasetName);
+        if (configuration == null) {
+            return defaultEngine;
+        }
+        String extractionEngine = configuration.getExtractionEngine();
+        return (extractionEngine == null ? defaultEngine : extractionEngine);
+    }
+
+
+    private TransformationConfiguration readConfiguration(String datasetName) throws ConfigurationException {
+        File transformFile = Paths.get(datasetsFolder.toString(), datasetName, FILENAME_TRANSFORMATION_CONFIGURATION)
+                .toFile();
+
+        if (!transformFile.exists()) {
+            return null;
+        }
+
+        TransformationConfiguration configuration = TransformationConfigurationReader.read(datasetName, transformFile);
+        return configuration;
+    }
+
 
     @Override
     public String getRootLocation() {
