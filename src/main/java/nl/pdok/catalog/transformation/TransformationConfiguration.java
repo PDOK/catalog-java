@@ -3,7 +3,7 @@ package nl.pdok.catalog.transformation;
 public class TransformationConfiguration {
 
     private String transformationEngine;
-    private String extractionEngine;
+    private String versionedDeletes;
 
     public String getEngine() {
         return transformationEngine;
@@ -13,12 +13,12 @@ public class TransformationConfiguration {
         this.transformationEngine = transformationEngine;
     }
 
-    public String getExtractionEngine() {
-        return extractionEngine;
+    public String getVersionedDeletes() {
+        return versionedDeletes;
     }
 
-    public void setExtractionEngine(String extractionEngine) {
-        this.extractionEngine = extractionEngine;
+    public void setVersionedDeletes(String versionedDeletes) {
+        this.versionedDeletes = versionedDeletes;
     }
 
 }

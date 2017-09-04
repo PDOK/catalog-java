@@ -17,7 +17,7 @@ public class FileSystemCatalogExtractionTest {
      * Catalogus based on /transformation folder.
      */
     private Catalog catalogusFromTestResources;
-    private static final String DEFAULT_APPLICATION_ID_EXTRACTION_ENGINE = "extraction-engine";
+    private static final String DEFAULT_VERSIONED_DELETES = "false";
 
     @Before
     public void setup() throws IOException {
@@ -27,26 +27,26 @@ public class FileSystemCatalogExtractionTest {
 
     @Test
     public void testGetextractionEngine() throws ConfigurationException {
-        assertEquals("extraction-engine",
-                    catalogusFromTestResources.getExtractionEngine("extraction", DEFAULT_APPLICATION_ID_EXTRACTION_ENGINE));
+        assertEquals("true",
+                    catalogusFromTestResources.getVersionedDeletes("extraction", DEFAULT_VERSIONED_DELETES));
     }
 
     @Test
     public void testGetTransformConfigurationNotExists() throws ConfigurationException {
-        assertEquals(DEFAULT_APPLICATION_ID_EXTRACTION_ENGINE,
-                catalogusFromTestResources.getExtractionEngine("not-exists", DEFAULT_APPLICATION_ID_EXTRACTION_ENGINE));
+        assertEquals(Boolean.FALSE.toString().toLowerCase(),
+                catalogusFromTestResources.getVersionedDeletes("not-exists", DEFAULT_VERSIONED_DELETES));
     }
 
     @Test
     public void testExtractionEngineNotPresent() throws ConfigurationException {
-        assertEquals(DEFAULT_APPLICATION_ID_EXTRACTION_ENGINE,
-                    catalogusFromTestResources.getExtractionEngine("dummy", DEFAULT_APPLICATION_ID_EXTRACTION_ENGINE));
+        assertEquals(Boolean.FALSE.toString().toLowerCase(),
+                    catalogusFromTestResources.getVersionedDeletes("dummy", DEFAULT_VERSIONED_DELETES));
 
     }
 
     @Test
     public void testGetTransformJsonEmpty() throws ConfigurationException {
-        assertEquals(DEFAULT_APPLICATION_ID_EXTRACTION_ENGINE,
-                    catalogusFromTestResources.getExtractionEngine("transform-json-empty", DEFAULT_APPLICATION_ID_EXTRACTION_ENGINE));
+        assertEquals(Boolean.FALSE.toString().toLowerCase(),
+                    catalogusFromTestResources.getVersionedDeletes("transform-json-empty", DEFAULT_VERSIONED_DELETES));
     }
 }
