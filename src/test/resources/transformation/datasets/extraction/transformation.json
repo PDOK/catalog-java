@@ -1,4 +1,4 @@
 {
   "engine": "pdok-featured-test",
-  "extractionEngine": "extraction-engine"
+  "versionedDeletes": "true"
 }

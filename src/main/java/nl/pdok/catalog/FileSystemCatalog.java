@@ -538,13 +538,13 @@ public class FileSystemCatalog implements Catalog {
     }
 
     @Override
-    public String getExtractionEngine(String datasetName, String defaultEngine) throws ConfigurationException {
+    public String getVersionedDeletes(String datasetName, String defaultVersionedDeletes) throws ConfigurationException {
         TransformationConfiguration configuration = readConfiguration(datasetName);
         if (configuration == null) {
-            return defaultEngine;
+            return defaultVersionedDeletes;
         }
-        String extractionEngine = configuration.getExtractionEngine();
-        return (extractionEngine == null ? defaultEngine : extractionEngine);
+        String versionedDeletes = configuration.getVersionedDeletes();
+        return (versionedDeletes == null ? defaultVersionedDeletes : versionedDeletes);
     }
 
 

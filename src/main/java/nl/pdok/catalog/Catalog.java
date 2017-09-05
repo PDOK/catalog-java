@@ -94,7 +94,7 @@ public interface Catalog {
 
     String getEngineTransformJson(String datasetName, String defaultEngine) throws ConfigurationException;
 
-    String getExtractionEngine(String datasetName, String defaultEngine) throws ConfigurationException;
+    String getVersionedDeletes(String datasetName, String defaultEngine) throws ConfigurationException;
 
     // FME
     List<Workbench> getWorkbenches(String datasetName);
