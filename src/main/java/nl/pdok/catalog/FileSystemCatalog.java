@@ -538,13 +538,13 @@ public class FileSystemCatalog implements Catalog {
     }
 
     @Override
-    public String getVersionedDeletes(String datasetName, String defaultVersionedDeletes) throws ConfigurationException {
+    public boolean getUniqueVersions(String datasetName, boolean uniqueVersionsDefault) throws ConfigurationException {
         TransformationConfiguration configuration = readConfiguration(datasetName);
         if (configuration == null) {
-            return defaultVersionedDeletes;
+            return uniqueVersionsDefault;
         }
-        String versionedDeletes = configuration.getVersionedDeletes();
-        return (versionedDeletes == null ? defaultVersionedDeletes : versionedDeletes);
+        Boolean uniqueVersions = configuration.getUniqueVersions();
+        return (uniqueVersions == null ? uniqueVersionsDefault : uniqueVersions);
     }
 
 

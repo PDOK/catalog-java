@@ -1,4 +1,4 @@
 {
   "engine": "pdok-featured-test",
-  "versionedDeletes": "true"
+  "uniqueVersions": true
 }

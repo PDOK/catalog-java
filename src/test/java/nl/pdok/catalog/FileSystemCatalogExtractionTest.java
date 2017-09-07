@@ -1,7 +1,6 @@
 package nl.pdok.catalog;
 
 import nl.pdok.catalog.exceptions.ConfigurationException;
-import org.apache.commons.lang3.StringUtils;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -17,7 +16,7 @@ public class FileSystemCatalogExtractionTest {
      * Catalogus based on /transformation folder.
      */
     private Catalog catalogusFromTestResources;
-    private static final String DEFAULT_VERSIONED_DELETES = "false";
+    private static final boolean DEFAULT_UNIQUE_VERSIONS = true;
 
     @Before
     public void setup() throws IOException {
@@ -26,27 +25,27 @@ public class FileSystemCatalogExtractionTest {
     }
 
     @Test
-    public void testGetextractionEngine() throws ConfigurationException {
-        assertEquals("true",
-                    catalogusFromTestResources.getVersionedDeletes("extraction", DEFAULT_VERSIONED_DELETES));
+    public void testGetUniqueVersionFalse() throws ConfigurationException {
+        assertEquals(Boolean.FALSE,
+                    catalogusFromTestResources.getUniqueVersions("extraction", DEFAULT_UNIQUE_VERSIONS));
     }
 
     @Test
     public void testGetTransformConfigurationNotExists() throws ConfigurationException {
-        assertEquals(Boolean.FALSE.toString().toLowerCase(),
-                catalogusFromTestResources.getVersionedDeletes("not-exists", DEFAULT_VERSIONED_DELETES));
+        assertEquals(Boolean.TRUE,
+                catalogusFromTestResources.getUniqueVersions("not-exists", DEFAULT_UNIQUE_VERSIONS));
     }
 
     @Test
     public void testExtractionEngineNotPresent() throws ConfigurationException {
-        assertEquals(Boolean.FALSE.toString().toLowerCase(),
-                    catalogusFromTestResources.getVersionedDeletes("dummy", DEFAULT_VERSIONED_DELETES));
+        assertEquals(Boolean.TRUE,
+                    catalogusFromTestResources.getUniqueVersions("dummy", DEFAULT_UNIQUE_VERSIONS));
 
     }
 
     @Test
     public void testGetTransformJsonEmpty() throws ConfigurationException {
-        assertEquals(Boolean.FALSE.toString().toLowerCase(),
-                    catalogusFromTestResources.getVersionedDeletes("transform-json-empty", DEFAULT_VERSIONED_DELETES));
+        assertEquals(Boolean.TRUE,
+                    catalogusFromTestResources.getUniqueVersions("transform-json-empty", DEFAULT_UNIQUE_VERSIONS));
     }
 }
