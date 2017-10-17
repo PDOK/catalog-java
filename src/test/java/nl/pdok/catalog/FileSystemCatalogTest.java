@@ -13,6 +13,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Set;
+
+import nl.pdok.catalog.exceptions.ConfigurationException;
 import nl.pdok.catalog.featured.FeatureTemplate;
 import nl.pdok.catalog.jobentry.JobEntry;
 import nl.pdok.catalog.jobentry.JobEntryException;
@@ -73,7 +75,7 @@ public class FileSystemCatalogTest {
     }
 
     @Test
-    public void getFeatureTemplates() throws IOException {
+    public void getFeatureTemplates() throws IOException, ConfigurationException {
         // Create dummy structure for reading feature templates
         createTemplateFeatureFolderStructure("b1", "ec");
         createTemplateFeatureFolderStructure("b1", "eg");
