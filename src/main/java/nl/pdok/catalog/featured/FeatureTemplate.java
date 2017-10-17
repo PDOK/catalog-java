@@ -25,6 +25,11 @@ public class FeatureTemplate implements Serializable {
      * Extract type (for instance 'citygml').
      */
     private final String extractType;
+    
+    /**
+     * Delta configuration (optional).
+     */
+    private final DeltaConfiguration deltaConfiguration;
 
     /**
      * List of partials files.
@@ -36,12 +41,17 @@ public class FeatureTemplate implements Serializable {
      */
     private final List<Path> features = new ArrayList<>();
 
-    public FeatureTemplate(String extractType) {
+    public FeatureTemplate(String extractType, DeltaConfiguration deltaConfiguration) {
         this.extractType = extractType;
+        this.deltaConfiguration = deltaConfiguration;
     }
 
     public String getExtractType() {
         return extractType;
+    }
+    
+    public DeltaConfiguration getDeltaConfiguration() {
+        return deltaConfiguration;
     }
 
     public List<Path> getPartialTemplates() {

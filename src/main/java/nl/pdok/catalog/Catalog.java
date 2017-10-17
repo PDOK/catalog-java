@@ -88,7 +88,7 @@ public interface Catalog {
 
     Set<String> getExtractTypes(String datasetName) throws IOException;
 
-    Set<FeatureTemplate> getFeatureTemplates(String datasetName) throws IOException;
+    Set<FeatureTemplate> getFeatureTemplates(String datasetName) throws ConfigurationException;
 
     String getXml2JsonMapping(String datasetName, String translator) throws IOException;
 

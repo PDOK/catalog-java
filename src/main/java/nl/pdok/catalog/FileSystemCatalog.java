@@ -19,13 +19,19 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import nl.pdok.catalog.exceptions.ConfigurationException;
 import nl.pdok.catalog.extract.ExtractConfiguration;
 import nl.pdok.catalog.extract.ExtractConfigurationReader;
+import nl.pdok.catalog.featured.DeltaConfiguration;
 import nl.pdok.catalog.featured.FeatureTemplate;
 import nl.pdok.catalog.featured.FeaturedCollectionOptions;
 import nl.pdok.catalog.gitutil.GitInteractionsHandler;
@@ -51,6 +57,9 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.comparator.NameFileComparator;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.codehaus.jackson.JsonNode;
+import org.codehaus.jackson.JsonProcessingException;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -460,19 +469,63 @@ public class FileSystemCatalog implements Catalog {
     }
 
     @Override
-    public Set<FeatureTemplate> getFeatureTemplates(String datasetName) throws IOException {
-        Set<FeatureTemplate> res = new HashSet<>();
-
-        for (String extractType : getExtractTypes(datasetName)) {
-            Path entry = Paths.get(datasetsFolder.toString(), datasetName, TEMPLATE_FOLDER, extractType);
-            res.add(getFeatureTemplateExtractType(entry));
+    public Set<FeatureTemplate> getFeatureTemplates(String datasetName) throws ConfigurationException {
+        try {
+            Set<FeatureTemplate> res = new HashSet<>();
+            
+            Path templateFolder = Paths.get(datasetsFolder.toString(), datasetName, TEMPLATE_FOLDER);
+            
+            Map<String, DeltaConfiguration> deltaConfigurations =
+                    getDeltaConfigurations(templateFolder);
+            
+            for (String extractType : getExtractTypes(datasetName)) {
+                Path entry = templateFolder.resolve(extractType);
+                res.add(getFeatureTemplateExtractType(entry, deltaConfigurations));
+            }
+            
+            return res;
+        } catch(IOException e) {
+            throw new ConfigurationException("Failed to read feature templates", e);
         }
-
-        return res;
     }
 
-    private FeatureTemplate getFeatureTemplateExtractType(Path extractTypeFolder) throws IOException {
-        FeatureTemplate res = new FeatureTemplate(extractTypeFolder.getFileName().toString());
+    private Map<String, DeltaConfiguration> getDeltaConfigurations(Path templateFolder) throws ConfigurationException {
+        
+        Path configFile = templateFolder.resolve("delta.json");
+        
+        try {
+            if (Files.exists(configFile)) {
+                Map<String, DeltaConfiguration> config = new HashMap<>();
+                
+                ObjectMapper objectMapper = new ObjectMapper();
+                
+                byte[] bytes = Files.readAllBytes(configFile);
+                JsonNode jsonContent = objectMapper.readTree(bytes);
+                if (jsonContent.isObject()) {
+                    for (Iterator<Entry<String, JsonNode>> itr = jsonContent.getFields(); itr.hasNext();) {
+                        Entry<String, JsonNode> entry = itr.next();
+                        
+                        String extractType = entry.getKey();
+                        DeltaConfiguration parsedConfig = objectMapper.convertValue(entry.getValue(), DeltaConfiguration.class);
+                        config.put(extractType, parsedConfig);
+                    }
+                } else {
+                    throw new ConfigurationException("Expected: a json object");
+                }
+                
+                return Collections.unmodifiableMap(config);
+            } else {
+                LOGGER.warn("No feature template delta configuration file (delta.json) found in: " + templateFolder);
+                return Collections.emptyMap();
+            }
+        } catch (Exception e) {
+            throw new ConfigurationException("Failed to parse feature template delta configuration: " + configFile, e);
+        }
+    }
+
+    private FeatureTemplate getFeatureTemplateExtractType(Path extractTypeFolder, Map<String, DeltaConfiguration> deltaConfigurations) throws IOException {
+        String extractType = extractTypeFolder.getFileName().toString();
+        FeatureTemplate res = new FeatureTemplate(extractType, deltaConfigurations.get(extractType));
 
         try (DirectoryStream<Path> stream = Files.newDirectoryStream(extractTypeFolder)) {
             for (Path entry : stream) {
