@@ -4,7 +4,7 @@
 	<groupId>nl.pdok</groupId>
 	<artifactId>pdok-catalog-java</artifactId>
 	<name>${project.artifactId}</name>
-	<version>2.10.7-SNAPSHOT</version>
+	<version>2.10.7</version>
 	<description>PDOK catalog in java</description>
 	<url>https://github.com/PDOK/catalog-java</url>
 	<packaging>jar</packaging>

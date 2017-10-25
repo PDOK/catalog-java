@@ -21,4 +21,4 @@ git commit -q -m "chore: new release cycle $dev_version [ci skip]"
 
 mvn -q versions:commit
 
-git push --follow-tags
+#git push --follow-tags
