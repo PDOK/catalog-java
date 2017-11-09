@@ -5,23 +5,25 @@ import java.util.List;
 import org.junit.Assert;
 import org.junit.Test;
 
+import nl.pdok.catalog.exceptions.FileReaderException;
+
 public class JobEntriesReaderTest {
 
-    @Test(expected = JobEntryException.class)
-    public void testRetrieveJobEntriesByDatasetFromCatalogusNoFile() throws JobEntryException {
+    @Test(expected = FileReaderException.class)
+    public void testRetrieveJobEntriesByDatasetFromCatalogusNoFile() throws FileReaderException {
         JobEntriesReader.retrieveJobEntriesByDatasetFromCatalogus(
                 new File(JobEntriesReaderTest.class.getResource("/testcatalogus/").getFile()), "bag");
     }
 
     @Test
-    public void testRetrieveJobEntriesByDatasetFromCatalogusEmptyFile() throws JobEntryException {
+    public void testRetrieveJobEntriesByDatasetFromCatalogusEmptyFile() throws FileReaderException {
         List<JobEntry> entries = JobEntriesReader.retrieveJobEntriesByDatasetFromCatalogus(
                 new File(JobEntriesReaderTest.class.getResource("/testcatalogus/").getFile()), "d1");
         Assert.assertTrue(entries.isEmpty());
     }
 
     @Test
-    public void testRetrieveJobEntriesByDatasetFromCatalogusAlgemene() throws JobEntryException {
+    public void testRetrieveJobEntriesByDatasetFromCatalogusAlgemene() throws FileReaderException {
         List<JobEntry> entries = JobEntriesReader.retrieveJobEntriesByDatasetFromCatalogus(
                 new File(JobEntriesReaderTest.class.getResource("/testcatalogus/").getFile()),
                 JobEntriesReader.ALGEMENE_JOBS);
@@ -29,7 +31,7 @@ public class JobEntriesReaderTest {
     }
 
     @Test
-    public void testRetrieveJobEntriesByDatasetFromCatalogusBagActueel() throws JobEntryException {
+    public void testRetrieveJobEntriesByDatasetFromCatalogusBagActueel() throws FileReaderException {
         List<JobEntry> entries = JobEntriesReader.retrieveJobEntriesByDatasetFromCatalogus(
                 new File(JobEntriesReaderTest.class.getResource("/testcatalogus/").getFile()), "bagactueel");
         Assert.assertEquals(1, entries.size());

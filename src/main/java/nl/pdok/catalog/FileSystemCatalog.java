@@ -1,10 +1,5 @@
 package nl.pdok.catalog;
 
-import com.google.common.base.Function;
-import com.google.common.base.Joiner;
-import com.google.common.base.Predicate;
-import com.google.common.base.Predicates;
-import com.google.common.collect.FluentIterable;
 import java.beans.PropertyDescriptor;
 import java.io.File;
 import java.io.FileFilter;
@@ -28,19 +23,39 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+
+import org.apache.commons.beanutils.PropertyUtils;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.comparator.NameFileComparator;
+import org.apache.commons.lang3.BooleanUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.codehaus.jackson.JsonNode;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
+
+import com.google.common.base.Function;
+import com.google.common.base.Joiner;
+import com.google.common.base.Predicate;
+import com.google.common.base.Predicates;
+import com.google.common.collect.FluentIterable;
+
 import nl.pdok.catalog.exceptions.ConfigurationException;
+import nl.pdok.catalog.exceptions.FileReaderException;
 import nl.pdok.catalog.extract.ExtractConfiguration;
 import nl.pdok.catalog.extract.ExtractConfigurationReader;
 import nl.pdok.catalog.featured.DeltaConfiguration;
 import nl.pdok.catalog.featured.FeatureTemplate;
 import nl.pdok.catalog.featured.FeaturedCollectionOptions;
 import nl.pdok.catalog.gitutil.GitInteractionsHandler;
+import nl.pdok.catalog.gmlconverter.GmlConverterConfig;
+import nl.pdok.catalog.gmlconverter.GmlConverterConfigReader;
 import nl.pdok.catalog.job.JobConfiguration;
 import nl.pdok.catalog.job.JobConfigurationDataset;
 import nl.pdok.catalog.job.JobConfigurationReader;
 import nl.pdok.catalog.jobentry.JobEntriesReader;
 import nl.pdok.catalog.jobentry.JobEntry;
-import nl.pdok.catalog.jobentry.JobEntryException;
 import nl.pdok.catalog.testdata.TestData;
 import nl.pdok.catalog.tiling.TilingConfiguration;
 import nl.pdok.catalog.tiling.TilingConfigurationReader;
@@ -52,17 +67,6 @@ import nl.pdok.catalog.workbench.WorkbenchParameter;
 import nl.pdok.catalog.workbench.WorkbenchResource;
 import nl.pdok.catalog.workbench.WorkbenchType;
 import nl.pdok.util.ZipUtils;
-import org.apache.commons.beanutils.PropertyUtils;
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.comparator.NameFileComparator;
-import org.apache.commons.lang3.BooleanUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.codehaus.jackson.JsonNode;
-import org.codehaus.jackson.JsonProcessingException;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeanUtils;
 
 public class FileSystemCatalog implements Catalog {
 
@@ -727,7 +731,7 @@ public class FileSystemCatalog implements Catalog {
      * @see nl.pdok.catalog.Catalog#retrieveJobEntriesByDataset(java.lang.String)
      */
     @Override
-    public List<JobEntry> retrieveJobEntriesByDataset(String dataset) throws JobEntryException {
+    public List<JobEntry> retrieveJobEntriesByDataset(String dataset) throws FileReaderException {
         return JobEntriesReader.retrieveJobEntriesByDatasetFromCatalogus(catalogFolder.toFile(), dataset);
     }
 
@@ -753,5 +757,13 @@ public class FileSystemCatalog implements Catalog {
     @Override
     public String checkCatalogusBranch() {
         return GitInteractionsHandler.whichBranchIsPresent(catalogFolder.toFile());
+    }
+
+    /* (non-Javadoc)
+     * @see nl.pdok.catalog.Catalog#retrieveGmlConverterConfigFromCatalogus(java.lang.String)
+     */
+    @Override
+    public GmlConverterConfig retrieveGmlConverterConfigFromCatalogus(String datasetName) throws FileReaderException {
+        return GmlConverterConfigReader.retrieveGmlConverterConfigFromCatalogus(catalogFolder.toFile(), datasetName);
     }
 }
