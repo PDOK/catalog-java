@@ -1,5 +1,7 @@
 package nl.pdok.catalog.jobentry;
 
+import static nl.pdok.catalog.util.FileReaderUtil.retrieveFileToStringFromFilePath;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
@@ -10,7 +12,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import nl.pdok.catalog.exceptions.FileReaderException;
-import nl.pdok.catalog.util.FileReaderUtil;
 
 public class JobEntriesReader {
 
@@ -29,7 +30,7 @@ public class JobEntriesReader {
             throws FileReaderException {
         String filePath = basePath + buildFilePathForDataset(datasetName);
 
-        String fileAsString = FileReaderUtil.retrieveFileToStringFromFilePath(filePath, LOGGER);
+        String fileAsString = retrieveFileToStringFromFilePath(filePath, LOGGER);
 
         return parseStringToJobEntries(fileAsString);
     }

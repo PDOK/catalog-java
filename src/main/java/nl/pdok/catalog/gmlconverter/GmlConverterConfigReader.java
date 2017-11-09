@@ -1,5 +1,7 @@
 package nl.pdok.catalog.gmlconverter;
 
+import static nl.pdok.catalog.util.FileReaderUtil.retrieveFileToStringFromFilePath;
+
 import java.io.File;
 import java.io.IOException;
 
@@ -8,7 +10,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import nl.pdok.catalog.exceptions.FileReaderException;
-import nl.pdok.catalog.util.FileReaderUtil;
 
 public class GmlConverterConfigReader {
     
@@ -25,7 +26,7 @@ public class GmlConverterConfigReader {
     public GmlConverterConfig retrieveGmlConverterConfigFromCatalogus(String datasetName) throws FileReaderException {
         String filePath = basePath + buildFilePathForDataset(datasetName);
 
-        String fileAsString = FileReaderUtil.retrieveFileToStringFromFilePath(filePath, LOGGER);
+        String fileAsString = retrieveFileToStringFromFilePath(filePath, LOGGER);
 
         return parseStringToGmlConverterConfig(fileAsString);
     }
