@@ -8,13 +8,15 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
+
 import nl.pdok.catalog.exceptions.ConfigurationException;
+import nl.pdok.catalog.exceptions.FileReaderException;
 import nl.pdok.catalog.extract.ExtractConfiguration;
 import nl.pdok.catalog.featured.FeatureTemplate;
 import nl.pdok.catalog.featured.FeaturedCollectionOptions;
+import nl.pdok.catalog.gmlconverter.GmlConverterConfig;
 import nl.pdok.catalog.job.JobConfigurationDataset;
 import nl.pdok.catalog.jobentry.JobEntry;
-import nl.pdok.catalog.jobentry.JobEntryException;
 import nl.pdok.catalog.testdata.TestData;
 import nl.pdok.catalog.tiling.TilingConfiguration;
 import nl.pdok.catalog.workbench.Workbench;
@@ -111,7 +113,16 @@ public interface Catalog {
      * @param dataset Name of the dataset to be extracted.
      * @return List of JobEntries.
      */
-    List<JobEntry> retrieveJobEntriesByDataset(String dataset) throws JobEntryException;
+    List<JobEntry> retrieveJobEntriesByDataset(String dataset) throws FileReaderException;
+    
+    /**
+     * Extract the configuration file required for the GMLConverter
+     * 
+     * @param datasetName
+     * @return configuration File
+     * @throws FileReaderException
+     */
+    GmlConverterConfig retrieveGmlConverterConfigFromCatalogus(String datasetName) throws FileReaderException;
 
     /**
      * Download and unpack the Catalogus from git.

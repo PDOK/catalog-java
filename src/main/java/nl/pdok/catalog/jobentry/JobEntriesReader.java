@@ -1,14 +1,17 @@
 package nl.pdok.catalog.jobentry;
 
+import static nl.pdok.catalog.util.FileReaderUtil.retrieveFileToStringFromFilePath;
+
 import java.io.File;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.List;
+
 import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import nl.pdok.catalog.exceptions.FileReaderException;
 
 public class JobEntriesReader {
 
@@ -16,28 +19,23 @@ public class JobEntriesReader {
 
     public static final String ALGEMENE_JOBS = "algemene_jobs";
     private static final String FILE_NAME = "job_entries.json";
-
-    public static List<JobEntry> retrieveJobEntriesByDatasetFromCatalogus(File catalogusFolder, String datasetName)
-            throws JobEntryException {
-        String filePath = catalogusFolder.getPath() + buildFilePathForDataset(datasetName);
-
-        File file = new File(filePath);
-        StringBuilder builder = new StringBuilder();
-
-        try {
-            for (String str : Files.readAllLines(file.toPath(), StandardCharsets.UTF_8)) {
-                builder.append(str);
-            }
-        } catch (IOException e) {
-            String errorMsg = "There was a problem reading the JobEntries file for dataset: \"" + datasetName + "\".";
-            LOGGER.error(errorMsg, e);
-            throw new JobEntryException(errorMsg, e);
-        }
-
-        return parseStringToJobEntries(builder.toString());
+    
+    private String basePath;
+    
+    public JobEntriesReader(File catalogusFolder) {
+        basePath = catalogusFolder.getPath();
     }
 
-    private static String buildFilePathForDataset(String datasetName) {
+    public List<JobEntry> retrieveJobEntriesByDatasetFromCatalogus(String datasetName)
+            throws FileReaderException {
+        String filePath = basePath + buildFilePathForDataset(datasetName);
+
+        String fileAsString = retrieveFileToStringFromFilePath(filePath, LOGGER);
+
+        return parseStringToJobEntries(fileAsString);
+    }
+
+    private String buildFilePathForDataset(String datasetName) {
         StringBuilder pathStr = new StringBuilder();
         pathStr.append(File.separator);
         if (ALGEMENE_JOBS.equalsIgnoreCase(datasetName)) {
@@ -54,7 +52,7 @@ public class JobEntriesReader {
         return pathStr.toString();
     }
 
-    private static List<JobEntry> parseStringToJobEntries(String jsonString) throws JobEntryException {
+    private List<JobEntry> parseStringToJobEntries(String jsonString) throws FileReaderException {
         ObjectMapper mapper = new ObjectMapper();
         try {
             JobEntry[] entries = mapper.readValue(jsonString, JobEntry[].class);
@@ -63,7 +61,7 @@ public class JobEntriesReader {
         } catch (IOException e) {
             String errorMsg = "There was an error when attempting to parse the json file";
             LOGGER.error(errorMsg, e);
-            throw new JobEntryException(errorMsg, e);
+            throw new FileReaderException(errorMsg, e);
         }
     }
 }
