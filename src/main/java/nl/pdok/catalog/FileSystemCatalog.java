@@ -732,7 +732,7 @@ public class FileSystemCatalog implements Catalog {
      */
     @Override
     public List<JobEntry> retrieveJobEntriesByDataset(String dataset) throws FileReaderException {
-        return JobEntriesReader.retrieveJobEntriesByDatasetFromCatalogus(catalogFolder.toFile(), dataset);
+        return new JobEntriesReader(catalogFolder.toFile()).retrieveJobEntriesByDatasetFromCatalogus(dataset);
     }
 
     /* (non-Javadoc)
@@ -764,6 +764,6 @@ public class FileSystemCatalog implements Catalog {
      */
     @Override
     public GmlConverterConfig retrieveGmlConverterConfigFromCatalogus(String datasetName) throws FileReaderException {
-        return GmlConverterConfigReader.retrieveGmlConverterConfigFromCatalogus(catalogFolder.toFile(), datasetName);
+        return new GmlConverterConfigReader(catalogFolder.toFile()).retrieveGmlConverterConfigFromCatalogus(datasetName);
     }
 }

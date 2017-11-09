@@ -18,17 +18,23 @@ public class JobEntriesReader {
 
     public static final String ALGEMENE_JOBS = "algemene_jobs";
     private static final String FILE_NAME = "job_entries.json";
+    
+    private String basePath;
+    
+    public JobEntriesReader(File catalogusFolder) {
+        basePath = catalogusFolder.getPath();
+    }
 
-    public static List<JobEntry> retrieveJobEntriesByDatasetFromCatalogus(File catalogusFolder, String datasetName)
+    public List<JobEntry> retrieveJobEntriesByDatasetFromCatalogus(String datasetName)
             throws FileReaderException {
-        String filePath = catalogusFolder.getPath() + buildFilePathForDataset(datasetName);
+        String filePath = basePath + buildFilePathForDataset(datasetName);
 
         String fileAsString = FileReaderUtil.retrieveFileToStringFromFilePath(filePath, LOGGER);
 
         return parseStringToJobEntries(fileAsString);
     }
 
-    private static String buildFilePathForDataset(String datasetName) {
+    private String buildFilePathForDataset(String datasetName) {
         StringBuilder pathStr = new StringBuilder();
         pathStr.append(File.separator);
         if (ALGEMENE_JOBS.equalsIgnoreCase(datasetName)) {
@@ -45,7 +51,7 @@ public class JobEntriesReader {
         return pathStr.toString();
     }
 
-    private static List<JobEntry> parseStringToJobEntries(String jsonString) throws FileReaderException {
+    private List<JobEntry> parseStringToJobEntries(String jsonString) throws FileReaderException {
         ObjectMapper mapper = new ObjectMapper();
         try {
             JobEntry[] entries = mapper.readValue(jsonString, JobEntry[].class);

@@ -15,19 +15,23 @@ public class GmlConverterConfigReader {
     private static final Logger LOGGER = LoggerFactory.getLogger(GmlConverterConfigReader.class);
 
     private static final String FILE_NAME = "configuration.json";
+    
+    private String basePath;
+    
+    public GmlConverterConfigReader(File catalogusFolder) {
+        basePath = catalogusFolder.getPath().concat(File.separator).concat("datasets");
+    }
 
-    public static GmlConverterConfig retrieveGmlConverterConfigFromCatalogus(File catalogusFolder, String datasetName) throws FileReaderException {
-        String filePath = catalogusFolder.getPath() + buildFilePathForDataset(datasetName);
+    public GmlConverterConfig retrieveGmlConverterConfigFromCatalogus(String datasetName) throws FileReaderException {
+        String filePath = basePath + buildFilePathForDataset(datasetName);
 
         String fileAsString = FileReaderUtil.retrieveFileToStringFromFilePath(filePath, LOGGER);
 
         return parseStringToGmlConverterConfig(fileAsString);
     }
 
-    private static String buildFilePathForDataset(String datasetName) {
+    private String buildFilePathForDataset(String datasetName) {
         StringBuilder pathStr = new StringBuilder();
-        pathStr.append(File.separator);
-        pathStr.append("datasets");
         pathStr.append(File.separator);
         pathStr.append(datasetName);
         pathStr.append(File.separator);
@@ -37,7 +41,7 @@ public class GmlConverterConfigReader {
         return pathStr.toString();
     }
 
-    private static GmlConverterConfig parseStringToGmlConverterConfig(String jsonString) throws FileReaderException {
+    private GmlConverterConfig parseStringToGmlConverterConfig(String jsonString) throws FileReaderException {
         ObjectMapper mapper = new ObjectMapper();
         try {
             GmlConverterConfigWrapper wrapper = mapper.readValue(jsonString, GmlConverterConfigWrapper.class);
