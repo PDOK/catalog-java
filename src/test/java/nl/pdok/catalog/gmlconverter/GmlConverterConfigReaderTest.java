@@ -2,6 +2,7 @@ package nl.pdok.catalog.gmlconverter;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
@@ -33,16 +34,19 @@ public class GmlConverterConfigReaderTest {
     @Test
     public void testGmlConverterConfigFromCatalogus() throws FileReaderException {
         GmlConverterConfig config = reader.retrieveGmlConverterConfigFromCatalogus("protectedSite");
-        assertEquals(".ProtectedSite.\"gml:id\"", config.getGmlId());
+        assertEquals(".id", config.getGmlId());
         assertEquals("new", config.getAction());
         assertEquals("ProtectedSite", config.getDataset());
-        assertEquals("ProtectedSite", config.getFeatureNode());
-        assertEquals("../gml/natura2000-small.gml", config.getPathToGML());
         assertTrue(config.getArrayNodes().isEmpty());
         assertFalse(config.getSkipNodes().isEmpty());
         assertEquals(2, config.getSkipNodes().size());
         assertTrue(config.getSkipNodes().contains(".siteName.GeographicalName"));
         assertTrue(config.getSkipNodes().contains(".siteName.GeographicalName.spelling.SpellingOfName"));
+        assertFalse(config.getRenameNodes().isEmpty());
+        assertEquals(1, config.getRenameNodes().size());
+        assertEquals("Classification", config.getRenameNodes().get("siteProtectionClassification"));
+        assertEquals("EVERYTHING", config.getAttributeStrategy());
+        assertNull(config.getAttributeExcept());
     }
 
 }

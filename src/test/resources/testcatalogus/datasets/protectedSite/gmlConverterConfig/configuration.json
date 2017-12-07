@@ -1,14 +1,17 @@
 {
-  "gmlToJson": {
-    "gmlId": ".ProtectedSite.\"gml:id\"",
+    "gmlId": ".id",
     "action": "new",
     "dataset": "ProtectedSite",
-    "featureNode": "ProtectedSite",
-    "pathToGML": "../gml/natura2000-small.gml",
+    "featureNodes": [
+      "ProtectedSite"
+    ],
     "arrayNodes": [],
     "skipNodes": [
       ".siteName.GeographicalName",
       ".siteName.GeographicalName.spelling.SpellingOfName"
-    ]
-  }
+    ],
+    "renameNodes": {
+      "siteProtectionClassification": "Classification"
+    },
+    "attributeStrategy": "EVERYTHING"
 }

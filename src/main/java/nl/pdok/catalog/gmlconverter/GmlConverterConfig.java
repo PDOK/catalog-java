@@ -2,11 +2,12 @@ package nl.pdok.catalog.gmlconverter;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.annotate.JsonProperty;
-import org.codehaus.jackson.map.annotate.JsonRootName;
 
-@JsonRootName(value="gmlToJson")
+@JsonIgnoreProperties
 public class GmlConverterConfig implements Serializable {
 
     /**
@@ -23,17 +24,23 @@ public class GmlConverterConfig implements Serializable {
     @JsonProperty(value = "dataset")
     private String dataset;
 
-    @JsonProperty(value = "featureNode")
-    private String featureNode;
-
-    @JsonProperty(value = "pathToGML")
-    private String pathToGML;
+    @JsonProperty(value = "featureNodes")
+    private List<String> featureNodes;
 
     @JsonProperty(value = "arrayNodes")
     private List<String> arrayNodes;
 
     @JsonProperty(value = "skipNodes")
     private List<String> skipNodes;
+
+    @JsonProperty(value = "renameNodes")
+    private Map<String, String> renameNodes;
+
+    @JsonProperty(value = "attributeStrategy")
+    private String attributeStrategy;
+
+    @JsonProperty(value = "attributeExcept")
+    private List<String> attributeExcept;
 
     public String getGmlId() {
         return gmlId;
@@ -59,20 +66,12 @@ public class GmlConverterConfig implements Serializable {
         this.dataset = dataset;
     }
 
-    public String getFeatureNode() {
-        return featureNode;
+    public List<String> getFeatureNodes() {
+        return featureNodes;
     }
 
-    public void setFeatureNode(String featureNode) {
-        this.featureNode = featureNode;
-    }
-
-    public String getPathToGML() {
-        return pathToGML;
-    }
-
-    public void setPathToGML(String pathToGML) {
-        this.pathToGML = pathToGML;
+    public void setFeatureNodes(List<String> featureNodes) {
+        this.featureNodes = featureNodes;
     }
 
     public List<String> getArrayNodes() {
@@ -89,5 +88,29 @@ public class GmlConverterConfig implements Serializable {
 
     public void setSkipNodes(List<String> skipNodes) {
         this.skipNodes = skipNodes;
+    }
+
+    public Map<String, String> getRenameNodes() {
+        return renameNodes;
+    }
+
+    public void setRenameNodes(Map<String, String> renameNodes) {
+        this.renameNodes = renameNodes;
+    }
+
+    public String getAttributeStrategy() {
+        return attributeStrategy;
+    }
+
+    public void setAttributeStrategy(String attributeStrategy) {
+        this.attributeStrategy = attributeStrategy;
+    }
+
+    public List<String> getAttributeExcept() {
+        return attributeExcept;
+    }
+
+    public void setAttributeExcept(List<String> attributeExcept) {
+        this.attributeExcept = attributeExcept;
     }
 }

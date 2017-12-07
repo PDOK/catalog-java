@@ -1,10 +1,9 @@
 {
-  "gmlToJsonn": {
+  "bla": {
     "gmlId": ".ProtectedSite.\"gml:id\"",
     "action": "new",
     "dataset": "ProtectedSite",
     "featureNode": "ProtectedSite",
-    "pathToGML": "../gml/natura2000-small.gml",
     "arrayNodes": [],
     "skipNodes": [
       ".siteName.GeographicalName",
