@@ -1,11 +1,11 @@
 {
+  "mapping": {
     "gmlId": ".id",
     "action": "new",
     "dataset": "ProtectedSite",
     "featureNodes": [
       "ProtectedSite"
     ],
-    "arrayNodes": [],
     "skipNodes": [
       ".siteName.GeographicalName",
       ".siteName.GeographicalName.spelling.SpellingOfName"
@@ -14,4 +14,5 @@
       "siteProtectionClassification": "Classification"
     },
     "attributeStrategy": "EVERYTHING"
+  }
 }

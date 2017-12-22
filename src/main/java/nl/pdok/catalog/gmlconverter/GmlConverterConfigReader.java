@@ -4,21 +4,21 @@ import static nl.pdok.catalog.util.FileReaderUtil.retrieveFileToStringFromFilePa
 
 import java.io.File;
 import java.io.IOException;
-
+import nl.pdok.catalog.exceptions.FileReaderException;
+import org.codehaus.jackson.map.DeserializationConfig;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import nl.pdok.catalog.exceptions.FileReaderException;
-
 public class GmlConverterConfigReader {
-    
+
     private static final Logger LOGGER = LoggerFactory.getLogger(GmlConverterConfigReader.class);
 
     private static final String FILE_NAME = "configuration.json";
-    
+
     private String basePath;
-    
+
     public GmlConverterConfigReader(File catalogusFolder) {
         basePath = catalogusFolder.getPath().concat(File.separator).concat("datasets");
     }
@@ -44,6 +44,8 @@ public class GmlConverterConfigReader {
 
     private GmlConverterConfig parseStringToGmlConverterConfig(String jsonString) throws FileReaderException {
         ObjectMapper mapper = new ObjectMapper();
+        mapper.enable(DeserializationConfig.Feature.UNWRAP_ROOT_VALUE);
+        mapper.setSerializationInclusion(Inclusion.NON_NULL);
         try {
             return mapper.readValue(jsonString, GmlConverterConfig.class);
         } catch (IOException e) {

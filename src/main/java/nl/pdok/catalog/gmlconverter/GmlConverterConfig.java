@@ -1,18 +1,19 @@
 package nl.pdok.catalog.gmlconverter;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.codehaus.jackson.annotate.JsonIgnoreProperties;
 import org.codehaus.jackson.annotate.JsonProperty;
+import org.codehaus.jackson.map.annotate.JsonRootName;
 
-@JsonIgnoreProperties
+@JsonRootName(value = "mapping")
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class GmlConverterConfig implements Serializable {
 
-    /**
-     * 
-     */
     private static final long serialVersionUID = 8243114907630395209L;
 
     @JsonProperty(value = "gmlId")
@@ -25,22 +26,22 @@ public class GmlConverterConfig implements Serializable {
     private String dataset;
 
     @JsonProperty(value = "featureNodes")
-    private List<String> featureNodes;
+    private List<String> featureNodes = new ArrayList<>();
 
     @JsonProperty(value = "arrayNodes")
-    private List<String> arrayNodes;
+    private List<String> arrayNodes = new ArrayList<>();
 
     @JsonProperty(value = "skipNodes")
-    private List<String> skipNodes;
+    private List<String> skipNodes = new ArrayList<>();
 
     @JsonProperty(value = "renameNodes")
-    private Map<String, String> renameNodes;
+    private Map<String, String> renameNodes = new HashMap<>();
 
     @JsonProperty(value = "attributeStrategy")
-    private String attributeStrategy;
+    private AttributeStrategy attributeStrategy = AttributeStrategy.NOTHING;
 
     @JsonProperty(value = "attributeExcept")
-    private List<String> attributeExcept;
+    private List<String> attributeExcept = new ArrayList<>();
 
     public String getGmlId() {
         return gmlId;
@@ -98,11 +99,11 @@ public class GmlConverterConfig implements Serializable {
         this.renameNodes = renameNodes;
     }
 
-    public String getAttributeStrategy() {
+    public AttributeStrategy getAttributeStrategy() {
         return attributeStrategy;
     }
 
-    public void setAttributeStrategy(String attributeStrategy) {
+    public void setAttributeStrategy(AttributeStrategy attributeStrategy) {
         this.attributeStrategy = attributeStrategy;
     }
 
