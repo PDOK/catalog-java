@@ -1,12 +1,11 @@
 package nl.pdok.catalog.jobentry;
 
-import static nl.pdok.catalog.util.FileReaderUtil.retrieveFileToStringFromFilePath;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.commons.io.FileUtils;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,7 +29,14 @@ public class JobEntriesReader {
             throws FileReaderException {
         String filePath = basePath + buildFilePathForDataset(datasetName);
 
-        String fileAsString = retrieveFileToStringFromFilePath(filePath, LOGGER);
+        String fileAsString;
+        try {
+            fileAsString = FileUtils.readFileToString(new File(filePath));
+        } catch (IOException e) {
+            String errorMsg = "There was a problem reading the job entries config file: " + filePath;
+            LOGGER.error(errorMsg, e);
+            throw new FileReaderException(errorMsg, e);
+        }
 
         return parseStringToJobEntries(fileAsString);
     }

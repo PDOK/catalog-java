@@ -1,10 +1,10 @@
 package nl.pdok.catalog.gmlconverter;
 
-import static nl.pdok.catalog.util.FileReaderUtil.retrieveFileToStringFromFilePath;
-
 import java.io.File;
 import java.io.IOException;
 import nl.pdok.catalog.exceptions.FileReaderException;
+
+import org.apache.commons.io.FileUtils;
 import org.codehaus.jackson.map.DeserializationConfig;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
@@ -26,9 +26,19 @@ public class GmlConverterConfigReader {
     public GmlConverterConfig retrieveGmlConverterConfigFromCatalogus(String datasetName) throws FileReaderException {
         String filePath = basePath + buildFilePathForDataset(datasetName);
 
-        String fileAsString = retrieveFileToStringFromFilePath(filePath, LOGGER);
-
-        return parseStringToGmlConverterConfig(fileAsString);
+        File file = new File(filePath);
+        if (file.exists()) {
+            try {
+                String fileContent = FileUtils.readFileToString(file);
+                return parseStringToGmlConverterConfig(fileContent);
+            } catch (IOException e) {
+                String errorMsg = "There was a problem reading the gml converter config file: " + filePath;
+                LOGGER.error(errorMsg, e);
+                throw new FileReaderException(errorMsg, e);
+            }
+        } else {
+            return null;
+        }
     }
 
     private String buildFilePathForDataset(String datasetName) {
