@@ -26,9 +26,8 @@ public class GmlConverterConfigReaderTest {
         reader = new GmlConverterConfigReader(new File(GmlConverterConfigReaderTest.class.getResource("/testcatalogus/").getFile()));
     }
 
-    @Test(expected = FileReaderException.class)
     public void testGmlConverterConfigFromCatalogusNoFile() throws FileReaderException {
-        reader.retrieveGmlConverterConfigFromCatalogus("bag");
+        assertNull(reader.retrieveGmlConverterConfigFromCatalogus("bag"));
     }
 
     @Test(expected = FileReaderException.class)
